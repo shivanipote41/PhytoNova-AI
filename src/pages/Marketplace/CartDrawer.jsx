@@ -15,6 +15,21 @@ export default function CartDrawer({ isOpen, onClose }) {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [error, setError] = useState(null);
+  const [imageErrors, setImageErrors] = useState({});
+
+  const getCategoryFallbackStyle = (category) => {
+    switch (category) {
+      case 'Fertilizers': return 'bg-emerald-900/50';
+      case 'Seeds': return 'bg-amber-900/50';
+      case 'Farming Tools': return 'bg-slate-800/50';
+      case 'Plant Care': return 'bg-teal-900/50';
+      default: return 'bg-gray-800/50';
+    }
+  };
+
+  const handleImageError = (itemId) => {
+    setImageErrors(prev => ({ ...prev, [itemId]: true }));
+  };
 
   const handleProceedToCheckout = () => {
     setView('checkout');
@@ -88,6 +103,7 @@ export default function CartDrawer({ isOpen, onClose }) {
       setPhone('');
       setAddress('');
       setError(null);
+      setImageErrors({});
     }, 300);
   };
 
@@ -132,7 +148,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               <div className="flex-1 overflow-y-auto px-5 py-6 space-y-6">
                 <div className="text-center space-y-4">
                   <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 flex items-center justify-center">
-                    <span className="text-3xl">✅</span>
+                    <span className="text-3xl">&#10003;</span>
                   </div>
                   <h3 className="text-xl font-bold text-text-primary">Order placed successfully!</h3>
                   <p className="text-text-secondary">Thank you for your order. We'll process it shortly.</p>
@@ -142,7 +158,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <h4 className="font-semibold text-text-primary">Order Summary</h4>
                   <div className="flex justify-between text-sm">
                     <span className="text-text-secondary">Total</span>
-                    <span className="font-semibold text-emerald-400">₹{total.toFixed(0)}</span>
+                    <span className="font-semibold text-emerald-400">&#8377;{total.toFixed(0)}</span>
                   </div>
                   <div className="flex justify-between text-sm">
                     <span className="text-text-secondary">Items</span>
@@ -215,7 +231,7 @@ export default function CartDrawer({ isOpen, onClose }) {
                   onClick={handleBackToCart}
                   className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors"
                 >
-                  ← Back to Cart
+                  &#8592; Back to Cart
                 </button>
 
                 {error && (
@@ -279,7 +295,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               <div className="px-5 py-4 border-t border-white/10 space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-text-secondary text-sm">Total</span>
-                  <span className="text-2xl font-bold text-emerald-400">₹{total.toFixed(0)}</span>
+                  <span className="text-2xl font-bold text-emerald-400">&#8377;{total.toFixed(0)}</span>
                 </div>
                 <button
                   onClick={handleCheckout}
@@ -367,18 +383,24 @@ export default function CartDrawer({ isOpen, onClose }) {
                     exit={{ opacity: 0, x: -20 }}
                     className="flex gap-3 p-3 rounded-md bg-white/5 border border-white/10"
                   >
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-16 h-16 rounded object-cover flex-shrink-0"
-                      loading="lazy"
-                      onError={(e) => { e.currentTarget.style.display = 'none'; }}
-                    />
+                    {imageErrors[item.id] ? (
+                      <div className={`w-16 h-16 rounded flex-shrink-0 flex items-center justify-center ${getCategoryFallbackStyle(item.category)}`}>
+                        <span className="text-white/60 text-xs font-medium text-center px-1">{item.category}</span>
+                      </div>
+                    ) : (
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-16 h-16 rounded object-cover flex-shrink-0"
+                        loading="lazy"
+                        onError={() => handleImageError(item.id)}
+                      />
+                    )}
                     <div className="flex-1 min-w-0">
                       <h4 className="text-sm font-semibold text-text-primary line-clamp-1">{item.name}</h4>
                       <p className="text-xs text-text-secondary">{item.category}</p>
                       <p className="text-sm font-semibold text-emerald-400 mt-0.5">
-                        ₹{item.price}
+                        &#8377;{item.price}
                       </p>
                       <div className="flex items-center gap-2 mt-2">
                         <button
@@ -415,7 +437,7 @@ export default function CartDrawer({ isOpen, onClose }) {
               <div className="px-5 py-4 border-t border-white/10 space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-text-secondary text-sm">Subtotal</span>
-                  <span className="text-2xl font-bold text-emerald-400">₹{total.toFixed(0)}</span>
+                  <span className="text-2xl font-bold text-emerald-400">&#8377;{total.toFixed(0)}</span>
                 </div>
                 <button
                   onClick={handleProceedToCheckout}

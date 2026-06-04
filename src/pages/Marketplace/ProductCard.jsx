@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaStar, FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
@@ -5,10 +6,21 @@ import Badge from '../../components/ui/Badge';
 
 export default function ProductCard({ product, onClick }) {
   const { addItem } = useCart();
+  const [imageError, setImageError] = useState(false);
 
   const handleAddToCart = (e) => {
     e.stopPropagation();
     addItem(product);
+  };
+
+  const getCategoryBgColor = (category) => {
+    switch (category) {
+      case 'Fertilizers': return 'bg-emerald-900/50';
+      case 'Seeds': return 'bg-amber-900/50';
+      case 'Farming Tools': return 'bg-slate-800/50';
+      case 'Plant Care': return 'bg-teal-900/50';
+      default: return 'bg-gray-800/50';
+    }
   };
 
   return (
@@ -22,13 +34,19 @@ export default function ProductCard({ product, onClick }) {
       className="bg-white/[0.02] border border-white/10 rounded-md overflow-hidden cursor-pointer group transition-shadow hover:shadow-lg hover:shadow-emerald-900/20"
     >
       <div className="relative h-48 overflow-hidden">
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-          loading="lazy"
-          onError={(e) => { e.currentTarget.style.display = 'none'; }}
-        />
+        {imageError ? (
+          <div className={`w-full h-full flex items-center justify-center ${getCategoryBgColor(product.category)}`}>
+            <span className="text-white/60 text-sm font-medium text-center px-2">{product.category}</span>
+          </div>
+        ) : (
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+            loading="lazy"
+            onError={() => setImageError(true)}
+          />
+        )}
         <div className="absolute top-3 left-3">
           <Badge variant="primary">{product.category}</Badge>
         </div>

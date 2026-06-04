@@ -6,6 +6,7 @@ import Badge from '../../components/ui/Badge';
 
 export default function ProductDetail({ product, onClose }) {
   const [quantity, setQuantity] = useState(1);
+  const [imageError, setImageError] = useState(false);
   const { addItem } = useCart();
 
   if (!product) return null;
@@ -16,6 +17,16 @@ export default function ProductDetail({ product, onClose }) {
   const handleAddToCart = () => {
     addItem({ ...product, quantity });
     onClose();
+  };
+
+  const getCategoryBgColor = (category) => {
+    switch (category) {
+      case 'Fertilizers': return 'bg-emerald-900/50';
+      case 'Seeds': return 'bg-amber-900/50';
+      case 'Farming Tools': return 'bg-slate-800/50';
+      case 'Plant Care': return 'bg-teal-900/50';
+      default: return 'bg-gray-800/50';
+    }
   };
 
   return (
@@ -48,13 +59,19 @@ export default function ProductDetail({ product, onClose }) {
 
           {/* Image */}
           <div className="relative h-72 md:h-80 overflow-hidden rounded-t-lg">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              onError={(e) => { e.currentTarget.style.display = 'none'; }}
-            />
+            {imageError ? (
+              <div className={`w-full h-full flex items-center justify-center ${getCategoryBgColor(product.category)}`}>
+                <span className="text-white/60 text-lg font-medium text-center px-4">{product.category}</span>
+              </div>
+            ) : (
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-full h-full object-cover"
+                loading="lazy"
+                onError={() => setImageError(true)}
+              />
+            )}
             <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
             <div className="absolute bottom-4 left-4 flex gap-2">
               <Badge variant="secondary">{product.category}</Badge>
