@@ -12,12 +12,27 @@ html {
   scroll-behavior: smooth;
 }
 
+html, body {
+  min-height: 100%;
+  overflow-x: hidden;
+  background-color: #000000;
+}
+
 body {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #0f172a;
+  background-color: #000000;
 }
+
+img, video, canvas, spline-viewer {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pointer-events-none { pointer-events: none; }
+.pointer-events-auto { pointer-events: auto; }
 
 @layer components {
   .glass-card {

@@ -47,17 +47,23 @@ export default function DetectionPage() {
 
       if (user && supabase) {
         const treatment = getTreatment(analysis.label);
-        await supabase.from('detections').insert({
-          user_id: user.id,
-          image_url: '',
-          disease: analysis.label,
-          confidence: analysis.confidence,
-          treatment: treatment.title,
-        });
+        try {
+          await supabase.from('detections').insert({
+            user_id: user.id,
+            image_url: '',
+            disease: analysis.label,
+            confidence: analysis.confidence,
+            treatment: treatment.title,
+          });
+        } catch (insertErr) {
+          // Log insert error but don't fail the user experience
+          console.error('[DetectionPage] Failed to save detection to history:', insertErr);
+        }
 
         window.dispatchEvent(new CustomEvent('phytanova:history:refresh'));
       }
     } catch (err) {
+      // Show user-friendly error message from AI service
       setError(err.message || 'Analysis failed. Please try again.');
     } finally {
       setLoading(false);
@@ -65,13 +71,13 @@ export default function DetectionPage() {
   }, [user]);
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-black">
       {/* Page header */}
-      <div className="max-w-5xl mx-auto px-4 pt-10 pb-6">
+      <div className="max-w-5xl mx-auto px-4 pt-24 pb-8">
         <motion.h1
           initial={{ opacity: 0, y: -16 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-4xl font-bold text-text-primary"
+          className="text-4xl font-bold text-white"
         >
           Disease{' '}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-secondary">
@@ -84,12 +90,12 @@ export default function DetectionPage() {
         </p>
       </div>
 
-      <div className="max-w-5xl mx-auto px-4 pb-16 grid gap-6 lg:grid-cols-2">
+      <div className="max-w-5xl mx-auto px-4 pb-24 space-y-8 lg:grid lg:grid-cols-2 lg:gap-6">
         {/* Left column — upload + result */}
-        <div className="space-y-6">
+        <div className="space-y-8">
           {/* Upload zone */}
-          <div className="border border-white/10 bg-white/[0.02] rounded-md p-5">
-            <h2 className="text-text-primary font-semibold mb-4">
+          <div className="border border-white/10 bg-white/[0.02] rounded-md p-6 lg:p-8">
+            <h2 className="text-white font-semibold mb-4">
               Upload Plant Image
             </h2>
             <UploadZone onUpload={handleUpload} />

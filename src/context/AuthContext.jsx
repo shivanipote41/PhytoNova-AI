@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import {
   signIn as authSignIn,
   signUp as authSignUp,
+  signInWithGoogle as authSignInWithGoogle,
   signOut as authSignOut,
   supabase,
 } from '../services/supabase';
@@ -12,6 +13,7 @@ const AuthContext = createContext({
   error: null,
   signIn: async () => {},
   signUp: async () => {},
+  signInWithGoogle: async () => {},
   signOut: async () => {},
 });
 
@@ -57,6 +59,12 @@ export function AuthProvider({ children }) {
     signUp: async (email, password) => {
       setError(null);
       const { error: err } = await authSignUp(email, password);
+      if (err) setError(err.message);
+      return { error: err };
+    },
+    signInWithGoogle: async () => {
+      setError(null);
+      const { error: err } = await authSignInWithGoogle();
       if (err) setError(err.message);
       return { error: err };
     },

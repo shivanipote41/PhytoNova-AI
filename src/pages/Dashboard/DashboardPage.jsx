@@ -7,7 +7,7 @@ export default function DashboardPage() {
   return (
     <div className="min-h-screen bg-background pb-16">
       {/* Page header */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-10 pb-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-20 pb-8">
         <div>
           <h1 className="text-3xl font-bold text-text-primary tracking-tight">
             Dashboard

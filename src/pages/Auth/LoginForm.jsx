@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { FcGoogle } from 'react-icons/fc';
 import { useAuth } from '../../context/AuthContext';
 
 export default function LoginForm() {
-  const { signIn, error } = useAuth();
+  const { signIn, signInWithGoogle, error } = useAuth();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -63,6 +64,21 @@ export default function LoginForm() {
         className="w-full bg-primary text-white rounded-md px-6 py-3 hover:bg-primary/90 transition disabled:opacity-50"
       >
         {loading ? 'Signing in…' : 'Sign In'}
+      </button>
+
+      <div className="relative flex items-center py-2">
+        <div className="flex-grow border-t border-white/10" />
+        <span className="mx-4 text-xs text-text-secondary">or</span>
+        <div className="flex-grow border-t border-white/10" />
+      </div>
+
+      <button
+        type="button"
+        onClick={signInWithGoogle}
+        className="w-full flex items-center justify-center gap-2 bg-white/[0.02] border border-white/10 text-text-primary rounded-md px-6 py-3 hover:bg-white/[0.04] transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900"
+      >
+        <FcGoogle className="w-5 h-5" />
+        <span className="text-sm font-medium">Continue with Google</span>
       </button>
 
       <div className="text-center">

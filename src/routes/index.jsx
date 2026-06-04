@@ -2,6 +2,7 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Layout from '../components/layout/Layout';
 import ProtectedRoute from '../components/layout/ProtectedRoute';
+import BrandedLoader from '../components/ui/BrandedLoader';
 
 const HomePage = lazy(() => import('../pages/Home/HomePage'));
 const AuthPage = lazy(() => import('../pages/Auth/AuthPage'));
@@ -11,17 +12,9 @@ const DetectionPage = lazy(() => import('../pages/Detection/DetectionPage'));
 const DashboardPage = lazy(() => import('../pages/Dashboard/DashboardPage'));
 const MarketplacePage = lazy(() => import('../pages/Marketplace/MarketplacePage'));
 
-function LoadingFallback() {
-  return (
-    <div className="flex items-center justify-center min-h-screen">
-      <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin" />
-    </div>
-  );
-}
-
 function AppRoutes() {
   return (
-    <Suspense fallback={<LoadingFallback />}>
+    <Suspense fallback={<BrandedLoader />}>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<HomePage />} />

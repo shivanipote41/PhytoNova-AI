@@ -43,6 +43,20 @@ export async function signIn(email, password) {
 }
 
 /**
+ * Sign in with Google OAuth via Supabase.
+ * @returns {{ data, error }}
+ */
+export async function signInWithGoogle() {
+  if (!supabase) return { data: null, error: new Error('Supabase not configured') };
+  return supabase.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin,
+    },
+  });
+}
+
+/**
  * End the current session.
  * @returns {{ error }}
  */

@@ -2,6 +2,7 @@ import { api } from './api';
 
 const HF_MODEL = import.meta.env.VITE_HF_MODEL || 'facebook/deit-base-distilled-patch16-224';
 const HF_TOKEN = import.meta.env.VITE_HF_API_TOKEN;
+const isValidToken = HF_TOKEN && HF_TOKEN !== 'your_huggingface_token' && HF_TOKEN.startsWith('hf_');
 
 /** Return base64-encoded data URL for a File/blob. */
 function toBase64(file) {
@@ -33,9 +34,9 @@ function mockPrediction() {
  * @returns {Promise<{ label: string, confidence: number }>}
  */
 export async function analyzeImage(file) {
-  if (!HF_TOKEN) {
+  if (!isValidToken) {
     console.warn(
-      '[aiService] VITE_HF_API_TOKEN is not set. Using mock prediction.'
+      '[aiService] VITE_HF_API_TOKEN is not set or invalid. Using mock prediction.'
     );
     await new Promise((r) => setTimeout(r, 800));
     return mockPrediction();
@@ -45,21 +46,27 @@ export async function analyzeImage(file) {
   // Strip data URL prefix so API accepts it cleanly
   const body = base64.split(',')[1];
 
-  const data = await api.post(
-    `https://api-inference.huggingface.co/models/${HF_MODEL}`,
-    { inputs: body },
-    {
-      headers: {
-        Authorization: `Bearer ${HF_TOKEN}`,
-        'Content-Type': 'application/json',
-      },
-    }
-  );
+  try {
+    const data = await api.post(
+      `https://api-inference.huggingface.co/models/${HF_MODEL}`,
+      { inputs: body },
+      {
+        headers: {
+          Authorization: `Bearer ${HF_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
-  // Hugging Face returns an array of [{ label, score }]
-  const top = data[0];
-  const label = top.label ?? 'Unknown';
-  const confidence = top.score ?? 0;
+    // Hugging Face returns an array of [{ label, score }]
+    const top = data[0];
+    const label = top.label ?? 'Unknown';
+    const confidence = top.score ?? 0;
 
-  return { label, confidence, source: 'huggingface' };
+    return { label, confidence, source: 'huggingface' };
+  } catch (err) {
+    // Return user-friendly error message for network failures
+    const message = err.response?.data?.error || err.message || 'Network error. Please try again.';
+    throw new Error(message);
+  }
 }
