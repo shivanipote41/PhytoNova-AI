@@ -3,8 +3,6 @@ import {
   signIn as authSignIn,
   signUp as authSignUp,
   signOut as authSignOut,
-  signInWithGoogle,
-  signInWithGitHub,
   supabase,
 } from '../services/supabase';
 
@@ -15,8 +13,6 @@ const AuthContext = createContext({
   signIn: async () => {},
   signUp: async () => {},
   signOut: async () => {},
-  signInWithGoogle: async () => {},
-  signInWithGitHub: async () => {},
 });
 
 export function useAuth() {
@@ -68,18 +64,6 @@ export function AuthProvider({ children }) {
       setError(null);
       const { error: err } = await authSignOut();
       if (err) setError(err.message);
-    },
-    signInWithGoogle: async () => {
-      setError(null);
-      const { error: err } = await signInWithGoogle();
-      if (err) setError(err.message);
-      return { error: err };
-    },
-    signInWithGitHub: async () => {
-      setError(null);
-      const { error: err } = await signInWithGitHub();
-      if (err) setError(err.message);
-      return { error: err };
     },
   };
 

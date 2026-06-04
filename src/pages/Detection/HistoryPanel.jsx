@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import GlassCard from '../../components/ui/GlassCard';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
 
@@ -15,15 +14,15 @@ function formatDate(iso) {
 
 function HistoryItem({ item }) {
   return (
-    <div className="flex items-center gap-4 p-3 rounded-xl hover:bg-white/5 transition-colors">
+    <div className="flex items-center gap-4 p-3 hover:bg-white/[0.02] transition-colors border-b border-white/5 last:border-b-0">
       {item.image_url ? (
         <img
           src={item.image_url}
           alt={item.disease}
-          className="w-12 h-12 rounded-lg object-cover flex-shrink-0 ring-1 ring-white/10"
+          className="w-12 h-12 object-cover flex-shrink-0 border border-white/10"
         />
       ) : (
-        <div className="w-12 h-12 rounded-lg bg-primary/20 flex items-center justify-center flex-shrink-0">
+        <div className="w-12 h-12 rounded-md bg-primary/20 flex items-center justify-center flex-shrink-0">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -53,7 +52,7 @@ function HistoryItem({ item }) {
       <div className="text-right flex-shrink-0">
         <span
           className={`
-            inline-block text-xs font-semibold px-2 py-0.5 rounded-full
+            inline-block text-xs font-semibold px-2 py-0.5 rounded-sm
             ${item.confidence >= 0.8
               ? 'bg-emerald-500/20 text-emerald-300'
               : item.confidence >= 0.6
@@ -102,7 +101,6 @@ export default function HistoryPanel() {
     fetchHistory();
   }, [user]);
 
-  // Expose a refresh function via a custom event
   useEffect(() => {
     const handler = () => {
       if (!user || !supabase) return;
@@ -121,13 +119,13 @@ export default function HistoryPanel() {
   }, [user]);
 
   return (
-    <GlassCard className="p-5">
+    <div className="border border-white/10 bg-white/[0.02] rounded-md p-5">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-text-primary font-semibold text-lg">
           Detection History
         </h3>
         {items.length > 0 && (
-          <span className="text-xs text-text-secondary bg-white/8 px-2 py-0.5 rounded-full">
+          <span className="text-xs text-text-secondary bg-white/5 px-2 py-0.5 rounded-sm">
             {items.length} scan{items.length !== 1 ? 's' : ''}
           </span>
         )}
@@ -137,7 +135,7 @@ export default function HistoryPanel() {
         <div className="space-y-3">
           {[...Array(3)].map((_, i) => (
             <div key={i} className="flex gap-4 items-center animate-pulse">
-              <div className="w-12 h-12 rounded-lg bg-white/10" />
+              <div className="w-12 h-12 bg-white/10" />
               <div className="flex-1 space-y-2">
                 <div className="h-4 bg-white/10 rounded w-3/4" />
                 <div className="h-3 bg-white/10 rounded w-1/2" />
@@ -146,8 +144,8 @@ export default function HistoryPanel() {
           ))}
         </div>
       ) : items.length === 0 ? (
-        <div className="text-center py-8">
-          <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-3">
+        <div className="text-center py-12">
+          <div className="w-12 h-12 rounded-md bg-white/5 flex items-center justify-center mx-auto mb-3">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -159,23 +157,24 @@ export default function HistoryPanel() {
               <path
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
+                d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
           </div>
           <p className="text-text-secondary text-sm">
-            {user
-              ? 'No scans yet — try uploading a plant image above.'
-              : 'Sign in to view your scan history.'}
+            No detections yet
+          </p>
+          <p className="text-text-secondary/60 text-xs mt-1">
+            Upload a plant image to get started
           </p>
         </div>
       ) : (
-        <div className="space-y-1 divide-y divide-white/5">
+        <div className="divide-y divide-white/5">
           {items.map((item) => (
             <HistoryItem key={item.id} item={item} />
           ))}
         </div>
       )}
-    </GlassCard>
+    </div>
   );
 }

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import GlassCard from '../../components/ui/GlassCard';
 import { useAuth } from '../../context/AuthContext';
 import { getProfile } from '../../services/supabase';
 
@@ -63,11 +62,11 @@ export default function ProfilePage() {
 
   const avatarColor = getAvatarColor(user.email);
   const initials = getInitials(user.email);
+  const displayName = user.user_metadata?.full_name || profile?.full_name || user.email.split('@')[0];
 
   return (
     <div className="min-h-screen bg-background px-4 py-12">
       <div className="max-w-2xl mx-auto space-y-6">
-        {/* Page title */}
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -76,9 +75,7 @@ export default function ProfilePage() {
           Your Profile
         </motion.h1>
 
-        {/* Profile card */}
-        <GlassCard className="p-8 flex flex-col items-center text-center">
-          {/* Avatar */}
+        <div className="bg-white/[0.02] border border-white/10 rounded-md p-8 flex flex-col items-center text-center">
           <div
             className="w-24 h-24 rounded-full flex items-center justify-center text-3xl font-bold text-white mb-4"
             style={{ backgroundColor: avatarColor }}
@@ -87,7 +84,7 @@ export default function ProfilePage() {
           </div>
 
           <h2 className="text-xl font-semibold text-text-primary mb-1">
-            {profile?.full_name || user.email.split('@')[0]}
+            {displayName}
           </h2>
           <p className="text-text-secondary text-sm mb-6">{user.email}</p>
 
@@ -113,11 +110,11 @@ export default function ProfilePage() {
 
           <button
             onClick={handleSignOut}
-            className="mt-8 w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-xl px-6 py-3 hover:opacity-90 transition"
+            className="mt-8 w-full bg-gradient-to-r from-red-500 to-orange-500 text-white font-semibold rounded-md px-6 py-3 hover:opacity-90 transition"
           >
             Sign Out
           </button>
-        </GlassCard>
+        </div>
       </div>
     </div>
   );

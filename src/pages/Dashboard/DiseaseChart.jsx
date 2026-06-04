@@ -9,50 +9,29 @@ import {
 } from 'recharts';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
-import ChartCard from '../../components/ui/ChartCard';
 
-// ---------------------------------------------------------------------------
-// Colors mapped to Tailwind palette for pie slices
-// ---------------------------------------------------------------------------
 const SLICE_COLORS = [
-  '#22c55e', // primary green
-  '#06b6d4', // secondary cyan
-  '#f59e0b', // amber
-  '#ef4444', // red
-  '#8b5cf6', // violet
-  '#ec4899', // pink
-  '#14b8a6', // teal
-  '#f97316', // orange
+  '#22c55e',
+  '#06b6d4',
+  '#f59e0b',
+  '#ef4444',
+  '#8b5cf6',
+  '#ec4899',
+  '#14b8a6',
+  '#f97316',
 ];
 
-// ---------------------------------------------------------------------------
-// Mock disease distribution (deterministic)
-// ---------------------------------------------------------------------------
-const MOCK_DATA = [
-  { name: 'Early Blight', value: 12 },
-  { name: 'Late Blight', value: 6 },
-  { name: 'Leaf Mold', value: 5 },
-  { name: 'Bacterial Spot', value: 4 },
-  { name: 'Healthy', value: 24 },
-];
-
-// ---------------------------------------------------------------------------
-// Custom tooltip with dark glassmorphism background
-// ---------------------------------------------------------------------------
 function CustomTooltip({ active, payload }) {
   if (!active || !payload?.length) return null;
   const { name, value } = payload[0];
   return (
-    <div className="backdrop-blur-md bg-white/10 border border-white/20 rounded-xl px-4 py-2 text-sm shadow-glass">
+    <div className="bg-white/10 border border-white/20 rounded-md px-4 py-2 text-sm">
       <span className="text-text-secondary">{name}: </span>
       <span className="text-text-primary font-semibold">{value}</span>
     </div>
   );
 }
 
-// ---------------------------------------------------------------------------
-// Custom legend renderer
-// ---------------------------------------------------------------------------
 function CustomLegend({ payload }) {
   if (!payload?.length) return null;
   return (
@@ -60,7 +39,7 @@ function CustomLegend({ payload }) {
       {payload.map((entry, i) => (
         <li key={i} className="flex items-center gap-1.5 text-xs text-text-secondary">
           <span
-            className="w-2.5 h-2.5 rounded-full flex-shrink-0"
+            className="w-2.5 h-2.5 rounded-sm flex-shrink-0"
             style={{ backgroundColor: entry.color }}
           />
           {entry.value}
@@ -70,16 +49,41 @@ function CustomLegend({ payload }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// DiseaseChart — pie chart of disease distribution
-// ---------------------------------------------------------------------------
-export default function DiseaseChart({ isDemo: _isDemo }) {
+function EmptyState() {
+  return (
+    <div className="flex flex-col items-center justify-center h-full text-center py-8">
+      <div className="w-12 h-12 rounded-md bg-white/5 flex items-center justify-center mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          className="w-6 h-6 text-text-secondary/50"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M7.5 14.25v2.25m3-4.5v4.5m3-6.75v6.75m3-9v9M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z"
+          />
+        </svg>
+      </div>
+      <p className="text-text-secondary text-sm">No data yet</p>
+      <p className="text-text-secondary/60 text-xs mt-1">
+        Complete some scans to see disease distribution
+      </p>
+    </div>
+  );
+}
+
+export default function DiseaseChart() {
   const { user } = useAuth();
   const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || !supabase) {
-      setData(MOCK_DATA);
+      setLoading(false);
       return;
     }
 
@@ -91,11 +95,10 @@ export default function DiseaseChart({ isDemo: _isDemo }) {
         .order('created_at', { ascending: false });
 
       if (error || !rows || rows.length === 0) {
-        setData(MOCK_DATA);
+        setLoading(false);
         return;
       }
 
-      // Aggregate by disease
       const freq = {};
       rows.forEach((r) => {
         const d = r.disease || 'Unknown';
@@ -106,42 +109,54 @@ export default function DiseaseChart({ isDemo: _isDemo }) {
         .map(([name, value]) => ({ name, value }))
         .sort((a, b) => b.value - a.value);
 
-      setData(aggregated.length > 0 ? aggregated : MOCK_DATA);
+      setData(aggregated.length > 0 ? aggregated : null);
+      setLoading(false);
     }
 
     fetchData();
   }, [user]);
 
-  if (!data) return null;
+  if (loading) {
+    return (
+      <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 h-80 animate-pulse">
+        <div className="h-6 bg-white/10 rounded w-40 mb-4" />
+        <div className="h-64 bg-white/5 rounded" />
+      </div>
+    );
+  }
 
   return (
-    <ChartCard
-      title="Disease Distribution"
-      subtitle="All-time scan results"
-    >
-      <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
-          <Pie
-            data={data}
-            cx="50%"
-            cy="45%"
-            innerRadius={55}
-            outerRadius={90}
-            paddingAngle={3}
-            dataKey="value"
-          >
-            {data.map((_, i) => (
-              <Cell
-                key={i}
-                fill={SLICE_COLORS[i % SLICE_COLORS.length]}
-                stroke="rgba(255,255,255,0.08)"
-              />
-            ))}
-          </Pie>
-          <Tooltip content={<CustomTooltip />} />
-          <Legend content={<CustomLegend />} />
-        </PieChart>
-      </ResponsiveContainer>
-    </ChartCard>
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-5">
+      <h3 className="text-text-primary font-semibold text-lg mb-4">
+        Disease Distribution
+      </h3>
+      {!data || data.length === 0 ? (
+        <EmptyState />
+      ) : (
+        <ResponsiveContainer width="100%" height={280}>
+          <PieChart>
+            <Pie
+              data={data}
+              cx="50%"
+              cy="45%"
+              innerRadius={55}
+              outerRadius={90}
+              paddingAngle={3}
+              dataKey="value"
+            >
+              {data.map((_, i) => (
+                <Cell
+                  key={i}
+                  fill={SLICE_COLORS[i % SLICE_COLORS.length]}
+                  stroke="rgba(255,255,255,0.08)"
+                />
+              ))}
+            </Pie>
+            <Tooltip content={<CustomTooltip />} />
+            <Legend content={<CustomLegend />} />
+          </PieChart>
+        </ResponsiveContainer>
+      )}
+    </div>
   );
 }

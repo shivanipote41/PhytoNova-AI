@@ -3,42 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
 
-// ---------------------------------------------------------------------------
-// Deterministic mock scans (newest first)
-// ---------------------------------------------------------------------------
-const MOCK_SCANS = [
-  {
-    id: 'mock-1',
-    disease: 'Tomato___Early_blight',
-    confidence: 0.94,
-    created_at: new Date(Date.now() - 1 * 3600000).toISOString(),
-  },
-  {
-    id: 'mock-2',
-    disease: 'Healthy',
-    confidence: 0.97,
-    created_at: new Date(Date.now() - 5 * 3600000).toISOString(),
-  },
-  {
-    id: 'mock-3',
-    disease: 'Tomato___Late_blight',
-    confidence: 0.88,
-    created_at: new Date(Date.now() - 24 * 3600000).toISOString(),
-  },
-  {
-    id: 'mock-4',
-    disease: 'Tomato___Leaf_Mold',
-    confidence: 0.91,
-    created_at: new Date(Date.now() - 36 * 3600000).toISOString(),
-  },
-  {
-    id: 'mock-5',
-    disease: 'Healthy',
-    confidence: 0.99,
-    created_at: new Date(Date.now() - 72 * 3600000).toISOString(),
-  },
-];
-
 function formatDate(iso) {
   const d = new Date(iso);
   const now = new Date();
@@ -54,7 +18,6 @@ function formatDate(iso) {
 function diseaseLabel(raw) {
   if (!raw) return 'Unknown';
   if (raw === 'Healthy') return 'Healthy';
-  // Strip prefix like "Tomato___"
   return raw.includes('___') ? raw.split('___').pop().replace(/_/g, ' ') : raw;
 }
 
@@ -63,60 +26,105 @@ function diseaseColor(disease) {
   return 'text-amber-400';
 }
 
-// ---------------------------------------------------------------------------
-// RecentScans — latest 5 detections for the user
-// ---------------------------------------------------------------------------
-export default function RecentScans({ isDemo }) {
+function EmptyState() {
+  const navigate = useNavigate();
+  return (
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-8 text-center">
+      <div className="w-12 h-12 rounded-md bg-white/5 flex items-center justify-center mx-auto mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          className="w-6 h-6 text-text-secondary/50"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <p className="text-text-secondary text-sm">No recent scans</p>
+      <button
+        onClick={() => navigate('/detect')}
+        className="mt-3 px-4 py-2 text-sm text-primary border border-primary/30 rounded-md hover:bg-primary/10 transition-colors"
+      >
+        Start Scanning
+      </button>
+    </div>
+  );
+}
+
+export default function RecentScans() {
   const { user } = useAuth();
   const navigate = useNavigate();
-  const [scans, setScans] = useState([]);
+  const [scans, setScans] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || !supabase) {
-      setScans(MOCK_SCANS);
+      setLoading(false);
       return;
     }
 
     async function fetchScans() {
       const { data, error } = await supabase
         .from('detections')
-        .select('id, disease, confidence, created_at')
+        .select('id, disease, confidence, created_at, image_url')
         .eq('user_id', user.id)
         .order('created_at', { ascending: false })
         .limit(5);
 
       if (error || !data || data.length === 0) {
-        setScans(MOCK_SCANS);
+        setLoading(false);
         return;
       }
       setScans(data);
+      setLoading(false);
     }
 
     fetchScans();
   }, [user]);
 
-  if (scans.length === 0) return null;
+  if (loading) {
+    return (
+      <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 animate-pulse">
+        <div className="h-6 bg-white/10 rounded w-32 mb-4" />
+        <div className="space-y-3">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="flex items-center gap-3">
+              <div className="w-12 h-12 bg-white/10" />
+              <div className="flex-1 space-y-2">
+                <div className="h-4 bg-white/10 rounded w-3/4" />
+                <div className="h-2 bg-white/10 rounded w-1/2" />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!scans || scans.length === 0) {
+    return <EmptyState />;
+  }
 
   return (
-    <div className="backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl p-5 flex flex-col gap-3">
-      <div className="flex items-center justify-between mb-1">
-        <h3 className="text-base font-semibold text-text-primary">Recent Scans</h3>
-        {isDemo && (
-          <span className="text-xs px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-400 border border-amber-400/30">
-            Demo data
-          </span>
-        )}
-      </div>
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 flex flex-col gap-3">
+      <h3 className="text-text-primary font-semibold text-lg mb-1">
+        Recent Scans
+      </h3>
 
       <ul className="flex flex-col gap-2">
         {scans.map((scan) => (
           <li key={scan.id}>
             <button
               onClick={() => navigate('/detect')}
-              className="w-full flex items-center gap-3 p-3 rounded-xl hover:bg-white/5 transition-colors text-left group"
+              className="w-full flex items-center gap-3 p-3 hover:bg-white/[0.02] transition-colors text-left group rounded-md"
             >
-              {/* Image placeholder */}
-              <div className="w-12 h-12 rounded-lg bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden">
+              <div className="w-12 h-12 rounded-md bg-white/10 flex items-center justify-center flex-shrink-0 overflow-hidden border border-white/10">
                 {scan.image_url ? (
                   <img
                     src={scan.image_url}
@@ -140,15 +148,14 @@ export default function RecentScans({ isDemo }) {
                 )}
               </div>
 
-              {/* Info */}
               <div className="flex-1 min-w-0">
                 <p className={`text-sm font-medium truncate ${diseaseColor(scan.disease)}`}>
                   {diseaseLabel(scan.disease)}
                 </p>
                 <div className="flex items-center gap-2 mt-0.5">
-                  <div className="flex-1 h-1 rounded-full bg-white/10 overflow-hidden">
+                  <div className="flex-1 h-1 bg-white/10 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-primary"
+                      className="h-full bg-primary"
                       style={{ width: `${Math.round((scan.confidence ?? 0) * 100)}%` }}
                     />
                   </div>
@@ -158,7 +165,6 @@ export default function RecentScans({ isDemo }) {
                 </div>
               </div>
 
-              {/* Date + arrow */}
               <div className="flex flex-col items-end gap-1 flex-shrink-0">
                 <span className="text-xs text-text-secondary">
                   {formatDate(scan.created_at)}

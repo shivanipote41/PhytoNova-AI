@@ -21,24 +21,6 @@ export const supabase = isConfigured
 // ---------------------------------------------------------------------------
 
 /**
- * Start Google OAuth login flow.
- * @returns {{ data, error }}
- */
-export async function signInWithGoogle() {
-  if (!supabase) return { data: { user: null, session: null }, error: new Error('Supabase not configured') };
-  return supabase.auth.signInWithOAuth({ provider: 'google' });
-}
-
-/**
- * Start GitHub OAuth login flow.
- * @returns {{ data, error }}
- */
-export async function signInWithGitHub() {
-  if (!supabase) return { data: { user: null, session: null }, error: new Error('Supabase not configured') };
-  return supabase.auth.signInWithOAuth({ provider: 'github' });
-}
-
-/**
  * Create a new account with email + password.
  * @param {string} email
  * @param {string} password

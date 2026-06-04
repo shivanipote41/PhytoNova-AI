@@ -2,48 +2,60 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
 
-// ---------------------------------------------------------------------------
-// Build last 7 days array (newest first)
-// ---------------------------------------------------------------------------
 function buildLast7Days() {
   const days = [];
   for (let i = 0; i < 7; i++) {
     const d = new Date();
     d.setHours(0, 0, 0, 0);
     d.setDate(d.getDate() - i);
-    days.push({ date: d, label: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }), iso: d.toISOString().slice(0, 10) });
+    days.push({
+      date: d,
+      label: d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+      iso: d.toISOString().slice(0, 10)
+    });
   }
   return days;
 }
 
-// ---------------------------------------------------------------------------
-// Mock grouped detections (last 7 days)
-// ---------------------------------------------------------------------------
-const MOCK_TIMELINE = [
-  { date: buildLast7Days()[0].iso, count: 5, topDisease: 'Early Blight' },
-  { date: buildLast7Days()[1].iso, count: 3, topDisease: 'Late Blight' },
-  { date: buildLast7Days()[2].iso, count: 0, topDisease: null },
-  { date: buildLast7Days()[3].iso, count: 7, topDisease: 'Healthy' },
-  { date: buildLast7Days()[4].iso, count: 2, topDisease: 'Leaf Mold' },
-  { date: buildLast7Days()[5].iso, count: 4, topDisease: 'Bacterial Spot' },
-  { date: buildLast7Days()[6].iso, count: 1, topDisease: 'Healthy' },
-];
+function EmptyState() {
+  return (
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-8 text-center">
+      <div className="w-12 h-12 rounded-md bg-white/5 flex items-center justify-center mx-auto mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          className="w-6 h-6 text-text-secondary/50"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"
+          />
+        </svg>
+      </div>
+      <p className="text-text-secondary text-sm">No activity yet</p>
+      <p className="text-text-secondary/60 text-xs mt-1">
+        Your detection activity will appear here
+      </p>
+    </div>
+  );
+}
 
-// ---------------------------------------------------------------------------
-// ActivityTimeline — vertical timeline grouped by date
-// ---------------------------------------------------------------------------
-export default function ActivityTimeline({ isDemo }) {
+export default function ActivityTimeline() {
   const { user } = useAuth();
-  const [timeline, setTimeline] = useState([]);
+  const [timeline, setTimeline] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || !supabase) {
-      setTimeline(MOCK_TIMELINE);
+      setLoading(false);
       return;
     }
 
     async function fetchTimeline() {
-      // Fetch detections from last 7 days
       const since = new Date();
       since.setDate(since.getDate() - 7);
       since.setHours(0, 0, 0, 0);
@@ -56,11 +68,10 @@ export default function ActivityTimeline({ isDemo }) {
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
-        setTimeline(MOCK_TIMELINE);
+        setLoading(false);
         return;
       }
 
-      // Group by date
       const groups = {};
       data.forEach((d) => {
         const iso = d.created_at.slice(0, 10);
@@ -68,7 +79,6 @@ export default function ActivityTimeline({ isDemo }) {
         groups[iso].push(d.disease);
       });
 
-      // Build 7-day slots
       const days = buildLast7Days();
       const result = days.map(({ iso, label }) => {
         const diseases = groups[iso] ?? [];
@@ -81,52 +91,61 @@ export default function ActivityTimeline({ isDemo }) {
       });
 
       setTimeline(result);
+      setLoading(false);
     }
 
     fetchTimeline();
   }, [user]);
 
-  if (timeline.length === 0) return null;
+  if (loading) {
+    return (
+      <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 animate-pulse">
+        <div className="h-6 bg-white/10 rounded w-48 mb-4" />
+        <div className="space-y-4">
+          {[...Array(5)].map((_, i) => (
+            <div key={i} className="flex items-center gap-4">
+              <div className="w-24 h-4 bg-white/10 rounded" />
+              <div className="flex-1 h-2 bg-white/10 rounded" />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  if (!timeline || timeline.every(t => t.count === 0)) {
+    return <EmptyState />;
+  }
 
   const maxCount = Math.max(...timeline.map((t) => t.count), 1);
 
   return (
-    <div className="backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl p-5 flex flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-base font-semibold text-text-primary">Activity — Last 7 Days</h3>
-        {isDemo && (
-          <span className="text-xs px-2 py-0.5 rounded-full bg-amber-400/20 text-amber-400 border border-amber-400/30">
-            Demo data
-          </span>
-        )}
-      </div>
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 flex flex-col gap-4">
+      <h3 className="text-text-primary font-semibold text-lg">
+        Activity — Last 7 Days
+      </h3>
 
-      {/* Vertical timeline */}
       <ol className="relative border-l border-white/15 ml-3 flex flex-col gap-5">
         {timeline.map((item) => (
           <li key={item.date} className="ml-5 flex items-start gap-4">
-            {/* Dot */}
             <span
-              className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-full border-2 mt-1.5 ${
+              className={`absolute -left-[5px] top-1 w-2.5 h-2.5 rounded-sm border-2 mt-1.5 ${
                 item.count > 0
-                  ? 'border-primary bg-primary shadow-[0_0_8px_rgba(34,197,94,0.6)]'
+                  ? 'border-primary bg-primary'
                   : 'border-white/30 bg-transparent'
               }`}
             />
 
-            {/* Date label */}
             <div className="flex-shrink-0 w-24 text-xs text-text-secondary font-medium pt-1">
               {item.label}
             </div>
 
-            {/* Bar + count + disease */}
             <div className="flex-1 min-w-0">
               {item.count > 0 ? (
                 <div className="flex flex-col gap-1">
-                  {/* Bar */}
-                  <div className="h-1.5 rounded-full bg-white/10 overflow-hidden">
+                  <div className="h-1.5 bg-white/10 overflow-hidden">
                     <div
-                      className="h-full rounded-full bg-primary transition-all duration-700"
+                      className="h-full bg-primary transition-all duration-700"
                       style={{ width: `${Math.round((item.count / maxCount) * 100)}%` }}
                     />
                   </div>
@@ -150,7 +169,7 @@ export default function ActivityTimeline({ isDemo }) {
                   </div>
                 </div>
               ) : (
-                <div className="h-1.5 rounded-full bg-white/5" />
+                <div className="h-1.5 bg-white/5" />
               )}
             </div>
           </li>

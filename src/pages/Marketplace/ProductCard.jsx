@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import { FaStar, FaShoppingCart } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import Badge from '../../components/ui/Badge';
 
 export default function ProductCard({ product, onClick }) {
   const { addItem } = useCart();
@@ -18,7 +19,7 @@ export default function ProductCard({ product, onClick }) {
       exit={{ opacity: 0, y: -10 }}
       whileHover={{ y: -4 }}
       onClick={() => onClick(product)}
-      className="backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl overflow-hidden cursor-pointer group transition-shadow hover:shadow-lg hover:shadow-emerald-900/20"
+      className="bg-white/[0.02] border border-white/10 rounded-md overflow-hidden cursor-pointer group transition-shadow hover:shadow-lg hover:shadow-emerald-900/20"
     >
       <div className="relative h-48 overflow-hidden">
         <img
@@ -28,9 +29,7 @@ export default function ProductCard({ product, onClick }) {
           loading="lazy"
         />
         <div className="absolute top-3 left-3">
-          <span className="px-2.5 py-1 text-xs font-medium rounded-full bg-black/50 backdrop-blur-sm text-emerald-400 border border-emerald-400/20">
-            {product.category}
-          </span>
+          <Badge variant="primary">{product.category}</Badge>
         </div>
       </div>
 
@@ -53,12 +52,12 @@ export default function ProductCard({ product, onClick }) {
             ))}
             <span className="ml-1 text-xs text-text-secondary">{product.rating}</span>
           </div>
-          <span className="text-lg font-bold text-emerald-400">${product.price.toFixed(2)}</span>
+          <span className="text-lg font-bold text-emerald-400">₹{product.price}</span>
         </div>
 
         <button
           onClick={handleAddToCart}
-          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl bg-emerald-500/20 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 transition-all duration-200 font-medium text-sm active:scale-95"
+          className="w-full flex items-center justify-center gap-2 py-2.5 rounded-md bg-emerald-500/20 hover:bg-emerald-500 text-emerald-400 hover:text-white border border-emerald-500/30 transition-all duration-200 font-medium text-sm active:scale-95"
         >
           <FaShoppingCart className="text-sm" />
           Add to Cart

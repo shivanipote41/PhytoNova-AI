@@ -1,56 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useMotionValue, useTransform, animate } from 'framer-motion';
 import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
 
-// ---------------------------------------------------------------------------
-// Deterministic mock data for first-time / demo users
-// ---------------------------------------------------------------------------
-const MOCK_STATS = {
-  totalScans: 47,
-  diseasesDetected: 23,
-  healthyScans: 24,
-  topDisease: 'Early Blight',
-};
-
-// ---------------------------------------------------------------------------
-// Animated counter hook
-// ---------------------------------------------------------------------------
-function useCountUp(target, duration = 1200) {
-  const motionVal = useMotionValue(0);
-  const rounded = useTransform(motionVal, (v) => Math.round(v));
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    const controls = animate(motionVal, target, { duration, ease: 'easeOut' });
-    const unsub = rounded.on('change', setDisplay);
-    return () => { controls.stop(); unsub(); };
-  }, [target, duration, motionVal, rounded]);
-
-  return display;
-}
-
-// ---------------------------------------------------------------------------
-// Single stat card
-// ---------------------------------------------------------------------------
-function StatCard({ icon, label, value, color, isText }) {
-  const animated = useCountUp(value);
-
-  const colorMap = {
-    primary: 'text-primary',
-    secondary: 'text-secondary',
-    amber: 'text-amber-400',
-    red: 'text-red-400',
-  };
-
+function StatCard({ icon, label, value }) {
   return (
-    <div className="backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl p-5 flex flex-col gap-3">
-      <div className={`text-3xl ${colorMap[color] ?? 'text-primary'}`}>
+    <div className="bg-white/[0.02] border border-white/10 rounded-md p-5 flex flex-col gap-3">
+      <div className="text-3xl text-primary">
         {icon}
       </div>
       <div>
         <div className="text-3xl font-bold text-text-primary tabular-nums">
-          {isText ? value : animated}
+          {value}
         </div>
         <div className="mt-1 text-sm text-text-secondary">{label}</div>
       </div>
@@ -58,16 +18,40 @@ function StatCard({ icon, label, value, color, isText }) {
   );
 }
 
-// ---------------------------------------------------------------------------
-// StatsCards — fetches real stats or falls back to mock
-// ---------------------------------------------------------------------------
-export default function StatsCards({ isDemo: _isDemo }) {
+function EmptyStateCard() {
+  return (
+    <div className="col-span-full bg-white/[0.02] border border-white/10 rounded-md p-8 text-center">
+      <div className="w-12 h-12 rounded-md bg-white/5 flex items-center justify-center mx-auto mb-3">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.5}
+          className="w-6 h-6 text-text-secondary/50"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M3.75 12h16.5m-16.5 3.75h16.5M3.75 19.5h16.5M5.625 4.5h12.75a1.875 1.875 0 010 3.75H5.625a1.875 1.875 0 010-3.75z"
+          />
+        </svg>
+      </div>
+      <p className="text-text-secondary text-sm">
+        No detections yet. Start scanning to see your analytics.
+      </p>
+    </div>
+  );
+}
+
+export default function StatsCards() {
   const { user } = useAuth();
   const [stats, setStats] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user || !supabase) {
-      setStats(MOCK_STATS);
+      setLoading(false);
       return;
     }
 
@@ -79,7 +63,7 @@ export default function StatsCards({ isDemo: _isDemo }) {
         .order('created_at', { ascending: false });
 
       if (error || !data || data.length === 0) {
-        setStats(MOCK_STATS);
+        setLoading(false);
         return;
       }
 
@@ -87,7 +71,6 @@ export default function StatsCards({ isDemo: _isDemo }) {
       const diseaseCount = data.filter((d) => d.disease && d.disease !== 'Healthy').length;
       const healthyCount = total - diseaseCount;
 
-      // Find most frequent non-healthy disease
       const freq = {};
       data.forEach((d) => {
         if (d.disease && d.disease !== 'Healthy') {
@@ -95,15 +78,41 @@ export default function StatsCards({ isDemo: _isDemo }) {
         }
       });
       const topDisease =
-        Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0] ?? 'None';
+        Object.entries(freq).sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 
-      setStats({ totalScans: total, diseasesDetected: diseaseCount, healthyScans: healthyCount, topDisease });
+      setStats({
+        totalScans: total,
+        diseasesDetected: diseaseCount,
+        healthyScans: healthyCount,
+        topDisease
+      });
+      setLoading(false);
     }
 
     fetchStats();
   }, [user]);
 
-  if (!stats) return null;
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        {[...Array(4)].map((_, i) => (
+          <div key={i} className="bg-white/[0.02] border border-white/10 rounded-md p-5 animate-pulse">
+            <div className="h-8 w-8 bg-white/10 rounded mb-3" />
+            <div className="h-8 bg-white/10 rounded w-20 mb-2" />
+            <div className="h-4 bg-white/10 rounded w-28" />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (!stats || stats.totalScans === 0) {
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+        <EmptyStateCard />
+      </div>
+    );
+  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
@@ -115,7 +124,6 @@ export default function StatsCards({ isDemo: _isDemo }) {
         }
         label="Total Scans"
         value={stats.totalScans}
-        color="primary"
       />
       <StatCard
         icon={
@@ -125,7 +133,6 @@ export default function StatsCards({ isDemo: _isDemo }) {
         }
         label="Diseases Detected"
         value={stats.diseasesDetected}
-        color="red"
       />
       <StatCard
         icon={
@@ -135,19 +142,18 @@ export default function StatsCards({ isDemo: _isDemo }) {
         }
         label="Healthy Scans"
         value={stats.healthyScans}
-        color="primary"
       />
-      <StatCard
-        icon={
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
-          </svg>
-        }
-        label="Top Disease"
-        value={stats.topDisease}
-        isText={true}
-        color="secondary"
-      />
+      {stats.topDisease && (
+        <StatCard
+          icon={
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-7 h-7">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 6v.75m0 3v.75m0 3v.75m0 3V18m-9-5.25h5.25M7.5 15h3M3.375 5.25c-.621 0-1.125.504-1.125 1.125v3.026a2.999 2.999 0 010 5.198v3.026c0 .621.504 1.125 1.125 1.125h17.25c.621 0 1.125-.504 1.125-1.125v-3.026a2.999 2.999 0 010-5.198V6.375c0-.621-.504-1.125-1.125-1.125H3.375z" />
+            </svg>
+          }
+          label="Top Disease"
+          value={stats.topDisease.split('___').pop().replace(/_/g, ' ')}
+        />
+      )}
     </div>
   );
 }

@@ -26,7 +26,7 @@ export default function ProductDetail({ product, onClose }) {
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
         onClick={onClose}
-        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+        className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60"
       >
         <motion.div
           key="modal"
@@ -35,19 +35,19 @@ export default function ProductDetail({ product, onClose }) {
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto backdrop-blur-md bg-slate-900/90 border border-white/10 rounded-3xl shadow-2xl"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-white/10 rounded-lg shadow-2xl"
         >
           {/* Close button */}
           <button
             onClick={onClose}
-            className="absolute top-4 right-4 z-10 p-2 rounded-full bg-white/10 hover:bg-white/20 text-text-secondary hover:text-text-primary transition-colors"
+            className="absolute top-4 right-4 z-10 p-2 rounded-md bg-white/10 hover:bg-white/20 text-text-secondary hover:text-text-primary transition-colors"
             aria-label="Close"
           >
             <FaTimes />
           </button>
 
           {/* Image */}
-          <div className="relative h-72 md:h-80 overflow-hidden rounded-t-3xl">
+          <div className="relative h-72 md:h-80 overflow-hidden rounded-t-lg">
             <img
               src={product.image}
               alt={product.name}
@@ -55,12 +55,7 @@ export default function ProductDetail({ product, onClose }) {
             />
             <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
             <div className="absolute bottom-4 left-4 flex gap-2">
-              <span className="px-3 py-1 text-sm font-medium rounded-full bg-black/50 backdrop-blur-sm text-cyan-400 border border-cyan-400/20">
-                {product.category}
-              </span>
-              {product.tags.map((tag) => (
-                <Badge key={tag} variant="default">{tag}</Badge>
-              ))}
+              <Badge variant="secondary">{product.category}</Badge>
             </div>
           </div>
 
@@ -85,14 +80,14 @@ export default function ProductDetail({ product, onClose }) {
             <div className="flex items-center justify-between pt-2 border-t border-white/10">
               <div>
                 <span className="text-xs text-text-secondary uppercase tracking-wider">Price</span>
-                <p className="text-3xl font-bold text-emerald-400">${product.price.toFixed(2)}</p>
+                <p className="text-3xl font-bold text-emerald-400">₹{product.price}</p>
               </div>
 
               {/* Quantity selector */}
               <div className="flex items-center gap-3">
                 <button
                   onClick={decrement}
-                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-text-primary transition-colors"
+                  className="p-2 rounded-md bg-white/10 hover:bg-white/20 text-text-primary transition-colors"
                   aria-label="Decrease quantity"
                 >
                   <FaMinus className="text-sm" />
@@ -100,7 +95,7 @@ export default function ProductDetail({ product, onClose }) {
                 <span className="w-10 text-center text-lg font-semibold text-text-primary">{quantity}</span>
                 <button
                   onClick={increment}
-                  className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-text-primary transition-colors"
+                  className="p-2 rounded-md bg-white/10 hover:bg-white/20 text-text-primary transition-colors"
                   aria-label="Increase quantity"
                 >
                   <FaPlus className="text-sm" />
@@ -112,14 +107,14 @@ export default function ProductDetail({ product, onClose }) {
             <div className="flex gap-3 pt-2">
               <button
                 onClick={handleAddToCart}
-                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95"
+                className="flex-1 flex items-center justify-center gap-2 py-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95"
               >
                 <FaShoppingCart />
                 Add to Cart
               </button>
               <button
                 onClick={onClose}
-                className="px-6 py-3 rounded-xl bg-white/10 hover:bg-white/20 text-text-primary border border-white/10 font-medium transition-colors"
+                className="px-6 py-3 rounded-md bg-white/10 hover:bg-white/20 text-text-primary border border-white/10 font-medium transition-colors"
               >
                 Cancel
               </button>
@@ -127,7 +122,7 @@ export default function ProductDetail({ product, onClose }) {
 
             {/* Total line */}
             <p className="text-center text-sm text-text-secondary">
-              Total: <span className="text-emerald-400 font-semibold">${(product.price * quantity).toFixed(2)}</span>
+              Total: <span className="text-emerald-400 font-semibold">₹{product.price * quantity}</span>
             </p>
           </div>
         </motion.div>

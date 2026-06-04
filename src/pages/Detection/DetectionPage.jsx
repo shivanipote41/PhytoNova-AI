@@ -1,6 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import GlassCard from '../../components/ui/GlassCard';
 import UploadZone from './UploadZone';
 import ResultPanel from './ResultPanel';
 import HistoryPanel from './HistoryPanel';
@@ -29,6 +28,7 @@ export default function DetectionPage() {
       }
     };
   }, []);
+
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -37,7 +37,6 @@ export default function DetectionPage() {
     setError(null);
     setResult(null);
 
-    // Show preview immediately
     const objectUrl = URL.createObjectURL(file);
     setPreview(objectUrl);
 
@@ -46,7 +45,6 @@ export default function DetectionPage() {
       const analysis = await analyzeImage(file);
       setResult(analysis);
 
-      // Persist to Supabase if user is authenticated
       if (user && supabase) {
         const treatment = getTreatment(analysis.label);
         await supabase.from('detections').insert({
@@ -57,7 +55,6 @@ export default function DetectionPage() {
           treatment: treatment.title,
         });
 
-        // Tell HistoryPanel to refresh
         window.dispatchEvent(new CustomEvent('phytanova:history:refresh'));
       }
     } catch (err) {
@@ -91,14 +88,12 @@ export default function DetectionPage() {
         {/* Left column — upload + result */}
         <div className="space-y-6">
           {/* Upload zone */}
-          <GlassCard>
-            <div className="p-5">
-              <h2 className="text-text-primary font-semibold mb-4">
-                Upload Plant Image
-              </h2>
-              <UploadZone onUpload={handleUpload} />
-            </div>
-          </GlassCard>
+          <div className="border border-white/10 bg-white/[0.02] rounded-md p-5">
+            <h2 className="text-text-primary font-semibold mb-4">
+              Upload Plant Image
+            </h2>
+            <UploadZone onUpload={handleUpload} />
+          </div>
 
           {/* Loading spinner */}
           <AnimatePresence>
@@ -110,8 +105,8 @@ export default function DetectionPage() {
                 className="flex flex-col items-center gap-4 py-10"
               >
                 <div className="relative w-16 h-16">
-                  <div className="absolute inset-0 rounded-full border-4 border-white/10" />
-                  <div className="absolute inset-0 rounded-full border-4 border-primary border-t-transparent animate-spin" />
+                  <div className="absolute inset-0 rounded-md border-4 border-white/10" />
+                  <div className="absolute inset-0 rounded-md border-4 border-primary border-t-transparent animate-spin" />
                 </div>
                 <p className="text-text-secondary text-sm">
                   Analysing image with AI…
@@ -127,7 +122,7 @@ export default function DetectionPage() {
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0 }}
-                className="GlassCard p-4 border-red-500/30 bg-red-500/10"
+                className="border border-red-500/30 bg-red-500/10 rounded-md p-4"
               >
                 <p className="text-red-300 text-sm">{error}</p>
               </motion.div>

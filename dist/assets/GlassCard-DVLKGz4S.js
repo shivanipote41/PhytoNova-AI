@@ -1,1 +1,0 @@
-import{j as s}from"./index-Mk70IYou.js";function t({children:r,className:e="",...o}){return s.jsx("div",{className:`backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl ${e}`,...o,children:r})}export{t as G};

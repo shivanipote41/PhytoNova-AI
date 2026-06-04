@@ -1,12 +1,11 @@
 /**
- * ChartCard — glassmorphism card wrapper designed for charts.
- * Inherits the same visual style as GlassCard but adds a title slot
- * and a responsive height container so recharts always fit cleanly.
+ * ChartCard — sharp design card wrapper for charts.
+ * Uses solid bg with border, no glassmorphism.
  */
 export default function ChartCard({ title, subtitle, children, className = '', ...props }) {
   return (
     <div
-      className={`backdrop-blur-md bg-white/8 border border-white/10 rounded-2xl ${className}`}
+      className={`bg-white/[0.02] border border-white/10 rounded-md ${className}`}
       {...props}
     >
       {(title || subtitle) && (

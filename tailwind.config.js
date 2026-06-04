@@ -42,14 +42,15 @@ export default {
       backgroundColor: {
         background: '#0f172a',
       },
-      backdropBlur: {
-        md: '12px',
+      fontFamily: {
+        sans: ['Inter', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
-        '2xl': '1rem',
-      },
-      boxShadow: {
-        'glass': '0 8px 32px 0 rgba(0, 0, 0, 0.37)',
+        DEFAULT: '6px',
+        sm: '4px',
+        md: '8px',
+        lg: '8px',
+        xl: '8px',
       },
     },
   },

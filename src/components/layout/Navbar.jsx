@@ -13,7 +13,6 @@ const navLinks = [
   { path: '/detect', label: 'Detect' },
   { path: '/dashboard', label: 'Dashboard' },
   { path: '/marketplace', label: 'Marketplace' },
-  { path: '/community', label: 'Community' },
   { path: '/profile', label: 'Profile' },
 ];
 
@@ -28,7 +27,6 @@ function Navbar() {
 
   const isActive = (path) => location.pathname === path;
 
-  // Close user menu on outside click
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (userMenuRef.current && !userMenuRef.current.contains(e.target)) {
@@ -39,7 +37,6 @@ function Navbar() {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Close menus on route change
   useEffect(() => {
     setMobileMenuOpen(false);
     setUserMenuOpen(false);
@@ -56,14 +53,18 @@ function Navbar() {
 
   return (
     <>
-      <nav className="sticky top-0 z-50 glass-card border-b border-white/10" role="navigation" aria-label="Main navigation">
+      <nav
+        className="sticky top-0 z-50 bg-slate-900/95 border-b border-white/10"
+        role="navigation"
+        aria-label="Main navigation"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <Link
               to="/"
               className={tw(
-                'flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900 rounded-xl'
+                'flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md'
               )}
               aria-label="PhytoNova AI home"
             >
@@ -78,7 +79,7 @@ function Navbar() {
                   key={link.path}
                   to={link.path}
                   className={tw(
-                    'px-3 py-2 rounded-xl text-sm font-medium transition-colors duration-200',
+                    'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
                     'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900',
                     isActive(link.path)
                       ? 'text-primary'
@@ -98,7 +99,7 @@ function Navbar() {
                 type="button"
                 onClick={() => setCartOpen(true)}
                 className={tw(
-                  'relative p-2.5 rounded-xl text-text-secondary hover:text-primary hover:bg-white/5 transition-colors duration-200',
+                  'relative p-2.5 rounded-md text-text-secondary hover:text-primary hover:bg-white/5 transition-colors duration-200',
                   'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                 )}
                 aria-label="Open shopping cart"
@@ -115,7 +116,7 @@ function Navbar() {
                         type="button"
                         onClick={() => setUserMenuOpen((v) => !v)}
                         className={tw(
-                          'flex items-center gap-2 p-1.5 rounded-xl hover:bg-white/5 transition-colors duration-200',
+                          'flex items-center gap-2 p-1.5 rounded-md hover:bg-white/5 transition-colors duration-200',
                           'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                         )}
                         aria-expanded={userMenuOpen}
@@ -136,7 +137,7 @@ function Navbar() {
                             animate={{ opacity: 1, y: 0, scale: 1 }}
                             exit={{ opacity: 0, y: -8, scale: 0.96 }}
                             transition={{ duration: 0.15 }}
-                            className="absolute right-0 mt-2 w-48 glass-card border border-white/10 shadow-xl overflow-hidden"
+                            className="absolute right-0 mt-2 w-48 bg-slate-800 border border-white/10 rounded-md shadow-xl overflow-hidden"
                             role="menu"
                           >
                             <div className="px-4 py-3 border-b border-white/10">
@@ -173,7 +174,7 @@ function Navbar() {
                     <Link
                       to="/auth"
                       className={tw(
-                        'px-4 py-2 rounded-xl text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors duration-200',
+                        'px-4 py-2 rounded-md text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors duration-200',
                         'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                       )}
                     >
@@ -185,7 +186,10 @@ function Navbar() {
 
               {/* Loading state */}
               {loading && (
-                <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" aria-label="Loading" />
+                <div
+                  className="w-8 h-8 rounded-md border-2 border-primary border-t-transparent animate-spin"
+                  aria-label="Loading"
+                />
               )}
             </div>
 
@@ -193,7 +197,7 @@ function Navbar() {
             <button
               type="button"
               className={tw(
-                'md:hidden p-2 rounded-xl text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
+                'md:hidden p-2 rounded-md text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
                 'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
               )}
               onClick={() => setMobileMenuOpen((v) => !v)}
@@ -218,7 +222,7 @@ function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden overflow-hidden glass-card border-t border-white/10"
+              className="md:hidden overflow-hidden bg-slate-900 border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-1">
                 {navLinks.map((link) => (
@@ -226,7 +230,7 @@ function Navbar() {
                     key={link.path}
                     to={link.path}
                     className={tw(
-                      'block px-4 py-2.5 rounded-xl text-sm font-medium transition-colors duration-200',
+                      'block px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-200',
                       'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900',
                       isActive(link.path)
                         ? 'bg-primary/20 text-primary'
@@ -245,7 +249,7 @@ function Navbar() {
                       setCartOpen(true);
                     }}
                     className={tw(
-                      'flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
+                      'flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
                       'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                     )}
                     aria-label="Open cart"
@@ -260,7 +264,7 @@ function Navbar() {
                         type="button"
                         onClick={handleLogout}
                         className={tw(
-                          'ml-auto px-3 py-2 rounded-xl text-sm text-red-400 hover:bg-red-500/10 transition-colors',
+                          'ml-auto px-3 py-2 rounded-md text-sm text-red-400 hover:bg-red-500/10 transition-colors',
                           'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                         )}
                       >
@@ -270,7 +274,7 @@ function Navbar() {
                       <Link
                         to="/auth"
                         className={tw(
-                          'ml-auto px-4 py-2 rounded-xl text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors',
+                          'ml-auto px-4 py-2 rounded-md text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors',
                           'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
                         )}
                       >

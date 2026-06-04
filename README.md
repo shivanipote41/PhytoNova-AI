@@ -1,6 +1,6 @@
 # PhytoNova AI
 
-AI-powered agriculture platform for plant disease detection, analytics, marketplace, and community-driven farming insights.
+AI-powered agriculture platform for plant disease detection, analytics, and marketplace — built with a sharp, Vercel-inspired dark design.
 
 ## Tech Stack
 
@@ -14,18 +14,16 @@ AI-powered agriculture platform for plant disease detection, analytics, marketpl
 | Backend | Supabase (Auth, Database, Storage) |
 | AI Inference | Hugging Face Inference API |
 | Charts | Recharts |
+| Analytics | Firebase Analytics |
+| Push Notifications | Firebase Cloud Messaging |
 | Icons | React Icons |
 
-## Color Palette
+## Design System
 
-| Token | Hex | Usage |
-|---|---|---|
-| `primary` | `#22c55e` | CTAs, links, accents |
-| `secondary` | `#06b6d4` | Secondary accents |
-| `background` | `#0f172a` | Page background |
-| `text-primary` | `#f8fafc` | Headings, body text |
-| `text-secondary` | `#94a3b8` | Muted text, labels |
-| Surface | `rgba(255,255,255,0.08)` | Glass cards |
+- **Style**: Sharp edges, solid surfaces, no glassmorphism
+- **Surfaces**: `bg-white/[0.02]` with `border border-white/10`
+- **Border radius**: `rounded-md` for cards/buttons, `rounded-full` only for spinners
+- **Background**: `#0f172a` (slate-900)
 
 ## Folder Structure
 
@@ -33,12 +31,13 @@ AI-powered agriculture platform for plant disease detection, analytics, marketpl
 PhytoNova-AI/
 ├── public/
 │   ├── robots.txt
-│   └── sitemap.xml
+│   ├── sitemap.xml
+│   └── firebase-messaging-sw.js   # Firebase push notification service worker
 ├── src/
 │   ├── components/
 │   │   ├── 3d/              # React Three Fiber scenes
 │   │   ├── layout/          # Navbar, Footer, Layout, ProtectedRoute
-│   │   └── ui/              # Avatar, Badge, GlassCard, SectionWrapper, SkipLink
+│   │   └── ui/              # Avatar, Badge, ChartCard, GlassCard, SectionWrapper, SkipLink
 │   ├── context/
 │   │   ├── AuthContext.jsx  # Supabase auth state
 │   │   ├── CartContext.jsx  # Cart state with localStorage persistence
@@ -48,11 +47,10 @@ PhytoNova-AI/
 │   ├── hooks/
 │   │   └── useAuth.js       # useAuth hook alias
 │   ├── pages/
-│   │   ├── Auth/            # AuthPage, LoginForm, RegisterForm
-│   │   ├── Community/       # CommunityPage, PostCard, CreatePost
+│   │   ├── Auth/            # AuthPage, LoginForm, RegisterForm, ForgotPassword
 │   │   ├── Dashboard/       # DashboardPage, StatsCards, RecentScans, ActivityTimeline, DiseaseChart
 │   │   ├── Detection/       # DetectionPage, UploadZone, ResultPanel, HistoryPanel
-│   │   ├── Home/            # HomePage, HeroSection, FeaturesSection, StatsSection, TestimonialsSection
+│   │   ├── Home/            # HomePage, HeroSection, FeaturesSection
 │   │   ├── Marketplace/     # MarketplacePage, ProductCard, ProductDetail, SearchFilter, CartDrawer
 │   │   └── Profile/         # ProfilePage
 │   ├── routes/
@@ -60,6 +58,7 @@ PhytoNova-AI/
 │   ├── services/
 │   │   ├── aiService.js     # Hugging Face inference wrapper
 │   │   ├── api.js           # Axios instance with base config
+│   │   ├── firebase.js      # Firebase Analytics + trackEvent helper
 │   │   └── supabase.js      # Supabase client + auth helpers
 │   ├── utils/
 │   │   ├── a11y.js          # Focus trap, focus ring, announce helpers
@@ -68,12 +67,21 @@ PhytoNova-AI/
 │   └── main.jsx
 ├── supabase/
 │   └── migrations/
-│       └── 001_initial.sql  # Auth, profiles, detections, posts, comments, likes
+│       └── 001_initial.sql  # profiles, detections, products, orders
 ├── .env.example
 ├── vercel.json
 ├── package.json
 └── tailwind.config.js
 ```
+
+## Features
+
+- **Plant Disease Detection** — AI-powered image analysis via Hugging Face, with confidence scores and treatment recommendations
+- **Dashboard Analytics** — Charts and stats tracking detection history over time
+- **Marketplace** — Product catalog with search, category filtering, cart, and checkout
+- **User Profiles** — Authenticated profiles with auto-creation on signup
+- **Firebase Analytics** — Event tracking for page views, detection events, and cart actions
+- **Push Notifications** — Firebase Cloud Messaging for background push support
 
 ## Setup
 
@@ -83,6 +91,7 @@ PhytoNova-AI/
 - npm or pnpm
 - A [Supabase](https://supabase.com) project
 - A [Hugging Face](https://huggingface.co) account with an inference token
+- A [Firebase](https://console.firebase.google.com) project (for Analytics + Push)
 
 ### 1. Clone and install
 
@@ -106,6 +115,12 @@ Open `.env` and fill in:
 | `VITE_SUPABASE_ANON_KEY` | Supabase Dashboard → Settings → API → anon public key |
 | `VITE_HF_API_TOKEN` | huggingface.co/settings/tokens (Needs `inference` scope) |
 | `VITE_APP_URL` | Your deployment URL (e.g. `https://my-app.vercel.app`) |
+| `VITE_FIREBASE_API_KEY` | Firebase Console → Project Settings → Web App → Config |
+| `VITE_FIREBASE_AUTH_DOMAIN` | Firebase Console → Project Settings → Web App → Config |
+| `VITE_FIREBASE_PROJECT_ID` | Firebase Console → Project Settings → Web App → Config |
+| `VITE_FIREBASE_STORAGE_BUCKET` | Firebase Console → Project Settings → Web App → Config |
+| `VITE_FIREBASE_MESSAGING_SENDER_ID` | Firebase Console → Project Settings → Web App → Config |
+| `VITE_FIREBASE_APP_ID` | Firebase Console → Project Settings → Web App → Config |
 
 ### 3. Initialize the Supabase database
 
@@ -118,11 +133,10 @@ Run the migration in the Supabase SQL editor:
 
 This creates the following tables:
 
-- `profiles` — extends `auth.users` with full name and avatar
+- `profiles` — extends `auth.users` with full name and avatar (auto-created on signup)
 - `detections` — stores each disease scan (image URL, disease label, confidence, treatment)
-- `posts` — community posts (title, content, image, author)
-- `comments` — replies to posts
-- `likes` — post reactions
+- `products` — marketplace product catalog (public read)
+- `orders` — marketplace purchase records (user-scoped)
 
 Row Level Security (RLS) policies restrict all writes to the owning user.
 
@@ -170,6 +184,7 @@ After deployment, add the environment variables in the Vercel project settings.
 2. Update `public/sitemap.xml` with your production domain and correct `<lastmod>` dates.
 3. In Supabase, add your production URL to **Authentication → URL Configuration → Site URL** and **Redirect URLs**.
 4. Set `VITE_APP_URL` to your production domain in Vercel environment variables.
+5. Enable Firebase Messaging in your Firebase project and upload `public/firebase-messaging-sw.js`.
 
 ## License
 

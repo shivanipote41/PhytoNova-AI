@@ -5,11 +5,11 @@ import ProtectedRoute from '../components/layout/ProtectedRoute';
 
 const HomePage = lazy(() => import('../pages/Home/HomePage'));
 const AuthPage = lazy(() => import('../pages/Auth/AuthPage'));
+const ForgotPassword = lazy(() => import('../pages/Auth/ForgotPassword'));
 const ProfilePage = lazy(() => import('../pages/Profile/ProfilePage'));
 const DetectionPage = lazy(() => import('../pages/Detection/DetectionPage'));
 const DashboardPage = lazy(() => import('../pages/Dashboard/DashboardPage'));
 const MarketplacePage = lazy(() => import('../pages/Marketplace/MarketplacePage'));
-const CommunityPage = lazy(() => import('../pages/Community/CommunityPage'));
 
 function LoadingFallback() {
   return (
@@ -28,13 +28,16 @@ function AppRoutes() {
           <Route path="detect" element={<DetectionPage />} />
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="marketplace" element={<MarketplacePage />} />
-          <Route path="community" element={<CommunityPage />} />
-          <Route path="profile" element={
-            <ProtectedRoute>
-              <ProfilePage />
-            </ProtectedRoute>
-          } />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
+          />
           <Route path="auth" element={<AuthPage />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
         </Route>
       </Routes>
     </Suspense>

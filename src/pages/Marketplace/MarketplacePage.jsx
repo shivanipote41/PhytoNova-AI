@@ -39,17 +39,17 @@ export default function MarketplacePage() {
                 <h1 className="text-3xl sm:text-4xl font-bold text-text-primary">Marketplace</h1>
               </div>
               <p className="text-text-secondary max-w-lg">
-                Discover premium organic agricultural products, biofertilizers, and sustainable farming tools.
+                Discover premium agricultural products, fertilizers, seeds, and farming tools.
               </p>
             </div>
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 px-4 py-2.5 rounded-xl bg-white/8 hover:bg-white/12 border border-white/10 text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="relative flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/8 hover:bg-white/12 border border-white/10 text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900"
             >
               <FaShoppingCart className="text-emerald-400" />
               <span className="hidden sm:inline text-sm font-medium">Cart</span>
               {cartCount > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center text-xs font-bold rounded-full bg-emerald-500 text-white">
+                <span className="absolute -top-1.5 -right-1.5 w-5 h-5 flex items-center justify-center text-xs font-bold rounded-md bg-emerald-500 text-white">
                   {cartCount > 9 ? '9+' : cartCount}
                 </span>
               )}
@@ -73,7 +73,7 @@ export default function MarketplacePage() {
             animate={{ opacity: 1, y: 0 }}
             className="text-center py-16"
           >
-            <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/5 flex items-center justify-center">
+            <div className="w-16 h-16 mx-auto mb-4 rounded-md bg-white/5 flex items-center justify-center">
               <FaStore className="text-2xl text-text-secondary/40" />
             </div>
             <h3 className="text-lg font-semibold text-text-primary mb-1">No products found</h3>
@@ -82,7 +82,7 @@ export default function MarketplacePage() {
         ) : (
           <>
             <p className="text-sm text-text-secondary mb-4">{filtered.length} product{filtered.length !== 1 ? 's' : ''} found</p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               <AnimatePresence mode="popLayout">
                 {filtered.map((product) => (
                   <ProductCard
