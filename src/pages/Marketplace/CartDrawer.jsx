@@ -1,10 +1,301 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes, FaMinus, FaPlus, FaTrash, FaShoppingBag } from 'react-icons/fa';
 import { useCart } from '../../context/CartContext';
+import { useAuth } from '../../context/AuthContext';
+import { supabase } from '../../services/supabase';
 
 export default function CartDrawer({ isOpen, onClose }) {
   const { items, removeItem, updateQuantity, clearCart, total } = useCart();
+  const { user } = useAuth();
 
+  const [view, setView] = useState('cart'); // 'cart' | 'checkout' | 'success'
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [address, setAddress] = useState('');
+  const [error, setError] = useState(null);
+
+  const handleProceedToCheckout = () => {
+    setView('checkout');
+    setError(null);
+  };
+
+  const handleBackToCart = () => {
+    setView('cart');
+    setError(null);
+  };
+
+  const handleCheckout = async () => {
+    // Validate fields
+    if (!name.trim() || !email.trim() || !phone.trim() || !address.trim()) {
+      setError('Please fill all fields');
+      return;
+    }
+
+    // 1. Build order payload
+    const cartSnapshot = items.map(i => ({ id: i.id, name: i.name, price: i.price, quantity: i.quantity }));
+    const orderPayload = {
+      user_id: user?.id || null,
+      total_price: total,
+      quantity: items.reduce((sum, i) => sum + i.quantity, 0),
+      status: 'pending',
+      customer_name: name.trim(),
+      customer_email: email.trim(),
+      customer_phone: phone.trim(),
+      customer_address: address.trim(),
+      cart_items: cartSnapshot,
+    };
+
+    // 2. Save to Supabase
+    const { data, error: dbError } = await supabase.from('orders').insert(orderPayload);
+    if (dbError) {
+      setError('Order save failed: ' + dbError.message);
+      return;
+    }
+
+    // 3. Send Resend email
+    try {
+      await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${import.meta.env.VITE_RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: 'onboarding@resend.dev',
+          to: email.trim(),
+          subject: 'Your PhytoNova Order Confirmation',
+          html: `<p>Hi ${name.trim()},</p><p>Your order of ₹${total.toFixed(0)} has been placed.</p><p>Items: ${items.map(i => `${i.name} x${i.quantity}`).join(', ')}</p>`,
+        }),
+      });
+    } catch (emailErr) {
+      console.error('Email failed:', emailErr);
+    }
+
+    // 4. Clear cart, show success
+    clearCart();
+    setView('success');
+  };
+
+  const handleContinueShopping = () => {
+    onClose();
+    // Reset form state after drawer closes
+    setTimeout(() => {
+      setView('cart');
+      setName('');
+      setEmail('');
+      setPhone('');
+      setAddress('');
+      setError(null);
+    }, 300);
+  };
+
+  // Render success view
+  if (view === 'success') {
+    return (
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              key="cart-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="fixed inset-0 z-40 bg-black/50"
+            />
+            <motion.div
+              key="cart-drawer"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-md flex flex-col bg-black border-l border-white/10 shadow-2xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                <div className="flex items-center gap-2 text-text-primary">
+                  <FaShoppingBag className="text-emerald-400" />
+                  <h2 className="text-lg font-bold">Order Confirmed</h2>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-md hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
+                  aria-label="Close cart"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              {/* Success content */}
+              <div className="flex-1 overflow-y-auto px-5 py-6 space-y-6">
+                <div className="text-center space-y-4">
+                  <div className="w-16 h-16 mx-auto rounded-full bg-emerald-500/20 flex items-center justify-center">
+                    <span className="text-3xl">✅</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-text-primary">Order placed successfully!</h3>
+                  <p className="text-text-secondary">Thank you for your order. We'll process it shortly.</p>
+                </div>
+
+                <div className="space-y-3 p-4 rounded-md bg-white/5 border border-white/10">
+                  <h4 className="font-semibold text-text-primary">Order Summary</h4>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-text-secondary">Total</span>
+                    <span className="font-semibold text-emerald-400">₹{total.toFixed(0)}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-text-secondary">Items</span>
+                    <span className="text-text-primary">{items.reduce((sum, i) => sum + i.quantity, 0)}</span>
+                  </div>
+                </div>
+
+                <div className="space-y-2 p-4 rounded-md bg-white/5 border border-white/10">
+                  <h4 className="font-semibold text-text-primary">Delivery Address</h4>
+                  <p className="text-sm text-text-secondary">{address}</p>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-5 py-4 border-t border-white/10">
+                <button
+                  onClick={handleContinueShopping}
+                  className="w-full py-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95"
+                >
+                  Continue Shopping
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    );
+  }
+
+  // Render checkout form
+  if (view === 'checkout') {
+    return (
+      <AnimatePresence>
+        {isOpen && (
+          <>
+            <motion.div
+              key="cart-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={onClose}
+              className="fixed inset-0 z-40 bg-black/50"
+            />
+            <motion.div
+              key="cart-drawer"
+              initial={{ x: '100%' }}
+              animate={{ x: 0 }}
+              exit={{ x: '100%' }}
+              transition={{ type: 'spring', damping: 30, stiffness: 300 }}
+              className="fixed inset-y-0 right-0 z-50 w-full max-w-md flex flex-col bg-black border-l border-white/10 shadow-2xl"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
+                <div className="flex items-center gap-2 text-text-primary">
+                  <FaShoppingBag className="text-emerald-400" />
+                  <h2 className="text-lg font-bold">Checkout</h2>
+                </div>
+                <button
+                  onClick={onClose}
+                  className="p-2 rounded-md hover:bg-white/10 text-text-secondary hover:text-text-primary transition-colors"
+                  aria-label="Close cart"
+                >
+                  <FaTimes />
+                </button>
+              </div>
+
+              {/* Checkout form */}
+              <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
+                <button
+                  onClick={handleBackToCart}
+                  className="flex items-center gap-1 text-sm text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  ← Back to Cart
+                </button>
+
+                {error && (
+                  <div className="p-3 rounded-md bg-red-500/20 border border-red-500/30 text-red-400 text-sm">
+                    {error}
+                  </div>
+                )}
+
+                <div className="space-y-4">
+                  <div>
+                    <label className="block text-sm text-text-secondary mb-1">Name</label>
+                    <input
+                      type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      placeholder="Your full name"
+                      className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-white placeholder:text-text-secondary/50"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-text-secondary mb-1">Email</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-white placeholder:text-text-secondary/50"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-text-secondary mb-1">Phone</label>
+                    <input
+                      type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      placeholder="+91 XXXXX XXXXX"
+                      className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-white placeholder:text-text-secondary/50"
+                      required
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm text-text-secondary mb-1">Address</label>
+                    <textarea
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      placeholder="Full delivery address"
+                      rows={3}
+                      className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-white placeholder:text-text-secondary/50 resize-none"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Footer */}
+              <div className="px-5 py-4 border-t border-white/10 space-y-3">
+                <div className="flex justify-between items-center">
+                  <span className="text-text-secondary text-sm">Total</span>
+                  <span className="text-2xl font-bold text-emerald-400">₹{total.toFixed(0)}</span>
+                </div>
+                <button
+                  onClick={handleCheckout}
+                  className="w-full py-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95"
+                >
+                  Place Order
+                </button>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
+    );
+  }
+
+  // Default: render cart view
   return (
     <AnimatePresence>
       {isOpen && (
@@ -26,7 +317,7 @@ export default function CartDrawer({ isOpen, onClose }) {
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 30, stiffness: 300 }}
-            className="fixed inset-y-0 right-0 z-50 w-full max-w-md flex flex-col bg-slate-900 border-l border-white/10 shadow-2xl"
+            className="fixed inset-y-0 right-0 z-50 w-full max-w-md flex flex-col bg-black border-l border-white/10 shadow-2xl"
           >
             {/* Header */}
             <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
@@ -124,7 +415,10 @@ export default function CartDrawer({ isOpen, onClose }) {
                   <span className="text-text-secondary text-sm">Subtotal</span>
                   <span className="text-2xl font-bold text-emerald-400">₹{total.toFixed(0)}</span>
                 </div>
-                <button className="w-full py-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95">
+                <button
+                  onClick={handleProceedToCheckout}
+                  className="w-full py-3 rounded-md bg-emerald-500 hover:bg-emerald-400 text-white font-semibold transition-colors active:scale-95"
+                >
                   Proceed to Checkout
                 </button>
                 <button

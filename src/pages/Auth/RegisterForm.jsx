@@ -55,7 +55,7 @@ export default function RegisterForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
-          className="w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
       </div>
 
@@ -70,7 +70,7 @@ export default function RegisterForm() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Min. 6 characters"
           required
-          className="w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
       </div>
 
@@ -85,7 +85,7 @@ export default function RegisterForm() {
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="Repeat your password"
           required
-          className="w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
       </div>
 

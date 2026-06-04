@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getDetections } from '../../utils/detectionsStore';
 
 function buildLast7Days() {
   const days = [];
@@ -50,30 +50,22 @@ export default function ActivityTimeline() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || !supabase) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchTimeline() {
-      const since = new Date();
-      since.setDate(since.getDate() - 7);
-      since.setHours(0, 0, 0, 0);
+      const { data } = await getDetections(user?.id);
 
-      const { data, error } = await supabase
-        .from('detections')
-        .select('disease, created_at')
-        .eq('user_id', user.id)
-        .gte('created_at', since.toISOString())
-        .order('created_at', { ascending: false });
-
-      if (error || !data || data.length === 0) {
+      if (!data || data.length === 0) {
         setLoading(false);
         return;
       }
 
+      const last7 = new Date();
+      last7.setDate(last7.getDate() - 7);
+      last7.setHours(0, 0, 0, 0);
+      const cutoff = last7.toISOString();
+      const recent = data.filter((d) => d.created_at >= cutoff);
+
       const groups = {};
-      data.forEach((d) => {
+      recent.forEach((d) => {
         const iso = d.created_at.slice(0, 10);
         if (!groups[iso]) groups[iso] = [];
         groups[iso].push(d.disease);
@@ -92,6 +84,11 @@ export default function ActivityTimeline() {
 
       setTimeline(result);
       setLoading(false);
+    }
+
+    if (!user) {
+      setLoading(false);
+      return;
     }
 
     fetchTimeline();

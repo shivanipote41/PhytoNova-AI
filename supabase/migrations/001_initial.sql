@@ -55,17 +55,22 @@ CREATE POLICY "Anyone can view products" ON products FOR SELECT TO anon, authent
 -- Orders (marketplace purchases)
 CREATE TABLE IF NOT EXISTS orders (
   id uuid PRIMARY KEY DEFAULT uuid_generate_v4(),
-  user_id uuid REFERENCES auth.users ON DELETE CASCADE,
+  user_id uuid REFERENCES auth.users ON DELETE SET NULL,
   product_id uuid REFERENCES products ON DELETE SET NULL,
   quantity integer NOT NULL DEFAULT 1,
   total_price numeric NOT NULL,
   status text DEFAULT 'pending',
+  customer_name text,
+  customer_email text,
+  customer_phone text,
+  customer_address text,
+  cart_items jsonb DEFAULT '[]'::jsonb,
   created_at timestamptz DEFAULT now()
 );
 
 ALTER TABLE orders ENABLE ROW LEVEL SECURITY;
 CREATE POLICY "Users can view own orders" ON orders FOR SELECT USING (auth.uid() = user_id);
-CREATE POLICY "Users can insert own orders" ON orders FOR INSERT WITH CHECK (auth.uid() = user_id);
+CREATE POLICY "Users can insert own orders" ON orders FOR INSERT WITH CHECK (auth.uid() = user_id OR auth.uid() IS NULL);
 
 -- Trigger to auto-create profile on signup
 CREATE OR REPLACE FUNCTION public.handle_new_user()

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getDetections } from '../../utils/detectionsStore';
 
 function formatDate(iso) {
   const d = new Date(iso);
@@ -64,25 +64,19 @@ export default function RecentScans() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || !supabase) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchScans() {
-      const { data, error } = await supabase
-        .from('detections')
-        .select('id, disease, confidence, created_at, image_url')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(5);
-
-      if (error || !data || data.length === 0) {
+      const { data } = await getDetections(user?.id);
+      if (!data || data.length === 0) {
         setLoading(false);
         return;
       }
-      setScans(data);
+      setScans(data.slice(0, 5));
       setLoading(false);
+    }
+
+    if (!user) {
+      setLoading(false);
+      return;
     }
 
     fetchScans();

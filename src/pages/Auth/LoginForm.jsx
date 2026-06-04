@@ -39,7 +39,7 @@ export default function LoginForm() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@example.com"
           required
-          className="w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
       </div>
 
@@ -54,7 +54,7 @@ export default function LoginForm() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="••••••••"
           required
-          className="w-full bg-slate-900 border border-slate-700 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
       </div>
 
@@ -75,7 +75,7 @@ export default function LoginForm() {
       <button
         type="button"
         onClick={signInWithGoogle}
-        className="w-full flex items-center justify-center gap-2 bg-white/[0.02] border border-white/10 text-text-primary rounded-md px-6 py-3 hover:bg-white/[0.04] transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900"
+        className="w-full flex items-center justify-center gap-2 bg-white/[0.02] border border-white/10 text-text-primary rounded-md px-6 py-3 hover:bg-white/[0.04] transition focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black"
       >
         <FcGoogle className="w-5 h-5" />
         <span className="text-sm font-medium">Continue with Google</span>

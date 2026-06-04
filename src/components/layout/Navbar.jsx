@@ -54,7 +54,7 @@ function Navbar() {
   return (
     <>
       <nav
-        className="sticky top-0 z-50 bg-slate-900/95 border-b border-white/10"
+        className="sticky top-0 z-50 bg-black/95 border-b border-white/10"
         role="navigation"
         aria-label="Main navigation"
       >
@@ -64,7 +64,7 @@ function Navbar() {
             <Link
               to="/"
               className={tw(
-                'flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900 rounded-md'
+                'flex items-center gap-2 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black rounded-md'
               )}
               aria-label="PhytoNova AI home"
             >
@@ -80,7 +80,7 @@ function Navbar() {
                   to={link.path}
                   className={tw(
                     'px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200',
-                    'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900',
+                    'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black',
                     isActive(link.path)
                       ? 'text-primary'
                       : 'text-text-secondary hover:text-primary hover:bg-white/5'
@@ -100,7 +100,7 @@ function Navbar() {
                 onClick={() => setCartOpen(true)}
                 className={tw(
                   'relative p-2.5 rounded-md text-text-secondary hover:text-primary hover:bg-white/5 transition-colors duration-200',
-                  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                 )}
                 aria-label="Open shopping cart"
               >
@@ -117,7 +117,7 @@ function Navbar() {
                         onClick={() => setUserMenuOpen((v) => !v)}
                         className={tw(
                           'flex items-center gap-2 p-1.5 rounded-md hover:bg-white/5 transition-colors duration-200',
-                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                         )}
                         aria-expanded={userMenuOpen}
                         aria-haspopup="true"
@@ -175,7 +175,7 @@ function Navbar() {
                       to="/auth"
                       className={tw(
                         'px-4 py-2 rounded-md text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors duration-200',
-                        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                       )}
                     >
                       Login
@@ -198,7 +198,7 @@ function Navbar() {
               type="button"
               className={tw(
                 'md:hidden p-2 rounded-md text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
-                'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
               )}
               onClick={() => setMobileMenuOpen((v) => !v)}
               aria-expanded={mobileMenuOpen}
@@ -222,7 +222,7 @@ function Navbar() {
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.2 }}
-              className="md:hidden overflow-hidden bg-slate-900 border-t border-white/10"
+              className="md:hidden overflow-hidden bg-black border-t border-white/10"
             >
               <div className="px-4 py-4 space-y-1">
                 {navLinks.map((link) => (
@@ -231,7 +231,7 @@ function Navbar() {
                     to={link.path}
                     className={tw(
                       'block px-4 py-2.5 rounded-md text-sm font-medium transition-colors duration-200',
-                      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900',
+                      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black',
                       isActive(link.path)
                         ? 'bg-primary/20 text-primary'
                         : 'text-text-secondary hover:text-primary hover:bg-white/5'
@@ -250,7 +250,7 @@ function Navbar() {
                     }}
                     className={tw(
                       'flex items-center gap-2 px-3 py-2 rounded-md text-sm text-text-secondary hover:text-primary hover:bg-white/5 transition-colors',
-                      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                     )}
                     aria-label="Open cart"
                   >
@@ -265,7 +265,7 @@ function Navbar() {
                         onClick={handleLogout}
                         className={tw(
                           'ml-auto px-3 py-2 rounded-md text-sm text-red-400 hover:bg-red-500/10 transition-colors',
-                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                         )}
                       >
                         Log out
@@ -275,7 +275,7 @@ function Navbar() {
                         to="/auth"
                         className={tw(
                           'ml-auto px-4 py-2 rounded-md text-sm font-medium bg-primary hover:bg-primary/90 text-white transition-colors',
-                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900'
+                          'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black'
                         )}
                       >
                         Login

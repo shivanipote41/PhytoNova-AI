@@ -84,4 +84,4 @@ export function announce(message, politeness = 'polite') {
  * Common focus ring class for all interactive elements.
  */
 export const focusRing =
-  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900';
+  'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black';

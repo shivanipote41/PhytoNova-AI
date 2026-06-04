@@ -7,8 +7,8 @@ import {
   ResponsiveContainer,
   Legend,
 } from 'recharts';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getDetections } from '../../utils/detectionsStore';
 
 const SLICE_COLORS = [
   '#22c55e',
@@ -82,25 +82,16 @@ export default function DiseaseChart() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || !supabase) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchData() {
-      const { data: rows, error } = await supabase
-        .from('detections')
-        .select('disease')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      const { data } = await getDetections(user?.id);
 
-      if (error || !rows || rows.length === 0) {
+      if (!data || data.length === 0) {
         setLoading(false);
         return;
       }
 
       const freq = {};
-      rows.forEach((r) => {
+      data.forEach((r) => {
         const d = r.disease || 'Unknown';
         freq[d] = (freq[d] || 0) + 1;
       });
@@ -111,6 +102,11 @@ export default function DiseaseChart() {
 
       setData(aggregated.length > 0 ? aggregated : null);
       setLoading(false);
+    }
+
+    if (!user) {
+      setLoading(false);
+      return;
     }
 
     fetchData();

@@ -27,7 +27,7 @@ export default function BrandedLoader() {
 
   return (
     <div
-      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-[#0f172a]"
+      className="fixed inset-0 z-[9999] flex flex-col items-center justify-center bg-black"
       role="status"
       aria-label="Loading PhytoNova"
     >

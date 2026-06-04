@@ -44,7 +44,7 @@ export default function MarketplacePage() {
             </div>
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/8 hover:bg-white/12 border border-white/10 text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-slate-900"
+              className="relative flex items-center gap-2 px-4 py-2.5 rounded-md bg-white/8 hover:bg-white/12 border border-white/10 text-text-primary transition-all focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-black"
             >
               <FaShoppingCart className="text-emerald-400" />
               <span className="hidden sm:inline text-sm font-medium">Cart</span>

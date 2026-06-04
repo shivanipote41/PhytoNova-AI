@@ -35,7 +35,7 @@ export default function ProductDetail({ product, onClose }) {
           exit={{ opacity: 0, scale: 0.95, y: 10 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
           onClick={(e) => e.stopPropagation()}
-          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-slate-900 border border-white/10 rounded-lg shadow-2xl"
+          className="relative w-full max-w-2xl max-h-[90vh] overflow-y-auto bg-black border border-white/10 rounded-lg shadow-2xl"
         >
           {/* Close button */}
           <button
@@ -53,7 +53,7 @@ export default function ProductDetail({ product, onClose }) {
               alt={product.name}
               className="w-full h-full object-cover"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
             <div className="absolute bottom-4 left-4 flex gap-2">
               <Badge variant="secondary">{product.category}</Badge>
             </div>

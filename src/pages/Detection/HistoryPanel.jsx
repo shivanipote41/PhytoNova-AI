@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getDetections } from '../../utils/detectionsStore';
 
 function formatDate(iso) {
   return new Date(iso).toLocaleDateString(undefined, {
@@ -71,30 +71,15 @@ function HistoryItem({ item }) {
 export default function HistoryPanel() {
   const { user } = useAuth();
   const [items, setItems] = useState([]);
+  const [source, setSource] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchHistory() {
       setLoading(true);
-      if (!supabase) {
-        setLoading(false);
-        return;
-      }
-      const { data, error } = await supabase
-        .from('detections')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(20);
-
-      if (!error && data) {
-        setItems(data);
-      }
+      const result = await getDetections(user?.id);
+      setItems((result.data || []).slice(0, 20));
+      setSource(result.source);
       setLoading(false);
     }
 
@@ -102,17 +87,12 @@ export default function HistoryPanel() {
   }, [user]);
 
   useEffect(() => {
-    const handler = () => {
-      if (!user || !supabase) return;
-      supabase
-        .from('detections')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false })
-        .limit(20)
-        .then(({ data }) => {
-          if (data) setItems(data);
-        });
+    const handler = async () => {
+      const result = await getDetections(user?.id);
+      if (result.data) {
+        setItems(result.data.slice(0, 20));
+        setSource(result.source);
+      }
     };
     window.addEventListener('phytanova:history:refresh', handler);
     return () => window.removeEventListener('phytanova:history:refresh', handler);
@@ -130,6 +110,11 @@ export default function HistoryPanel() {
           </span>
         )}
       </div>
+      {source === 'local' && items.length > 0 && (
+        <div className="text-xs text-amber-400/70 mb-3 px-2 py-1 bg-amber-400/10 rounded-sm">
+          Saved locally — sign in to sync
+        </div>
+      )}
 
       {loading ? (
         <div className="space-y-3">

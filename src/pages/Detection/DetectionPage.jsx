@@ -4,9 +4,9 @@ import UploadZone from './UploadZone';
 import ResultPanel from './ResultPanel';
 import HistoryPanel from './HistoryPanel';
 import { analyzeImage } from '../../services/aiService';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
 import { getTreatment } from '../../utils/treatments';
+import { saveDetection } from '../../utils/detectionsStore';
 
 export default function DetectionPage() {
   const { user } = useAuth();
@@ -45,23 +45,21 @@ export default function DetectionPage() {
       const analysis = await analyzeImage(file);
       setResult(analysis);
 
-      if (user && supabase) {
-        const treatment = getTreatment(analysis.label);
-        try {
-          await supabase.from('detections').insert({
-            user_id: user.id,
-            image_url: '',
-            disease: analysis.label,
-            confidence: analysis.confidence,
-            treatment: treatment.title,
-          });
-        } catch (insertErr) {
-          // Log insert error but don't fail the user experience
-          console.error('[DetectionPage] Failed to save detection to history:', insertErr);
-        }
+      const treatment = getTreatment(analysis.label);
+      const { supabaseError } = await saveDetection(
+        {
+          disease: analysis.label,
+          confidence: analysis.confidence,
+          treatment: treatment.title,
+        },
+        user
+      );
 
-        window.dispatchEvent(new CustomEvent('phytanova:history:refresh'));
+      if (supabaseError) {
+        console.warn('[DetectionPage] Saved locally. Supabase error:', supabaseError);
       }
+
+      window.dispatchEvent(new CustomEvent('phytanova:history:refresh'));
     } catch (err) {
       // Show user-friendly error message from AI service
       setError(err.message || 'Analysis failed. Please try again.');

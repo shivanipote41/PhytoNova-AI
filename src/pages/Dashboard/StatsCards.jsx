@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { supabase } from '../../services/supabase';
 import { useAuth } from '../../context/AuthContext';
+import { getDetections } from '../../utils/detectionsStore';
 
 function StatCard({ icon, label, value }) {
   return (
@@ -50,19 +50,10 @@ export default function StatsCards() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    if (!user || !supabase) {
-      setLoading(false);
-      return;
-    }
-
     async function fetchStats() {
-      const { data, error } = await supabase
-        .from('detections')
-        .select('disease, created_at')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: false });
+      const { data } = await getDetections(user?.id);
 
-      if (error || !data || data.length === 0) {
+      if (!data || data.length === 0) {
         setLoading(false);
         return;
       }
@@ -87,6 +78,11 @@ export default function StatsCards() {
         topDisease
       });
       setLoading(false);
+    }
+
+    if (!user) {
+      setLoading(false);
+      return;
     }
 
     fetchStats();

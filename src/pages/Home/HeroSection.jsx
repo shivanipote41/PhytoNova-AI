@@ -8,9 +8,24 @@ function HeroSection() {
   useEffect(() => {
     const el = viewerRef.current;
     if (!el) return;
-    const onLoad = () => setSplineLoaded(true);
+
+    let loaded = false;
+    const onLoad = () => {
+      loaded = true;
+      setSplineLoaded(true);
+    };
+
     el.addEventListener('load', onLoad);
-    return () => el.removeEventListener('load', onLoad);
+
+    // Fallback: show the scene after 6s even if event never fires
+    const fallback = setTimeout(() => {
+      if (!loaded) setSplineLoaded(true);
+    }, 6000);
+
+    return () => {
+      el.removeEventListener('load', onLoad);
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (

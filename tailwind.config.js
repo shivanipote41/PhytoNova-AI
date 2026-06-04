@@ -34,13 +34,13 @@ export default {
           800: '#155e75',
           900: '#164e63',
         },
-        background: '#0f172a',
+        background: '#000000',
         surface: 'rgba(255,255,255,0.08)',
         'text-primary': '#f8fafc',
         'text-secondary': '#94a3b8',
       },
       backgroundColor: {
-        background: '#0f172a',
+        background: '#000000',
       },
       fontFamily: {
         sans: ['Inter', 'system-ui', 'sans-serif'],
