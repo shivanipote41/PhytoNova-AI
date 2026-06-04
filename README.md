@@ -75,6 +75,7 @@ Fill in the values in `.env`:
 |---|---|---|
 | VITE_SUPABASE_URL | Supabase project URL | Supabase Dashboard → Settings → API |
 | VITE_SUPABASE_ANON_KEY | Supabase anon/public key | Supabase Dashboard → Settings → API |
+| VITE_SITE_URL | Your production domain (e.g. `https://phytonova-ai.vercel.app`) | Your Vercel deployment URL |
 | VITE_HF_API_TOKEN | Hugging Face inference token | huggingface.co/settings/tokens |
 | VITE_FIREBASE_API_KEY | Firebase web app API key | Firebase Console → Project Settings → Web App |
 | VITE_FIREBASE_AUTH_DOMAIN | Firebase auth domain | Firebase Console → Project Settings → Web App |
@@ -202,13 +203,28 @@ vercel
 4. Add environment variables in Vercel dashboard → Settings → Environment Variables
 5. Click Deploy
 
-### Post-Deployment Checklist
+### Post-Deployment Supabase Auth Setup
 
-1. Add your production URL to Supabase **Authentication → URL Configuration → Site URL** and **Redirect URLs**
-2. Set `VITE_APP_URL` to your production domain in Vercel environment variables
-3. Update `public/robots.txt` and `public/sitemap.xml` with your production domain
-4. Enable Firebase Messaging in your Firebase project for push notifications
-5. Update the Resend domain configuration if using custom sender domain
+After deploying to Vercel, you **must** configure Supabase Auth redirect URLs so OAuth (Google) and password-reset emails redirect users back to your live site instead of `localhost`.
+
+1. Open your Supabase project dashboard → **Authentication → URL Configuration**
+2. Set **Site URL** to your production URL (e.g. `https://phytonova-ai.vercel.app`)
+3. Add your production URL to **Redirect URLs** (must match `VITE_SITE_URL` in Vercel env vars)
+4. In Vercel dashboard → **Settings → Environment Variables**, add `VITE_SITE_URL=https://phytonova-ai.vercel.app`
+
+> If `VITE_SITE_URL` is not set, the app falls back to `window.location.origin` which usually works — but only after the above Supabase config is done.
+
+### Run Database Migration
+
+The `orders` table (and other tables) must exist in Supabase before checkout works:
+
+1. Go to your Supabase project dashboard
+2. Open **SQL Editor**
+3. Copy the contents of `supabase/migrations/001_initial.sql`
+4. Paste and **Run** the query
+
+Until this is done, orders are saved to `localStorage` as a fallback.
+```
 
 ## Folder Structure
 

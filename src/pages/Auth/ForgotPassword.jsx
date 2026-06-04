@@ -14,7 +14,8 @@ export default function ForgotPassword() {
     setError('');
     setMessage('');
 
-    const redirectTo = window.location.origin + '/auth';
+    const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
+    const redirectTo = siteUrl + '/auth';
 
     if (!supabase) {
       // Graceful degradation when Supabase is not configured

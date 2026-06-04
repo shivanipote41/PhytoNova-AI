@@ -2,6 +2,7 @@ import { createClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const siteUrl = import.meta.env.VITE_SITE_URL || window.location.origin;
 
 const isConfigured = Boolean(supabaseUrl && supabaseAnonKey);
 
@@ -28,7 +29,11 @@ export const supabase = isConfigured
  */
 export async function signUp(email, password) {
   if (!supabase) return { data: { user: null, session: null }, error: new Error('Supabase not configured') };
-  return supabase.auth.signUp({ email, password });
+  return supabase.auth.signUp({
+    email,
+    password,
+    options: { emailRedirectTo: siteUrl },
+  });
 }
 
 /**
@@ -51,7 +56,7 @@ export async function signInWithGoogle() {
   return supabase.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin,
+      redirectTo: siteUrl,
     },
   });
 }

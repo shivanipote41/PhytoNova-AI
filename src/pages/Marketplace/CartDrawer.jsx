@@ -62,11 +62,25 @@ export default function CartDrawer({ isOpen, onClose }) {
       cart_items: cartSnapshot,
     };
 
-    // 2. Save to Supabase
-    const { data, error: dbError } = await supabase.from('orders').insert(orderPayload);
+    // 2. Save to Supabase (with localStorage fallback if table not ready)
+    let dbError = null;
+    try {
+      const { error } = await supabase.from('orders').insert(orderPayload);
+      dbError = error;
+    } catch (err) {
+      dbError = err;
+    }
+
     if (dbError) {
-      setError('Order save failed: ' + dbError.message);
-      return;
+      console.warn('[Cart] Supabase orders insert failed — falling back to localStorage:', dbError.message);
+      const existing = JSON.parse(localStorage.getItem('phytanova_orders') || '[]');
+      const localOrder = {
+        ...orderPayload,
+        id: crypto.randomUUID?.() || String(Date.now()),
+        created_at: new Date().toISOString(),
+        _savedLocally: true,
+      };
+      localStorage.setItem('phytanova_orders', JSON.stringify([...existing, localOrder]));
     }
 
     // 3. Send Resend email
