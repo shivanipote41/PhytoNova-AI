@@ -424,106 +424,70 @@ const calculateCartTotal = () => window.cartItems?.reduce((sum, i) => sum + i.pr
 // Helper: sendOrderEmail
 // ---------------------------------------------------------------------------
 const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, address, paymentMethod }) => {
-  // Try Supabase Edge Function first
+  // PATH 1 — Supabase Edge Function (Resend via server, no CORS issues)
   try {
-    if (window.supabase && !import.meta.env.VITE_RESEND_API_KEY) {
-      console.log('[PhytoNova] Attempting to send order email via edge function to:', to, 'with orderId:', orderId);
-      const { data, error } = await window.supabase.functions.invoke('send-order-email', {
+    if (supabase) {
+      const { data, error } = await supabase.functions.invoke('send-order-email', {
         body: { to, cartItems, total, orderId, customerName, address, paymentMethod }
       });
-      if (error) throw error;
-      console.log('[PhytoNova] Order email sent via edge function:', data);
-      showToast('📧 Order confirmation email sent!');
-      return;
+      if (!error) {
+        console.log('[PhytoNova] Email sent via Edge Function:', data);
+        showToast('📧 Order confirmation email sent!');
+        return;
+      }
+      if (error?.message?.includes('404') || error?.context?.status === 404) {
+        console.warn('[PhytoNova] Edge Function not deployed yet.');
+        showToast('⚠️ Edge Function not deployed. Falling back to EmailJS...');
+      } else {
+        console.warn('[PhytoNova] Edge Function error:', error);
+      }
     }
   } catch (e) {
-    console.warn('[PhytoNova] Edge function failed, falling back to direct Resend:', e);
+    console.warn('[PhytoNova] Edge Function threw:', e);
   }
 
-  const apiKey = import.meta.env.VITE_RESEND_API_KEY;
-  if (!apiKey) {
-    console.warn('[PhytoNova] VITE_RESEND_API_KEY not set — skipping order email.');
-    showToast('⚠️ Email not sent — VITE_RESEND_API_KEY not configured.');
-    return;
-  }
-
-  const methodLabel = { upi: 'UPI', card: 'Credit/Debit Card', netbanking: 'Net Banking', cod: 'Cash on Delivery' }[paymentMethod] || paymentMethod || 'UPI';
-  const methodColor = { upi: '#22c55e', card: '#3b82f6', netbanking: '#f59e0b', cod: '#8b5cf6' }[paymentMethod] || '#22c55e';
-
-  const htmlBody = `
-    <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a2018;color:#1a1a1a;">
-      <div style="background:#0a2018;padding:24px 32px;border-radius:12px 12px 0 0;text-align:center;">
-        <h1 style="color:#22c55e;margin:0;font-size:28px;">🌿 PhytoNova Order Confirmed</h1>
-        <p style="color:#86efac;margin:8px 0 0;font-size:14px;">Thank you for your order, ${customerName || 'farmer'}!</p>
-      </div>
-      <div style="padding:32px;background:#fff;">
-        <p style="font-size:16px;margin:0 0 8px;"><strong>Order ID:</strong> <span style="color:#22c55e;font-weight:700;">${orderId}</span></p>
-        <p style="font-size:14px;color:#555;margin:0 0 24px;">Placed just now</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:0 0 24px;" />
-        <h2 style="font-size:16px;margin:0 0 16px;color:#333;">Items Ordered</h2>
-        <table style="width:100%;border-collapse:collapse;font-size:14px;">
-          <thead>
-            <tr style="background:#f5f5f5;">
-              <th style="padding:10px 8px;text-align:left;color:#555;">Item Name</th>
-              <th style="padding:10px 8px;text-align:center;color:#555;">Qty</th>
-              <th style="padding:10px 8px;text-align:right;color:#555;">Unit Price</th>
-              <th style="padding:10px 8px;text-align:right;color:#555;">Subtotal</th>
-            </tr>
-          </thead>
-          <tbody>
-            ${(cartItems || []).map(item => `
-              <tr style="border-bottom:1px solid #eee;">
-                <td style="padding:10px 8px;color:#333;">${item.name || item.product_name || 'Product'}</td>
-                <td style="padding:10px 8px;text-align:center;color:#333;">${item.qty || 1}</td>
-                <td style="padding:10px 8px;text-align:right;color:#333;">₹${(item.price || 0).toLocaleString('en-IN')}</td>
-                <td style="padding:10px 8px;text-align:right;color:#333;font-weight:700;">₹${((item.price || 0) * (item.qty || 1)).toLocaleString('en-IN')}</td>
-              </tr>`).join('')}
-          </tbody>
-        </table>
-        <div style="margin-top:20px;padding:16px;background:#f0fdf4;border-radius:8px;text-align:right;">
-          <span style="font-size:14px;color:#555;">Grand Total: </span>
-          <span style="font-size:22px;font-weight:700;color:#16a34a;">₹${(total || 0).toLocaleString('en-IN')}</span>
-        </div>
-        <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
-        <h2 style="font-size:16px;margin:0 0 12px;color:#333;">Delivery Address</h2>
-        <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.6;">${address || 'Not provided'}</p>
-        <div style="display:inline-block;padding:10px 16px;background:#f5f5f5;border-radius:8px;">
-          <span style="font-size:12px;color:#888;">Payment Method: </span>
-          <span style="font-size:13px;font-weight:700;color:${methodColor};">${methodLabel}</span>
-        </div>
-      </div>
-      <div style="background:#f5f5f5;padding:16px 32px;border-radius:0 0 12px 12px;text-align:center;">
-        <p style="margin:0;font-size:12px;color:#999;">© PhytoNova AI — Your smart farming companion</p>
-      </div>
-    </div>`;
-
-  console.log('[PhytoNova] Attempting to send order email to:', to, 'with orderId:', orderId);
-  try {
-    const response = await fetch('https://api.resend.com/emails', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer ' + apiKey,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        from: 'PhytoNova <orders@phytonova.ai>',
-        to,
-        subject: `Your PhytoNova Order Confirmation — ${orderId}`,
-        html: htmlBody,
-      }),
-    });
-    if (!response.ok) {
-      const errText = await response.text();
-      console.error('[PhytoNova] Resend API error:', response.status, errText);
-      showToast('⚠️ Email failed: ' + response.status + ' ' + errText.slice(0, 100));
+  // PATH 2 — EmailJS REST API (browser-safe, CORS enabled)
+  const emailjsService = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+  const emailjsTemplate = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+  const emailjsPublicKey = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+  if (emailjsService && emailjsTemplate && emailjsPublicKey) {
+    try {
+      const itemsText = (cartItems || []).map(i => `${i.emoji} ${i.name} x${i.qty} = ₹${i.price * i.qty}`).join('\n');
+      const resp = await fetch('https://api.emailjs.com/api/v1.0/email/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          service_id: emailjsService,
+          template_id: emailjsTemplate,
+          user_id: emailjsPublicKey,
+          template_params: {
+            to_email: to,
+            order_id: orderId,
+            customer_name: customerName,
+            items_list: itemsText || 'No items',
+            total_amount: '₹' + (total || 0).toLocaleString('en-IN'),
+            address: address || 'Not provided',
+            payment_method: paymentMethod || 'UPI',
+          }
+        })
+      });
+      if (!resp.ok) {
+        const errText = await resp.text();
+        console.error('[PhytoNova] EmailJS error:', resp.status, errText);
+        showToast('⚠️ EmailJS failed. Check template_params match your template.');
+        return;
+      }
+      console.log('[PhytoNova] Email sent via EmailJS');
+      showToast('📧 Order confirmation email sent via EmailJS!');
       return;
+    } catch (e) {
+      console.error('[PhytoNova] EmailJS threw:', e);
     }
-    const result = await response.json();
-    console.log('[PhytoNova] Order email sent. Resend response:', result);
-    showToast('📧 Order confirmation email sent!');
-  } catch (err) {
-    console.error('[PhytoNova] Failed to send order email:', err);
   }
+
+  // PATH 3 — Nothing configured
+  console.warn('[PhytoNova] No email provider configured.');
+  showToast('⚠️ Order saved, but email not sent. Add Supabase Edge Function (Resend) or EmailJS credentials in .env.');
 };
 
 // ---------------------------------------------------------------------------
@@ -571,9 +535,9 @@ window.goPayStep = (function () {
       const orderIdEl = document.getElementById('orderId');
       if (orderIdEl) orderIdEl.textContent = orderId;
 
-      if (window.supabase && window.currentUser?.id) {
+      if (supabase && window.currentUser?.id) {
         try {
-          await window.supabase.from('orders').insert({
+          await supabase.from('orders').insert({
             user_id: window.currentUser.id,
             customer_name: name,
             customer_email: window.currentUser.email,

@@ -4,7 +4,10 @@ serve(async (req) => {
   const { to, cartItems, total, orderId, customerName, address, paymentMethod } = await req.json()
   const apiKey = Deno.env.get('RESEND_API_KEY')
   if (!apiKey) {
-    return new Response(JSON.stringify({ error: 'RESEND_API_KEY not set' }), { status: 500 })
+    return new Response(JSON.stringify({ error: 'RESEND_API_KEY not set' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 
   const itemsHtml = cartItems.map((i: any) =>
@@ -26,7 +29,7 @@ serve(async (req) => {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      from: 'PhytoNova <orders@phytonova.ai>',
+      from: 'PhytoNova <onboarding@resend.dev>',
       to,
       subject: `Your PhytoNova Order Confirmation — ${orderId}`,
       html: htmlBody,
@@ -35,9 +38,15 @@ serve(async (req) => {
 
   if (!res.ok) {
     const err = await res.text()
-    return new Response(JSON.stringify({ error: err }), { status: 500 })
+    return new Response(JSON.stringify({ error: err }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
   }
 
   const data = await res.json()
-  return new Response(JSON.stringify(data), { status: 200 })
+  return new Response(JSON.stringify(data), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' },
+  })
 })
