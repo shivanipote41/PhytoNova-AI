@@ -433,7 +433,7 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
       if (!error) {
         console.log('[PhytoNova] Email sent via Edge Function:', data);
         showToast('📧 Order confirmation email sent!');
-        return;
+        return true;
       }
       if (error?.message?.includes('404') || error?.context?.status === 404) {
         console.warn('[PhytoNova] Edge Function not deployed yet.');
@@ -475,11 +475,11 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
         const errText = await resp.text();
         console.error('[PhytoNova] EmailJS error:', resp.status, errText);
         showToast('⚠️ EmailJS failed. Check template_params match your template.');
-        return;
+        return false;
       }
       console.log('[PhytoNova] Email sent via EmailJS');
       showToast('📧 Order confirmation email sent via EmailJS!');
-      return;
+      return true;
     } catch (e) {
       console.error('[PhytoNova] EmailJS threw:', e);
     }
@@ -488,6 +488,27 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
   // PATH 3 — Nothing configured
   console.warn('[PhytoNova] No email provider configured.');
   showToast('⚠️ Order saved, but email not sent. Add Supabase Edge Function (Resend) or EmailJS credentials in .env.');
+  return false;
+};
+
+const sendOrderSMS = async ({ phone, total, orderId }) => {
+  try {
+    if (supabase) {
+      const { data, error } = await supabase.functions.invoke('send-order-sms', {
+        body: { phone, total, orderId }
+      });
+      if (!error) {
+        console.log('[PhytoNova] SMS sent:', data);
+        showToast('📱 Order confirmation SMS sent!');
+        return true;
+      }
+      console.warn('[PhytoNova] SMS error:', error);
+    }
+  } catch (e) {
+    console.warn('[PhytoNova] SMS threw:', e);
+  }
+  showToast('⚠️ Could not send SMS notification.');
+  return false;
 };
 
 // ---------------------------------------------------------------------------
@@ -552,16 +573,17 @@ window.goPayStep = (function () {
         }
       }
 
-      if (window.currentUser?.email) {
-        await sendOrderEmail({
-          to: window.currentUser.email,
-          cartItems: window.cartItems,
-          total,
-          orderId,
-          customerName: name,
-          address,
-          paymentMethod: selected,
-        });
+      const emailSuccess = await sendOrderEmail({
+        to: window.currentUser?.email,
+        cartItems: window.cartItems,
+        total,
+        orderId,
+        customerName: name,
+        address,
+        paymentMethod: selected,
+      });
+      if (!emailSuccess && phone) {
+        await sendOrderSMS({ phone, total, orderId });
       }
 
       if (typeof window.addNotification === 'function') {
