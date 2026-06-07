@@ -392,6 +392,7 @@ window.addToCart = (function () {
     const total = calculateCartTotal();
     const totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+    if (typeof window.updateCartTotalDisplay === 'function') window.updateCartTotalDisplay();
     showToast(`✅ Added. Cart total: ₹${total.toLocaleString('en-IN')}`);
   };
 })();
@@ -406,6 +407,7 @@ window.changeQty = (function () {
     const total = calculateCartTotal();
     const totalEl = document.getElementById('cartTotal');
     if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+    if (typeof window.updateCartTotalDisplay === 'function') window.updateCartTotalDisplay();
   };
 })();
 
@@ -422,6 +424,22 @@ const calculateCartTotal = () => window.cartItems?.reduce((sum, i) => sum + i.pr
 // Helper: sendOrderEmail
 // ---------------------------------------------------------------------------
 const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, address, paymentMethod }) => {
+  // Try Supabase Edge Function first
+  try {
+    if (window.supabase && !import.meta.env.VITE_RESEND_API_KEY) {
+      console.log('[PhytoNova] Attempting to send order email via edge function to:', to, 'with orderId:', orderId);
+      const { data, error } = await window.supabase.functions.invoke('send-order-email', {
+        body: { to, cartItems, total, orderId, customerName, address, paymentMethod }
+      });
+      if (error) throw error;
+      console.log('[PhytoNova] Order email sent via edge function:', data);
+      showToast('📧 Order confirmation email sent!');
+      return;
+    }
+  } catch (e) {
+    console.warn('[PhytoNova] Edge function failed, falling back to direct Resend:', e);
+  }
+
   const apiKey = import.meta.env.VITE_RESEND_API_KEY;
   if (!apiKey) {
     console.warn('[PhytoNova] VITE_RESEND_API_KEY not set — skipping order email.');
@@ -479,8 +497,9 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
       </div>
     </div>`;
 
+  console.log('[PhytoNova] Attempting to send order email to:', to, 'with orderId:', orderId);
   try {
-    await fetch('https://api.resend.com/emails', {
+    const response = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: {
         'Authorization': 'Bearer ' + apiKey,
@@ -493,6 +512,15 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
         html: htmlBody,
       }),
     });
+    if (!response.ok) {
+      const errText = await response.text();
+      console.error('[PhytoNova] Resend API error:', response.status, errText);
+      showToast('⚠️ Email failed: ' + response.status + ' ' + errText.slice(0, 100));
+      return;
+    }
+    const result = await response.json();
+    console.log('[PhytoNova] Order email sent. Resend response:', result);
+    showToast('📧 Order confirmation email sent!');
   } catch (err) {
     console.error('[PhytoNova] Failed to send order email:', err);
   }
