@@ -302,6 +302,114 @@ window.handleLogout = (function () {
 })();
 
 // ---------------------------------------------------------------------------
+// BUG 2 — Override window.loadProfileFields (Supabase-backed)
+// ---------------------------------------------------------------------------
+const originalLoadProfileFields = window.loadProfileFields;
+window.loadProfileFields = async function () {
+  if (!supabase || !window.currentUser?.id) {
+    showToast('⚠️ Could not load profile — Supabase not available. Showing saved data.');
+    if (typeof originalLoadProfileFields === 'function') originalLoadProfileFields();
+    return;
+  }
+  try {
+    const { data: profile, error } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('user_id', window.currentUser.id)
+      .maybeSingle();
+    if (error) throw error;
+
+    const name = profile?.full_name || window.currentUser.name || 'User';
+    const email = window.currentUser.email || 'email@example.com';
+    const bio = profile?.bio || 'Experienced grower focused on regenerative practices.';
+
+    const sName = document.getElementById('settingsName'); if (sName) sName.value = name;
+    const sEmail = document.getElementById('settingsEmail'); if (sEmail) sEmail.value = email;
+    const sBio = document.getElementById('settingsBio'); if (sBio) sBio.value = bio;
+    const pName = document.getElementById('profileName'); if (pName) pName.textContent = name;
+    const pEmail = document.getElementById('profileEmail'); if (pEmail) pEmail.textContent = email;
+    const pBio = document.getElementById('profileBio'); if (pBio) pBio.textContent = bio;
+    const myd = document.getElementById('memberYearDisplay');
+    if (myd && window.currentUser.createdAt) myd.textContent = new Date(window.currentUser.createdAt).getFullYear();
+
+    if (!localStorage.getItem('userAvatar')) {
+      const initial = (window.currentUser.name || name).charAt(0).toUpperCase();
+      ['sidebarAvatar', 'topbarAvatar', 'communityAvatar', 'profileAvatar'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) { el.style.backgroundImage = ''; el.style.color = ''; el.textContent = initial; }
+      });
+    }
+  } catch (err) {
+    console.error('[PhytoNova] loadProfileFields error:', err);
+    showToast('⚠️ Could not load profile from database.');
+    if (typeof originalLoadProfileFields === 'function') originalLoadProfileFields();
+  }
+};
+
+// ---------------------------------------------------------------------------
+// BUG 2 — Override window.saveProfileChanges (Supabase-backed)
+// ---------------------------------------------------------------------------
+window.saveProfileChanges = async function () {
+  const name = document.getElementById('settingsName')?.value.trim();
+  const email = document.getElementById('settingsEmail')?.value.trim();
+  const bio = document.getElementById('settingsBio')?.value.trim();
+
+  if (!supabase || !window.currentUser?.id) {
+    showToast('⚠️ Supabase not available. Saving locally only.');
+    if (name) { localStorage.setItem('userName', name); document.getElementById('sidebarName').textContent = name; }
+    if (email) { localStorage.setItem('userEmail', email); }
+    if (bio) localStorage.setItem('userBio', bio);
+    const pBio = document.getElementById('profileBio'); if (pBio) pBio.textContent = bio || '';
+    showToast('✅ Profile saved (local only)');
+    return;
+  }
+
+  try {
+    await supabase.from('profiles').update({ full_name: name, bio }).eq('user_id', window.currentUser.id);
+    await supabase.auth.updateUser({ data: { full_name: name } });
+  } catch (err) {
+    console.error('[PhytoNova] saveProfileChanges error:', err);
+  }
+
+  if (name) {
+    localStorage.setItem('userName', name);
+    document.getElementById('sidebarName').textContent = name;
+    document.getElementById('profileName').textContent = name;
+    window.currentUser.name = name;
+  }
+  if (email) { localStorage.setItem('userEmail', email); document.getElementById('profileEmail').textContent = email; }
+  if (bio) { localStorage.setItem('userBio', bio); const pBio = document.getElementById('profileBio'); if (pBio) pBio.textContent = bio; }
+  showToast('✅ Profile saved');
+};
+
+// ---------------------------------------------------------------------------
+// BUG 3 — Override window.addToCart (cart total + toast)
+// ---------------------------------------------------------------------------
+window.addToCart = (function () {
+  const originalAddToCart = window.addToCart;
+  return function (...args) {
+    if (typeof originalAddToCart === 'function') originalAddToCart.apply(this, args);
+    const total = calculateCartTotal();
+    const totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+    showToast(`✅ Added. Cart total: ₹${total.toLocaleString('en-IN')}`);
+  };
+})();
+
+// ---------------------------------------------------------------------------
+// BUG 3 — Override window.changeQty (cart total after qty change)
+// ---------------------------------------------------------------------------
+window.changeQty = (function () {
+  const originalChangeQty = window.changeQty;
+  return function (...args) {
+    if (typeof originalChangeQty === 'function') originalChangeQty.apply(this, args);
+    const total = calculateCartTotal();
+    const totalEl = document.getElementById('cartTotal');
+    if (totalEl) totalEl.textContent = '₹' + total.toLocaleString('en-IN');
+  };
+})();
+
+// ---------------------------------------------------------------------------
 // Checkout Integration — Order Saving + Email
 // ---------------------------------------------------------------------------
 
@@ -313,12 +421,16 @@ const calculateCartTotal = () => window.cartItems?.reduce((sum, i) => sum + i.pr
 // ---------------------------------------------------------------------------
 // Helper: sendOrderEmail
 // ---------------------------------------------------------------------------
-const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, address }) => {
+const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, address, paymentMethod }) => {
   const apiKey = import.meta.env.VITE_RESEND_API_KEY;
   if (!apiKey) {
     console.warn('[PhytoNova] VITE_RESEND_API_KEY not set — skipping order email.');
+    showToast('⚠️ Email not sent — VITE_RESEND_API_KEY not configured.');
     return;
   }
+
+  const methodLabel = { upi: 'UPI', card: 'Credit/Debit Card', netbanking: 'Net Banking', cod: 'Cash on Delivery' }[paymentMethod] || paymentMethod || 'UPI';
+  const methodColor = { upi: '#22c55e', card: '#3b82f6', netbanking: '#f59e0b', cod: '#8b5cf6' }[paymentMethod] || '#22c55e';
 
   const htmlBody = `
     <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;background:#0a2018;color:#1a1a1a;">
@@ -334,9 +446,9 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
           <thead>
             <tr style="background:#f5f5f5;">
-              <th style="padding:10px 8px;text-align:left;color:#555;">Product</th>
+              <th style="padding:10px 8px;text-align:left;color:#555;">Item Name</th>
               <th style="padding:10px 8px;text-align:center;color:#555;">Qty</th>
-              <th style="padding:10px 8px;text-align:right;color:#555;">Price</th>
+              <th style="padding:10px 8px;text-align:right;color:#555;">Unit Price</th>
               <th style="padding:10px 8px;text-align:right;color:#555;">Subtotal</th>
             </tr>
           </thead>
@@ -344,19 +456,23 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
             ${(cartItems || []).map(item => `
               <tr style="border-bottom:1px solid #eee;">
                 <td style="padding:10px 8px;color:#333;">${item.name || item.product_name || 'Product'}</td>
-                <td style="padding:10px 8px;text-align:center;color:#333;">× ${item.qty || 1}</td>
+                <td style="padding:10px 8px;text-align:center;color:#333;">${item.qty || 1}</td>
                 <td style="padding:10px 8px;text-align:right;color:#333;">₹${(item.price || 0).toLocaleString('en-IN')}</td>
                 <td style="padding:10px 8px;text-align:right;color:#333;font-weight:700;">₹${((item.price || 0) * (item.qty || 1)).toLocaleString('en-IN')}</td>
               </tr>`).join('')}
           </tbody>
         </table>
         <div style="margin-top:20px;padding:16px;background:#f0fdf4;border-radius:8px;text-align:right;">
-          <span style="font-size:14px;color:#555;">Total Paid: </span>
+          <span style="font-size:14px;color:#555;">Grand Total: </span>
           <span style="font-size:22px;font-weight:700;color:#16a34a;">₹${(total || 0).toLocaleString('en-IN')}</span>
         </div>
         <hr style="border:none;border-top:1px solid #eee;margin:24px 0;" />
         <h2 style="font-size:16px;margin:0 0 12px;color:#333;">Delivery Address</h2>
-        <p style="font-size:14px;color:#555;margin:0;line-height:1.6;">${address || 'Not provided'}</p>
+        <p style="font-size:14px;color:#555;margin:0 0 16px;line-height:1.6;">${address || 'Not provided'}</p>
+        <div style="display:inline-block;padding:10px 16px;background:#f5f5f5;border-radius:8px;">
+          <span style="font-size:12px;color:#888;">Payment Method: </span>
+          <span style="font-size:13px;font-weight:700;color:${methodColor};">${methodLabel}</span>
+        </div>
       </div>
       <div style="background:#f5f5f5;padding:16px 32px;border-radius:0 0 12px 12px;text-align:center;">
         <p style="margin:0;font-size:12px;color:#999;">© PhytoNova AI — Your smart farming companion</p>
@@ -412,6 +528,10 @@ window.goPayStep = (function () {
           window.showToast('⚠️ Please enter a valid UPI ID.');
           return;
         }
+      } else if (selected === 'card') {
+        if (typeof window.validateCard === 'function' && !window.validateCard()) return;
+      } else if (selected === 'netbanking') {
+        if (typeof window.validateNetBanking === 'function' && !window.validateNetBanking()) return;
       }
 
       const name = document.getElementById('addr-name')?.value.trim();
@@ -448,6 +568,7 @@ window.goPayStep = (function () {
           orderId,
           customerName: name,
           address,
+          paymentMethod: selected,
         });
       }
 

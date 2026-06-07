@@ -3875,10 +3875,49 @@
             </label>
           </div>
         </div>
-        <div id="upi-input">
+        <div id="upi-input" class="payment-input-group">
           <div class="form-group">
             <label class="form-label">UPI ID</label>
             <input type="text" class="form-input" id="upiId" placeholder="yourname@upi">
+          </div>
+        </div>
+        <div id="card-input" class="payment-input-group" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Card Number</label>
+            <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19">
+          </div>
+          <div style="display:flex;gap:12px;">
+            <div class="form-group" style="flex:1;">
+              <label class="form-label">Expiry MM/YY</label>
+              <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" maxlength="5">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label class="form-label">CVV</label>
+              <input type="password" class="form-input" id="cardCvv" placeholder="•••" maxlength="4">
+            </div>
+          </div>
+        </div>
+        <div id="netbanking-input" class="payment-input-group" style="display:none;">
+          <div class="form-group">
+            <label class="form-label">Account Number</label>
+            <input type="text" class="form-input" id="accNumber" placeholder="Enter account number">
+          </div>
+          <div style="display:flex;gap:12px;">
+            <div class="form-group" style="flex:1;">
+              <label class="form-label">IFSC Code</label>
+              <input type="text" class="form-input" id="ifscCode" placeholder="SBIN0001234" maxlength="11">
+            </div>
+            <div class="form-group" style="flex:1;">
+              <label class="form-label">Bank Name</label>
+              <input type="text" class="form-input" id="bankName" placeholder="State Bank of India">
+            </div>
+          </div>
+        </div>
+        <div id="cod-input" class="payment-input-group" style="display:none;">
+          <div class="form-group">
+            <div style="padding:14px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:10px;font-size:14px;color:rgba(255,255,255,0.8);">
+              💵 You can pay in cash when your order is delivered.
+            </div>
           </div>
         </div>
         <div
@@ -3969,6 +4008,22 @@
     }
     function validateUPI(upi) {
       return /^[a-zA-Z0-9._-]{2,256}@[a-zA-Z]{2,64}$/.test(upi.trim());
+    }
+    function validateCard() {
+      const num = document.getElementById('cardNumber')?.value.replace(/\s/g, '') || '';
+      const expiry = document.getElementById('cardExpiry')?.value || '';
+      const cvv = document.getElementById('cardCvv')?.value || '';
+      if (!/^\d{13,19}$/.test(num)) { showToast('⚠️ Please enter a valid card number.'); return false; }
+      if (!/^\d{2}\/\d{2}$/.test(expiry)) { showToast('⚠️ Please enter expiry as MM/YY.'); return false; }
+      if (!/^\d{3,4}$/.test(cvv)) { showToast('⚠️ Please enter a valid CVV.'); return false; }
+      return true;
+    }
+    function validateNetBanking() {
+      const acc = document.getElementById('accNumber')?.value.trim() || '';
+      const ifsc = document.getElementById('ifscCode')?.value.trim() || '';
+      if (!/^\d{9,18}$/.test(acc)) { showToast('⚠️ Please enter a valid account number.'); return false; }
+      if (!/^[A-Z]{4}0[A-Z0-9]{6}$/i.test(ifsc)) { showToast('⚠️ Please enter a valid IFSC code.'); return false; }
+      return true;
     }
 
     // ==================== PRODUCTS ====================
@@ -5933,7 +5988,12 @@
             showToast('⚠️ Please enter a valid UPI ID.');
             return;
           }
+        } else if (selected === 'card') {
+          if (!validateCard()) return;
+        } else if (selected === 'netbanking') {
+          if (!validateNetBanking()) return;
         }
+        // COD requires no additional validation
         document.getElementById('orderId').textContent = Math.floor(Math.random() * 900000 + 100000);
         addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
         showToast('🎉 Order placed successfully!');
@@ -6175,6 +6235,28 @@
       sendChatMsg();
     }
 
+    // ==================== PAYMENT INPUT TOGGLING ====================
+    function setupPaymentInputs() {
+      const paymentInputs = document.querySelectorAll('input[name="payment"]');
+      const groups = ['upi-input', 'card-input', 'netbanking-input', 'cod-input'];
+      paymentInputs.forEach(radio => {
+        radio.addEventListener('change', () => {
+          groups.forEach(id => {
+            const el = document.getElementById(id);
+            if (el) el.style.display = id === radio.value + '-input' ? 'block' : 'none';
+          });
+        });
+      });
+      // show correct input on page load based on checked state
+      const checked = document.querySelector('input[name="payment"]:checked');
+      if (checked) {
+        groups.forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = id === checked.value + '-input' ? 'block' : 'none';
+        });
+      }
+    }
+
     // ==================== TOAST ====================
     function showToast(msg) {
       const toast = document.getElementById('toast');
@@ -6224,6 +6306,7 @@
       // restore profile fields (name, email, bio)
       try { loadProfileFields(); } catch (e) { console.warn('loadProfileFields failed', e); }
       setupAuthEnterKey();
+      setupPaymentInputs();
       renderAllCategories();
       renderFeaturedCarousel();
       renderNotifications();
