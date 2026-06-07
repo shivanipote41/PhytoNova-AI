@@ -3941,6 +3941,11 @@
           style="background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;color:rgba(255,255,255,0.7);">
           Order ID: <strong style="color:var(--green-neon);">#PNI-<span id="orderId"></span></strong>
         </div>
+        <div id="order-notification-status" style="margin-top:10px;padding:16px;background:var(--glass);border:1px solid var(--glass-border);border-radius:8px;text-align:left;font-size:12px;line-height:1.7;">
+          <div id="status-order" style="color:var(--green-neon);">🛒 Order saved to database</div>
+          <div id="status-email" style="color:rgba(255,255,255,0.45);">📧 Email: checking...</div>
+          <div id="status-sms" style="color:rgba(255,255,255,0.45);">📱 SMS: checking...</div>
+        </div>
         <button class="btn btn-primary" style="width:100%;padding:14px;"
           onclick="closePayment();closeCart();clearCart();">Continue Shopping</button>
       </div>
@@ -6274,13 +6279,38 @@
       }
     }
 
-    // ==================== TOAST ====================
+    // ==================== TOAST QUEUE ====================
+    let toastQueue = [];
+    let toastTimer = null;
     function showToast(msg) {
-      const toast = document.getElementById('toast');
-      document.getElementById('toastMsg').textContent = msg;
-      toast.classList.add('show');
-      setTimeout(() => toast.classList.remove('show'), 3000);
+      toastQueue.push(msg);
+      processToastQueue();
     }
+    function processToastQueue() {
+      if (toastTimer || toastQueue.length === 0) return;
+      const msg = toastQueue.shift();
+      const toast = document.getElementById('toast');
+      const toastMsg = document.getElementById('toastMsg');
+      if (!toast || !toastMsg) return;
+      toastMsg.textContent = msg;
+      toast.classList.add('show');
+      toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+        toastTimer = null;
+        setTimeout(() => processToastQueue(), 350);
+      }, 3000);
+    }
+
+    // ==================== ORDER STATUS ====================
+    function updateOrderStatus(type, success, reason) {
+      const el = document.getElementById('status-' + type);
+      if (!el) return;
+      const icon = success ? '✅' : '❌';
+      const color = success ? 'var(--green-neon)' : '#ff6b6b';
+      el.textContent = icon + ' ' + (type === 'order' ? 'Order saved' : type === 'email' ? 'Email' : 'SMS') + ': ' + reason;
+      el.style.color = color;
+    }
+    window.updateOrderStatus = updateOrderStatus;
 
     function toggleTheme() {
       const isLight = document.body.classList.toggle('light-theme');

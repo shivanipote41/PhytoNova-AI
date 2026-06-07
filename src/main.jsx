@@ -432,12 +432,10 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
       });
       if (!error) {
         console.log('[PhytoNova] Email sent via Edge Function:', data);
-        showToast('📧 Order confirmation email sent!');
-        return true;
+        return { success: true, via: 'supabase-edge', reason: 'Sent via Resend' };
       }
       if (error?.message?.includes('404') || error?.context?.status === 404) {
         console.warn('[PhytoNova] Edge Function not deployed yet.');
-        showToast('⚠️ Edge Function not deployed. Falling back to EmailJS...');
       } else {
         console.warn('[PhytoNova] Edge Function error:', error);
       }
@@ -474,12 +472,10 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
       if (!resp.ok) {
         const errText = await resp.text();
         console.error('[PhytoNova] EmailJS error:', resp.status, errText);
-        showToast('⚠️ EmailJS failed. Check template_params match your template.');
-        return false;
+        return { success: false, via: 'emailjs', reason: 'EmailJS failed. Check template_params.' };
       }
       console.log('[PhytoNova] Email sent via EmailJS');
-      showToast('📧 Order confirmation email sent via EmailJS!');
-      return true;
+      return { success: true, via: 'emailjs', reason: 'Sent via EmailJS' };
     } catch (e) {
       console.error('[PhytoNova] EmailJS threw:', e);
     }
@@ -487,8 +483,7 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
 
   // PATH 3 — Nothing configured
   console.warn('[PhytoNova] No email provider configured.');
-  showToast('⚠️ Order saved, but email not sent. Add Supabase Edge Function (Resend) or EmailJS credentials in .env.');
-  return false;
+  return { success: false, via: null, reason: 'No email provider configured. Add Supabase Edge Function (Resend) or EmailJS credentials in .env.' };
 };
 
 const sendOrderSMS = async ({ phone, total, orderId }) => {
@@ -499,16 +494,14 @@ const sendOrderSMS = async ({ phone, total, orderId }) => {
       });
       if (!error) {
         console.log('[PhytoNova] SMS sent:', data);
-        showToast('📱 Order confirmation SMS sent!');
-        return true;
+        return { success: true, via: data.provider || 'supabase-edge', reason: 'SMS sent' };
       }
       console.warn('[PhytoNova] SMS error:', error);
     }
   } catch (e) {
     console.warn('[PhytoNova] SMS threw:', e);
   }
-  showToast('⚠️ Could not send SMS notification.');
-  return false;
+  return { success: false, via: null, reason: 'No SMS provider configured. Add FAST2SMS_API_KEY or TWILIO_* secrets in Supabase dashboard.' };
 };
 
 // ---------------------------------------------------------------------------
@@ -573,7 +566,7 @@ window.goPayStep = (function () {
         }
       }
 
-      const emailSuccess = await sendOrderEmail({
+      const emailResult = await sendOrderEmail({
         to: window.currentUser?.email,
         cartItems: window.cartItems,
         total,
@@ -582,15 +575,35 @@ window.goPayStep = (function () {
         address,
         paymentMethod: selected,
       });
-      if (!emailSuccess && phone) {
-        await sendOrderSMS({ phone, total, orderId });
+      window.updateOrderStatus('email', emailResult.success, emailResult.reason);
+
+      let smsResult = { success: false, reason: 'Skipped because email succeeded' };
+      if (!emailResult.success && phone) {
+        smsResult = await sendOrderSMS({ phone, total, orderId });
+        window.updateOrderStatus('sms', smsResult.success, smsResult.reason);
+      } else {
+        window.updateOrderStatus('sms', false, smsResult.reason);
       }
 
-      if (typeof window.addNotification === 'function') {
-        window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
+      // queued toasts — sequential via queue
+      if (emailResult.success) {
+        window.showToast('📧 ' + emailResult.reason);
+      } else {
+        window.showToast('⚠️ Email failed: ' + emailResult.reason);
+        if (smsResult.success) {
+          window.showToast('📱 ' + smsResult.reason);
+        } else {
+          window.showToast('⚠️ SMS failed: ' + smsResult.reason);
+        }
       }
-      window.showToast('🎉 Order placed successfully!');
-      trackEvent('purchase', { value: total, currency: 'INR', items: window.cartItems?.length || 0 });
+
+      setTimeout(() => {
+        if (typeof window.addNotification === 'function') {
+          window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
+        }
+        window.showToast('🎉 Order placed successfully!');
+        trackEvent('purchase', { value: total, currency: 'INR', items: window.cartItems?.length || 0 });
+      }, 1000);
 
       return originalGoPayStep(step);
     }
