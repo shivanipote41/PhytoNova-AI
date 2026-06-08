@@ -82,7 +82,7 @@ window.handleSignIn = async function () {
     return;
   }
   if (!validateEmail(email)) {
-    errorEl.textContent = 'Enter a valid email like farmer@example.com.';
+    errorEl.textContent = 'Enter a valid email address.';
     emailInput.classList.add('error');
     return;
   }
@@ -160,7 +160,7 @@ window.handleSignUp = async function () {
     return;
   }
   if (!validateEmail(email)) {
-    errorEl.textContent = 'Enter a valid email like farmer@example.com.';
+    errorEl.textContent = 'Enter a valid email address.';
     emailInput.classList.add('error');
     return;
   }
@@ -386,7 +386,7 @@ window.loadProfileFields = async function () {
     if (error) throw error;
 
     const name = profile?.full_name || window.currentUser.name || 'User';
-    const email = window.currentUser.email || 'email@example.com';
+    const email = window.currentUser.email || 'Not signed in';
     const bio = profile?.bio || 'Experienced grower focused on regenerative practices.';
 
     const sName = document.getElementById('settingsName'); if (sName) sName.value = name;
