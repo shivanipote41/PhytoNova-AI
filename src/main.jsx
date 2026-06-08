@@ -1,4 +1,5 @@
 import { supabase } from './services/supabase.js';
+window.supabase = supabase;
 import { trackEvent } from './services/firebase.js';
 
 // ---------------------------------------------------------------------------
@@ -570,112 +571,101 @@ const sendOrderSMS = async ({ phone, total, orderId }) => {
 };
 
 // ---------------------------------------------------------------------------
-// Override window.goPayStep
+// Override window.goPayStep (replaces the broken inline version)
 // ---------------------------------------------------------------------------
-window.goPayStep = (function () {
-  const originalGoPayStep = window.goPayStep;
-  return async function (step) {
-    if (step === 2) {
-      const name = document.getElementById('addr-name')?.value.trim();
-      const phone = document.getElementById('addr-phone')?.value.trim();
-      const address = document.getElementById('addr-address')?.value.trim();
+window.goPayStep = async function (step) {
+  if (step === 2) {
+    const name = document.getElementById('addr-name')?.value.trim();
+    const phone = document.getElementById('addr-phone')?.value.trim();
+    const address = document.getElementById('addr-address')?.value.trim();
+    if (!name || !phone || !address) {
+      (window.showToast || showToast)('⚠️ Please complete delivery name, phone and address.');
+      return;
+    }
+    if (typeof window.validatePhone === 'function' && !window.validatePhone(phone)) {
+      (window.showToast || showToast)('⚠️ Please enter a valid phone number.');
+      return;
+    }
+  }
 
-      if (!name || !phone || !address) {
-        window.showToast('⚠️ Please complete delivery name, phone and address.');
+  if (step === 3) {
+    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'upi';
+    if (paymentMethod === 'upi') {
+      const upi = document.getElementById('upiId')?.value.trim();
+      if (!upi || !/^[a-zA-Z0-9._-]{2,256}@[a-zA-Z]{2,64}$/.test(upi)) {
+        (window.showToast || showToast)('⚠️ Please enter a valid UPI ID.');
         return;
       }
-      if (typeof window.validatePhone === 'function' && !window.validatePhone(phone)) {
-        window.showToast('⚠️ Please enter a valid phone number.');
+    } else if (paymentMethod === 'card') {
+      const cno = document.getElementById('cardNumber')?.value.trim();
+      const exp = document.getElementById('cardExpiry')?.value.trim();
+      const cvv = document.getElementById('cardCvv')?.value.trim();
+      if (!cno || cno.replace(/\s/g, '').length < 13 || !exp || !cvv) {
+        (window.showToast || showToast)('⚠️ Please enter valid card details.');
+        return;
+      }
+    } else if (paymentMethod === 'netbanking') {
+      const acc = document.getElementById('accNumber')?.value.trim();
+      const ifsc = document.getElementById('ifscCode')?.value.trim();
+      if (!acc || !ifsc) {
+        (window.showToast || showToast)('⚠️ Please enter account number and IFSC code.');
         return;
       }
     }
 
-    if (step === 3) {
-      const paymentMethod = document.querySelector('input[name="payment"]:checked');
-      const selected = paymentMethod ? paymentMethod.value : 'upi';
-      if (selected === 'upi') {
-        const upi = document.getElementById('upiId')?.value.trim();
-        if (typeof window.validateUPI === 'function' && !window.validateUPI(upi)) {
-          window.showToast('⚠️ Please enter a valid UPI ID.');
-          return;
-        }
-      } else if (selected === 'card') {
-        if (typeof window.validateCard === 'function' && !window.validateCard()) return;
-      } else if (selected === 'netbanking') {
-        if (typeof window.validateNetBanking === 'function' && !window.validateNetBanking()) return;
-      }
-
-      const name = document.getElementById('addr-name')?.value.trim();
-      const phone = document.getElementById('addr-phone')?.value.trim();
-      const address = document.getElementById('addr-address')?.value.trim();
-      const total = calculateCartTotal();
-      const orderId = 'PNI-' + Math.floor(Math.random() * 900000 + 100000);
-
-      const orderIdEl = document.getElementById('orderId');
-      if (orderIdEl) orderIdEl.textContent = orderId;
-
-      if (supabase && window.currentUser?.id) {
-        try {
-          await supabase.from('orders').insert({
-            user_id: window.currentUser.id,
-            customer_name: name,
-            customer_email: window.currentUser.email,
-            customer_phone: phone,
-            customer_address: address,
-            cart_items: window.cartItems,
-            total_price: total,
-            status: 'confirmed',
-          });
-        } catch (err) {
-          console.error('[PhytoNova] Failed to save order to Supabase:', err);
-        }
-      }
-
-      const emailResult = await sendOrderEmail({
-        to: window.currentUser?.email,
-        cartItems: window.cartItems,
-        total,
-        orderId,
-        customerName: name,
-        address,
-        paymentMethod: selected,
-      });
-      window.updateOrderStatus('email', emailResult.success, emailResult.reason);
-
-      let smsResult = { success: false, reason: 'Skipped because email succeeded' };
-      if (!emailResult.success && phone) {
-        smsResult = await sendOrderSMS({ phone, total, orderId });
-        window.updateOrderStatus('sms', smsResult.success, smsResult.reason);
-      } else {
-        window.updateOrderStatus('sms', false, smsResult.reason);
-      }
-
-      // queued toasts — sequential via queue
-      if (emailResult.success) {
-        window.showToast('📧 ' + emailResult.reason);
-      } else {
-        window.showToast('⚠️ Email failed: ' + emailResult.reason);
-        if (smsResult.success) {
-          window.showToast('📱 ' + smsResult.reason);
-        } else {
-          window.showToast('⚠️ SMS failed: ' + smsResult.reason);
-        }
-      }
-
-      setTimeout(() => {
-        if (typeof window.addNotification === 'function') {
-          window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
-        }
-        window.showToast('🎉 Order placed successfully!');
-        trackEvent('purchase', { value: total, currency: 'INR', items: window.cartItems?.length || 0 });
-      }, 1000);
-
-      return originalGoPayStep(step);
+    if (!window.cartItems?.length) {
+      (window.showToast || showToast)('⚠️ Your cart is empty.');
+      return;
     }
 
-    return originalGoPayStep(step);
-  };
-})();
+    const total = window.calculateCartTotal ? window.calculateCartTotal() : window.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+    const orderId = 'PNI-' + Math.floor(Math.random() * 900000 + 100000);
+    const email = window.currentUser?.email || 'guest@phytanova.ai';
+    const customerName = window.currentUser?.name || document.getElementById('addr-name')?.value.trim() || 'Guest';
+    const deliveryAddress = document.getElementById('addr-address')?.value.trim() || '';
+    const phone = document.getElementById('addr-phone')?.value.trim() || '';
+
+    try {
+      if (window.supabase) {
+        const { error } = await window.supabase.from('orders').insert([{
+          user_id: window.currentUser?.id || null,
+          order_id: orderId,
+          items: window.cartItems,
+          total,
+          status: 'pending',
+          delivery_name: customerName,
+          delivery_phone: phone,
+          delivery_address: deliveryAddress,
+          payment_method: paymentMethod,
+        }]);
+        if (error) console.warn('[PhytoNova] Order save error:', error);
+      }
+      if (typeof sendOrderEmail === 'function') {
+        await sendOrderEmail({ to: email, cartItems: window.cartItems, total, orderId, customerName, address: deliveryAddress, paymentMethod });
+      }
+      if (typeof sendOrderSMS === 'function') {
+        await sendOrderSMS({ phone, orderId, total, customerName });
+      }
+    } catch (err) {
+      console.error('[PhytoNova] Checkout error:', err);
+    }
+
+    document.getElementById('orderId').textContent = orderId;
+    (window.showToast || showToast)('🎉 Order placed successfully!');
+    if (typeof window.addNotification === 'function') {
+      window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
+    }
+    window.cartItems = [];
+    if (typeof window.renderCart === 'function') window.renderCart();
+  }
+
+  [1, 2, 3].forEach(n => {
+    const stepEl = document.getElementById('checkout-step' + n);
+    if (stepEl) stepEl.style.display = n === step ? 'block' : 'none';
+    const pstep = document.getElementById('pstep' + n);
+    if (pstep) pstep.className = 'payment-step' + (n < step ? ' done' : n === step ? ' active' : '');
+  });
+};
 
 // ---------------------------------------------------------------------------
 // Override window.renderCart — ensure #cartTotal is always accurate
@@ -692,171 +682,10 @@ window.renderCart = (function () {
   };
 })();
 
-// -----------------------------------------------------------------------
-// window.placeOrder — real checkout: save to Supabase, email, SMS, status panel
-// -------------------------------------------------------------------------
-window.placeOrder = async function () {
-  try {
-    console.log('[PhytoNova] placeOrder START');
-
-    const name = document.getElementById('addr-name')?.value.trim();
-    const phone = document.getElementById('addr-phone')?.value.trim();
-    const address = document.getElementById('addr-address')?.value.trim();
-
-    if (!name || !phone || !address) {
-      window.showToast('⚠️ Please complete delivery name, phone and address.');
-      return;
-    }
-    if (typeof window.validatePhone === 'function' && !window.validatePhone(phone)) {
-      window.showToast('⚠️ Please enter a valid phone number.');
-      return;
-    }
-
-    const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'upi';
-    if (paymentMethod === 'upi') {
-      const upi = document.getElementById('upiId')?.value.trim();
-      const upiValid = /^[a-zA-Z0-9._-]{2,256}@[a-zA-Z]{2,64}$/.test(upi || '');
-      if (!upiValid) { window.showToast('⚠️ Please enter a valid UPI ID.'); return; }
-    } else if (paymentMethod === 'card') {
-      const cno = document.getElementById('cardNumber')?.value.trim();
-      const exp = document.getElementById('cardExpiry')?.value.trim();
-      const cvv = document.getElementById('cardCvv')?.value.trim();
-      const cardOk = cno && cno.replace(/\s/g, '').length >= 13 && exp && cvv;
-      if (!cardOk) { window.showToast('⚠️ Please enter valid card details.'); return; }
-    } else if (paymentMethod === 'netbanking') {
-      const acc = document.getElementById('accNumber')?.value.trim();
-      const ifsc = document.getElementById('ifscCode')?.value.trim();
-      if (!acc || !ifsc) { window.showToast('⚠️ Please enter account number and IFSC code.'); return; }
-    }
-
-    if (!window.cartItems?.length) {
-      window.showToast('⚠️ Your cart is empty.');
-      return;
-    }
-
-    const total = window.calculateCartTotal ? window.calculateCartTotal() : window.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
-    const orderId = 'PNI-' + Math.floor(Math.random() * 900000 + 100000);
-    const email = window.currentUser?.email || 'guest@phytanova.ai';
-    const customerName = window.currentUser?.name || name;
-    const deliveryAddress = address;
-
-    // Bridge updateOrderStatus if the inline HTML defines it but hasn't put it on window
-    if (!window.updateOrderStatus && typeof updateOrderStatus === 'function') {
-      window.updateOrderStatus = updateOrderStatus;
-    }
-
-    // Save to Supabase orders table
-    let dbOk = false;
-    try {
-      if (supabase) {
-        const { error } = await supabase.from('orders').insert([{
-          user_id: window.currentUser?.id || null,
-          order_id: orderId,
-          items: window.cartItems,
-          total,
-          status: 'pending',
-          delivery_name: name,
-          delivery_phone: phone,
-          delivery_address: deliveryAddress,
-          payment_method: paymentMethod,
-        }]);
-        if (!error) {
-          dbOk = true;
-        } else {
-          console.warn('[PhytoNova] Order save error:', error);
-        }
-      }
-    } catch (e) {
-      console.warn('[PhytoNova] Order save exception:', e);
-    }
-    console.log('[PhytoNova] Order saved:', dbOk);
-
-    // Send email
-    const emailResult = await sendOrderEmail({
-      to: email,
-      cartItems: window.cartItems,
-      total,
-      orderId,
-      customerName,
-      address: deliveryAddress,
-      paymentMethod,
-    });
-    console.log('[PhytoNova] Email result:', emailResult);
-
-    // Send SMS
-    const smsResult = await sendOrderSMS({
-      phone,
-      orderId,
-      total,
-      customerName,
-    });
-    console.log('[PhytoNova] SMS result:', smsResult);
-
-    // Update UI
-    console.log('[PhytoNova] placeOrder proceeding to step 3');
-    document.getElementById('orderId').textContent = orderId;
-    window.showToast('🎉 Order placed successfully!');
-    if (typeof window.addNotification === 'function') {
-      window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
-    }
-    window.cartItems = [];
-    if (typeof window.renderCart === 'function') window.renderCart();
-
-    // Advance checkout step UI to step 3
-    [1, 2, 3].forEach(n => {
-      const stepEl = document.getElementById('checkout-step' + n);
-      if (stepEl) stepEl.style.display = n === 3 ? 'block' : 'none';
-      const pstep = document.getElementById('pstep' + n);
-      if (pstep) pstep.className = 'payment-step' + (n < 3 ? ' done' : n === 3 ? ' active' : '');
-    });
-
-    trackEvent('purchase', { value: total, currency: 'INR', items: window.cartItems?.length || 0 });
-    console.log('[PhytoNova] placeOrder SUCCESS');
-  } catch (err) {
-    console.error('[PhytoNova] placeOrder CRASH:', err);
-    window.showToast('⚠️ Something went wrong. Please try again.');
-  }
-};
-
 // ---------------------------------------------------------------------------
 // Attach everything after DOM is ready
 // ---------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   restoreSession();
-
-  // Wire Place Order button robustly — uses addEventListener + MutationObserver
-  const wirePlaceOrder = () => {
-    const btn = document.querySelector('button[onclick*="goPayStep(3)"]');
-    if (!btn) return;
-    if (btn.dataset.wired === '1') return;
-    btn.dataset.wired = '1';
-    btn.removeAttribute('onclick');
-    btn.addEventListener('click', (e) => {
-      e.preventDefault();
-      e.stopPropagation();
-      if (window.placeOrder) window.placeOrder();
-    });
-  };
-
-  // Try wiring on DOM ready + whenever payment modal opens
-  setTimeout(wirePlaceOrder, 200);
-  const modal = document.getElementById('paymentModal');
-  if (modal) {
-    const observer = new MutationObserver(() => {
-      if (modal.classList.contains('active')) wirePlaceOrder();
-    });
-    observer.observe(modal, { attributes: true, attributeFilter: ['class'] });
-  }
-
-  // Simplify goPayStep override for step 3 — non-async to avoid return value issues
-  if (typeof window.goPayStep === 'function') {
-    const __origGoPayStep = window.goPayStep;
-    window.goPayStep = function (step) {
-      if (step === 3 && window.placeOrder) {
-        window.placeOrder();
-        return;
-      }
-      return __origGoPayStep(step);
-    };
-  }
+  // goPayStep is already assigned globally above; no extra wiring needed
 });

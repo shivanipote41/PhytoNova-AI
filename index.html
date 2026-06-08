@@ -3989,6 +3989,11 @@
   </div>
 
   <script>
+    // Global error handler — catches ALL runtime errors in the inline script
+    window.onerror = function(msg, url, line) {
+      alert('JavaScript error at line ' + line + ': ' + msg + '.\nOpen browser console (F12) for details.');
+      console.error('[PhytoNova] Global error:', msg, 'at line', line);
+    };
 
     // ==================== STATE ====================
     var currentUser = null;
@@ -5983,6 +5988,16 @@
     }
 
     function goPayStep(step) {
+      try {
+        _goPayStep(step);
+      } catch (err) {
+        console.error('[PhytoNova] goPayStep error:', err);
+        alert('Checkout error: ' + err.message + '\nPlease check the console (F12) for details.');
+        showToast('⚠️ Error: ' + err.message);
+      }
+    }
+
+    function _goPayStep(step) {
       if (step === 2) {
         const name = document.getElementById('addr-name').value.trim();
         const phone = document.getElementById('addr-phone').value.trim();
@@ -5999,7 +6014,7 @@
 
       if (step === 3) {
         const paymentMethod = document.querySelector('input[name="payment"]:checked');
-        const selected = paymentMethod ? paymentMethod.value : 'upi';
+        const selected = paymentMethod ? paymentMethod.value : 'cod';
         if (selected === 'upi') {
           const upi = document.getElementById('upiId').value.trim();
           if (!upi || !validateUPI(upi)) {
