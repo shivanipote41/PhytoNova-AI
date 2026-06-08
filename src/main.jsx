@@ -189,12 +189,26 @@ window.handleSignUp = async function () {
 
   setTimeout(() => {
     switchTab('signin');
+    const tabs = document.querySelector('.form-tabs');
+    if (tabs) tabs.style.display = 'none';
     errorEl.style.color = '';
     errorEl.textContent = '';
   }, 2000);
 
   trackEvent('sign_up', { user_id: data.user.id, method: 'email' });
 };
+
+// ---------------------------------------------------------------------------
+// Reset tab visibility when modal reopens
+// ---------------------------------------------------------------------------
+window.openModal = (function () {
+  const orig = window.openModal;
+  return function (tab) {
+    if (typeof orig === 'function') orig(tab);
+    const tabs = document.querySelector('.form-tabs');
+    if (tabs) tabs.style.display = 'flex';
+  };
+})();
 
 // ---------------------------------------------------------------------------
 // Override window.saveDiseaseImage
