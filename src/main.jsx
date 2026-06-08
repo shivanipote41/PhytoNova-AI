@@ -424,6 +424,45 @@ const calculateCartTotal = () => window.cartItems?.reduce((sum, i) => sum + i.pr
 // Helper: sendOrderEmail
 // ---------------------------------------------------------------------------
 const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, address, paymentMethod }) => {
+  // PATH 0 — Local Vite proxy (bypasses CORS, works immediately in dev)
+  try {
+    if (import.meta.env.DEV && import.meta.env.VITE_RESEND_API_KEY) {
+      const itemsText = (cartItems || []).map(i => `${i.emoji} ${i.name} x${i.qty} = ₹${i.price * i.qty}`).join('\n');
+      const htmlBody = `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; color: #333;">
+          <h2 style="color: #2d6a4f;">🪴 PhytoNova Order Confirmation</h2>
+          <p>Hi <strong>${customerName || 'Customer'}</strong>,</p>
+          <p>Your order <strong>#${orderId}</strong> has been received!</p>
+          <h3>Order Details</h3>
+          <pre style="background: #f5f5f5; padding: 10px; border-radius: 8px;">${itemsText || 'No items'}</pre>
+          <p><strong>Total:</strong> ₹${(total || 0).toLocaleString('en-IN')}</p>
+          <p><strong>Payment:</strong> ${paymentMethod || 'UPI'}</p>
+          <p><strong>Delivery Address:</strong><br>${address || 'Not provided'}</p>
+          <p style="margin-top: 20px;">Thank you for choosing PhytoNova! 🌿</p>
+        </div>
+      `;
+      const resp = await fetch('/api/email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          from: 'PhytoNova <onboarding@resend.dev>',
+          to,
+          subject: 'Your PhytoNova Order Confirmation — ' + orderId,
+          html: htmlBody,
+        }),
+      });
+      if (resp.ok) {
+        console.log('[PhytoNova] Email sent via Resend proxy');
+        showToast('📧 Order confirmation email sent!');
+        return { success: true, via: 'resend', reason: 'Sent via Resend' };
+      }
+      const errText = await resp.text();
+      console.warn('[PhytoNova] Resend proxy returned non-OK:', resp.status, errText);
+    }
+  } catch (e) {
+    console.warn('[PhytoNova] Resend proxy error:', e);
+  }
+
   // PATH 1 — Supabase Edge Function (Resend via server, no CORS issues)
   try {
     if (supabase) {
