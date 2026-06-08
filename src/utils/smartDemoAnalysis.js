@@ -21,19 +21,29 @@ function analysePixels(img) {
   canvas.height = size;
   ctx.drawImage(img, 0, 0, size, size);
 
-  const data = ctx.getImageData(0, 0, size, size).data;
+  const imageData = ctx.getImageData(0, 0, size, size);
+  const data = imageData.data;
   let total = 0;
   let green = 0;
   let brown = 0;
   let yellow = 0;
   let white = 0;
   let dark = 0;
+  let hash = 2166136261;
 
   for (let i = 0; i < data.length; i += 16) { // Sample every 4th pixel for speed
     const r = data[i];
     const g = data[i + 1];
     const b = data[i + 2];
     total++;
+
+    // Build deterministic hash from sampled pixels
+    hash ^= r;
+    hash = (hash * 16777619) >>> 0;
+    hash ^= g;
+    hash = (hash * 16777619) >>> 0;
+    hash ^= b;
+    hash = (hash * 16777619) >>> 0;
 
     const max = Math.max(r, g, b);
     const min = Math.min(r, g, b);
@@ -77,7 +87,19 @@ function analysePixels(img) {
     }
   }
 
-  return { total, green, brown, yellow, white, dark };
+  return { total, green, brown, yellow, white, dark, hash };
+}
+
+function seededRandom(seed) {
+  let value = seed >>> 0;
+  return () => {
+    value = (value * 1664525 + 1013904223) >>> 0;
+    return value / 0x100000000;
+  };
+}
+
+function chooseBySeed(seed, items) {
+  return items[seed % items.length];
 }
 
 const DIAGNOSES = [
@@ -129,34 +151,36 @@ export async function smartDemoAnalyse(file) {
   try {
     const img = await loadImage(url);
     const ratios = analysePixels(img);
+    const random = seededRandom(ratios.hash);
 
-    // Find first matching diagnosis
-    for (const diag of DIAGNOSES) {
-      if (diag.check(ratios)) {
-        const noise = (Math.random() - 0.5) * 0.06;
-        const confidence = Math.min(0.97, Math.max(0.65, diag.confidenceBoost + noise));
-        return { label: diag.label, confidence, source: 'demo' };
-      }
+    const candidates = DIAGNOSES.filter((diag) => diag.check(ratios));
+    if (candidates.length > 0) {
+      const chosen = chooseBySeed(ratios.hash, candidates);
+      const noise = (random() - 0.5) * 0.06;
+      const confidence = Math.min(0.97, Math.max(0.65, chosen.confidenceBoost + noise));
+      return { label: chosen.label, confidence, source: 'demo' };
     }
 
-    // Fallback based on strongest signal
     const { green, brown, yellow, white } = ratios;
     const maxSignal = Math.max(green, brown, yellow, white);
+    const fallbackGroup = [];
 
     if (maxSignal === green) {
-      return { label: 'Healthy', confidence: 0.78 + Math.random() * 0.12, source: 'demo' };
+      fallbackGroup.push('Healthy');
     }
     if (maxSignal === brown) {
-      return { label: 'Tomato___Early_blight', confidence: 0.72 + Math.random() * 0.14, source: 'demo' };
+      fallbackGroup.push('Tomato___Early_blight', 'Tomato___Late_blight');
     }
     if (maxSignal === yellow) {
-      return { label: 'Bacterial_spot', confidence: 0.68 + Math.random() * 0.14, source: 'demo' };
+      fallbackGroup.push('Bacterial_spot', 'Cucumber___Downy_mildew');
     }
     if (maxSignal === white) {
-      return { label: 'Powdery_mildew', confidence: 0.75 + Math.random() * 0.12, source: 'demo' };
+      fallbackGroup.push('Powdery_mildew');
     }
 
-    return { label: 'Healthy', confidence: 0.71 + Math.random() * 0.1, source: 'demo' };
+    const label = fallbackGroup.length > 0 ? chooseBySeed(ratios.hash, fallbackGroup) : 'Healthy';
+    const confidence = 0.65 + random() * 0.3;
+    return { label, confidence, source: 'demo' };
   } finally {
     URL.revokeObjectURL(url);
   }
