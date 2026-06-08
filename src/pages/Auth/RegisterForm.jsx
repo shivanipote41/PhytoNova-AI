@@ -6,6 +6,7 @@ export default function RegisterForm() {
   const navigate = useNavigate();
   const { signUp, error } = useAuth();
 
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
@@ -16,8 +17,19 @@ export default function RegisterForm() {
     e.preventDefault();
     setLocalError('');
 
-    if (password.length < 6) {
-      setLocalError('Password must be at least 6 characters.');
+    // Validate username: only alphabets
+    if (!username.trim()) {
+      setLocalError('Username is required.');
+      return;
+    }
+    if (!/^[a-zA-Z]+$/.test(username)) {
+      setLocalError('Username must contain only alphabets (no numbers, underscores, or special characters).');
+      return;
+    }
+
+    // Validate password: at least 10 characters
+    if (password.length < 10) {
+      setLocalError('Password must be at least 10 characters.');
       return;
     }
     if (password !== confirm) {
@@ -47,6 +59,21 @@ export default function RegisterForm() {
       )}
 
       <div>
+        <label className="block text-sm text-text-secondary mb-1" htmlFor="reg-username">
+          Username
+        </label>
+        <input
+          id="reg-username"
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Alphabets only"
+          required
+          className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
+        />
+      </div>
+
+      <div>
         <label className="block text-sm text-text-secondary mb-1" htmlFor="reg-email">
           Email
         </label>
@@ -70,7 +97,7 @@ export default function RegisterForm() {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Min. 6 characters"
+          placeholder="Min. 10 characters"
           required
           className="w-full bg-[#0a0a0a] border border-white/15 rounded-md px-4 py-2 text-slate-50 placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition"
         />
