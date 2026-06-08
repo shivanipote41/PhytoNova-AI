@@ -548,7 +548,7 @@ const sendOrderEmail = async ({ to, cartItems, total, orderId, customerName, add
 
   // PATH 3 — Nothing configured
   console.warn('[PhytoNova] No email provider configured.');
-  return { success: false, via: null, reason: 'No email provider configured. Add Supabase Edge Function (Resend) or EmailJS credentials in .env.' };
+  return { success: false, via: null, reason: 'Unable to send confirmation email. You may contact support if needed.' };
 };
 
 const sendOrderSMS = async ({ phone, total, orderId }) => {
@@ -566,7 +566,7 @@ const sendOrderSMS = async ({ phone, total, orderId }) => {
   } catch (e) {
     console.warn('[PhytoNova] SMS threw:', e);
   }
-  return { success: false, via: null, reason: 'No SMS provider configured. Add FAST2SMS_API_KEY or TWILIO_* secrets in Supabase dashboard.' };
+  return { success: false, via: null, reason: 'Unable to send confirmation SMS. Your order is still confirmed.' };
 };
 
 // ---------------------------------------------------------------------------
@@ -692,9 +692,144 @@ window.renderCart = (function () {
   };
 })();
 
+// -----------------------------------------------------------------------
+// window.placeOrder — real checkout: save to Supabase, email, SMS, status panel
+// -----------------------------------------------------------------------
+window.placeOrder = async function () {
+  const name = document.getElementById('addr-name')?.value.trim();
+  const phone = document.getElementById('addr-phone')?.value.trim();
+  const address = document.getElementById('addr-address')?.value.trim();
+
+  if (!name || !phone || !address) {
+    showToast('⚠️ Please complete delivery name, phone and address.');
+    return;
+  }
+  if (typeof window.validatePhone === 'function' && !window.validatePhone(phone)) {
+    showToast('⚠️ Please enter a valid phone number.');
+    return;
+  }
+
+  const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'upi';
+  if (paymentMethod === 'upi') {
+    const upi = document.getElementById('upiId')?.value.trim();
+    if (!upi) { showToast('⚠️ Please enter a valid UPI ID.'); return; }
+  } else if (paymentMethod === 'card') {
+    const cno = document.getElementById('cardNumber')?.value.trim();
+    if (!cno || cno.length < 13) { showToast('⚠️ Please enter a valid card.'); return; }
+  } else if (paymentMethod === 'netbanking') {
+    const nb = document.getElementById('netBankSelect')?.value;
+    if (!nb) { showToast('⚠️ Please select a bank.'); return; }
+  }
+
+  if (!window.cartItems?.length) {
+    showToast('⚠️ Your cart is empty.');
+    return;
+  }
+
+  const total = window.calculateCartTotal ? window.calculateCartTotal() : window.cartItems.reduce((s, i) => s + i.price * i.qty, 0);
+  const orderId = 'PNI-' + Math.floor(Math.random() * 900000 + 100000);
+  const email = window.currentUser?.email || 'guest@phytanova.ai';
+  const customerName = window.currentUser?.name || name;
+  const deliveryAddress = address;
+
+  // Bridge updateOrderStatus if the inline HTML defines it but hasn't put it on window
+  if (!window.updateOrderStatus && typeof updateOrderStatus === 'function') {
+    window.updateOrderStatus = updateOrderStatus;
+  }
+
+  // UI: reset status panel
+  if (window.updateOrderStatus) {
+    window.updateOrderStatus('order', true, 'Saving order...');
+    window.updateOrderStatus('email', false, 'Sending email...');
+    window.updateOrderStatus('sms', false, 'Sending SMS...');
+  }
+
+  // Save to Supabase orders table
+  let dbOk = false;
+  try {
+    if (supabase) {
+      const { error } = await supabase.from('orders').insert([{
+        user_id: window.currentUser?.id || null,
+        order_id: orderId,
+        items: window.cartItems,
+        total,
+        status: 'pending',
+        delivery_name: name,
+        delivery_phone: phone,
+        delivery_address: deliveryAddress,
+        payment_method: paymentMethod,
+      }]);
+      dbOk = !error;
+      if (error) console.warn('[PhytoNova] Order save error:', error);
+    }
+  } catch (e) {
+    console.warn('[PhytoNova] Order save exception:', e);
+  }
+  if (window.updateOrderStatus) {
+    window.updateOrderStatus('order', dbOk, dbOk ? 'Order saved to database' : 'Order not saved (offline/cart demo)');
+  }
+
+  // Send email
+  const emailResult = await sendOrderEmail({
+    to: email,
+    cartItems: window.cartItems,
+    total,
+    orderId,
+    customerName,
+    address: deliveryAddress,
+    paymentMethod,
+  });
+  if (window.updateOrderStatus) {
+    window.updateOrderStatus('email', emailResult.success, emailResult.success ? 'Email: sent via ' + (emailResult.via || 'Resend') : emailResult.reason);
+  }
+
+  // Send SMS
+  const smsResult = await sendOrderSMS({
+    phone,
+    orderId,
+    total,
+    customerName,
+  });
+  if (window.updateOrderStatus) {
+    window.updateOrderStatus('sms', smsResult.success, smsResult.success ? 'SMS: sent via ' + (smsResult.via || 'provider') : smsResult.reason);
+  }
+
+  // Update UI
+  document.getElementById('orderId').textContent = orderId;
+  showToast('🎉 Order placed successfully!');
+  if (typeof window.addNotification === 'function') {
+    window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
+  }
+  window.cartItems = [];
+  if (typeof window.renderCart === 'function') window.renderCart();
+
+  // Advance checkout step UI to step 3
+  [1, 2, 3].forEach(n => {
+    const stepEl = document.getElementById('checkout-step' + n);
+    if (stepEl) stepEl.style.display = n === 3 ? 'block' : 'none';
+    const pstep = document.getElementById('pstep' + n);
+    if (pstep) pstep.className = 'payment-step' + (n < 3 ? ' done' : n === 3 ? ' active' : '');
+  });
+
+  trackEvent('purchase', { value: total, currency: 'INR', items: window.cartItems?.length || 0 });
+};
+
 // ---------------------------------------------------------------------------
 // Attach everything after DOM is ready
 // ---------------------------------------------------------------------------
 document.addEventListener('DOMContentLoaded', () => {
   restoreSession();
+
+  // Wire Place Order button to real checkout logic
+  setTimeout(() => {
+    const btn = document.querySelector('button[onclick*="goPayStep(3)"]');
+    if (btn && window.placeOrder) {
+      btn.onclick = function (e) {
+        e.preventDefault?.();
+        window.placeOrder();
+      };
+      // Clear the old inline onclick so it doesn't fire twice
+      btn.removeAttribute('onclick');
+    }
+  }, 500);
 });
