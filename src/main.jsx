@@ -701,28 +701,33 @@ window.placeOrder = async function () {
   const address = document.getElementById('addr-address')?.value.trim();
 
   if (!name || !phone || !address) {
-    showToast('⚠️ Please complete delivery name, phone and address.');
+    window.showToast('⚠️ Please complete delivery name, phone and address.');
     return;
   }
   if (typeof window.validatePhone === 'function' && !window.validatePhone(phone)) {
-    showToast('⚠️ Please enter a valid phone number.');
+    window.showToast('⚠️ Please enter a valid phone number.');
     return;
   }
 
   const paymentMethod = document.querySelector('input[name="payment"]:checked')?.value || 'upi';
   if (paymentMethod === 'upi') {
     const upi = document.getElementById('upiId')?.value.trim();
-    if (!upi) { showToast('⚠️ Please enter a valid UPI ID.'); return; }
+    const upiValid = /^[a-zA-Z0-9._-]{2,256}@[a-zA-Z]{2,64}$/.test(upi || '');
+    if (!upiValid) { window.showToast('⚠️ Please enter a valid UPI ID.'); return; }
   } else if (paymentMethod === 'card') {
     const cno = document.getElementById('cardNumber')?.value.trim();
-    if (!cno || cno.length < 13) { showToast('⚠️ Please enter a valid card.'); return; }
+    const exp = document.getElementById('cardExpiry')?.value.trim();
+    const cvv = document.getElementById('cardCvv')?.value.trim();
+    const cardOk = cno && cno.replace(/\s/g, '').length >= 13 && exp && cvv;
+    if (!cardOk) { window.showToast('⚠️ Please enter valid card details.'); return; }
   } else if (paymentMethod === 'netbanking') {
-    const nb = document.getElementById('netBankSelect')?.value;
-    if (!nb) { showToast('⚠️ Please select a bank.'); return; }
+    const acc = document.getElementById('accNumber')?.value.trim();
+    const ifsc = document.getElementById('ifscCode')?.value.trim();
+    if (!acc || !ifsc) { window.showToast('⚠️ Please enter account number and IFSC code.'); return; }
   }
 
   if (!window.cartItems?.length) {
-    showToast('⚠️ Your cart is empty.');
+    window.showToast('⚠️ Your cart is empty.');
     return;
   }
 
@@ -752,8 +757,11 @@ window.placeOrder = async function () {
         delivery_address: deliveryAddress,
         payment_method: paymentMethod,
       }]);
-      dbOk = !error;
-      if (error) console.warn('[PhytoNova] Order save error:', error);
+      if (!error) {
+        dbOk = true;
+      } else {
+        console.warn('[PhytoNova] Order save error:', error);
+      }
     }
   } catch (e) {
     console.warn('[PhytoNova] Order save exception:', e);
@@ -783,7 +791,7 @@ window.placeOrder = async function () {
 
   // Update UI
   document.getElementById('orderId').textContent = orderId;
-  showToast('🎉 Order placed successfully!');
+  window.showToast('🎉 Order placed successfully!');
   if (typeof window.addNotification === 'function') {
     window.addNotification('Order Confirmed', 'Your order has been placed successfully and is being processed.', 'Just now');
   }
@@ -817,6 +825,18 @@ document.addEventListener('DOMContentLoaded', () => {
       };
       // Clear the old inline onclick so it doesn't fire twice
       btn.removeAttribute('onclick');
+    }
+
+    // Fallback: override goPayStep itself in case button wiring misses
+    if (typeof window.goPayStep === 'function') {
+      const __origGoPayStep = window.goPayStep;
+      window.goPayStep = async function (step) {
+        if (step === 3 && window.placeOrder) {
+          await window.placeOrder();
+          return;
+        }
+        return __origGoPayStep(step);
+      };
     }
   }, 500);
 });
