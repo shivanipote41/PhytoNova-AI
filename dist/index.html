@@ -3,7 +3,8 @@
 
 <head>
   <meta charset="UTF-8">
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22 0 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>" />
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%22 0 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🌱</text></svg>" />
   <meta name="theme-color" content="#0d2b1a" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>PYTHONOVA INTELLIGENCE</title>
@@ -2902,24 +2903,68 @@
     /* =========================================
    USERS DATABASE (localStorage simulation)
    ========================================= */
-  /* =========================================
+    /* =========================================
    RESPONSIVE (mobile/tablet)
    ========================================= */
-  @media (max-width: 640px) {
-    .products-grid { grid-template-columns: repeat(2, 1fr) !important; gap: 12px !important; }
-    .cart-panel { width: 100vw !important; }
-    .modal { width: 95vw !important; padding: 28px !important; }
-    .chatbot-window { width: 100vw !important; height: 100vh !important; right: 0 !important; bottom: 0 !important; border-radius: 0 !important; }
-    .hero { flex-direction: column !important; padding: 100px 20px 40px !important; }
-    .section { padding: 60px 20px !important; }
-    .features-grid, .testimonials, .steps { grid-template-columns: 1fr !important; }
-    .topbar { flex-direction: column !important; align-items: flex-start !important; gap: 12px !important; }
-    .marketplace-header { flex-direction: column !important; align-items: stretch !important; }
-    .dashboard-row { grid-template-columns: 1fr !important; }
-    .category-section { display: none; }
-  }
+    @media (max-width: 640px) {
+      .products-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 12px !important;
+      }
+
+      .cart-panel {
+        width: 100vw !important;
+      }
+
+      .modal {
+        width: 95vw !important;
+        padding: 28px !important;
+      }
+
+      .chatbot-window {
+        width: 100vw !important;
+        height: 100vh !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        border-radius: 0 !important;
+      }
+
+      .hero {
+        flex-direction: column !important;
+        padding: 100px 20px 40px !important;
+      }
+
+      .section {
+        padding: 60px 20px !important;
+      }
+
+      .features-grid,
+      .testimonials,
+      .steps {
+        grid-template-columns: 1fr !important;
+      }
+
+      .topbar {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 12px !important;
+      }
+
+      .marketplace-header {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+
+      .dashboard-row {
+        grid-template-columns: 1fr !important;
+      }
+
+      .category-section {
+        display: none;
+      }
+    }
   </style>
-  <script type="module" crossorigin src="/assets/index-BG3d2TZN.js"></script>
+  <script type="module" crossorigin src="/assets/index-CaLMAk9t.js"></script>
 </head>
 
 <body>
@@ -3028,7 +3073,8 @@
     <section class="section" id="features">
       <div class="section-tag">⚡ What We Offer</div>
       <h2 class="section-title">Everything you need for<br>precision farming</h2>
-      <p class="section-sub">From AI diagnostics to a thriving community — PYTHONOVA INTELLIGENCE has every tool to elevate your
+      <p class="section-sub">From AI diagnostics to a thriving community — PYTHONOVA INTELLIGENCE has every tool to
+        elevate your
         plantation.</p>
 
       <div class="features-grid">
@@ -3205,16 +3251,9 @@
             <option>Vegetable Farm</option>
             <option>Fruit Orchard</option>
             <option>Grain / Cereal Farm</option>
-            <option>Dairy Farm</option>
-            <option>Poultry Farm</option>
-            <option>Fishery / Aquaculture</option>
-            <option>Tea / Coffee Plantation</option>
-            <option>Sugarcane Farm</option>
-            <option>Cotton Farm</option>
-            <option>Spice Farm</option>
-            <option>Mixed Farming</option>
-            <option>Hydroponic / Greenhouse</option>
             <option>Organic Farm</option>
+            <option>Flower / Herb Farm</option>
+            <option>Mixed Farming</option>
             <option>Other</option>
           </select>
         </div>
@@ -3260,7 +3299,8 @@
         <button class="nav-item" onclick="openCart()">
           <i class="fa fa-shopping-cart"></i> My Cart <span id="cart-badge"
             style="background:var(--green-neon);color:var(--green-deep);border-radius:10px;padding:1px 7px;font-size:11px;font-weight:700;margin-left:auto;">0</span>
-          <span id="sidebar-cart-total" style="margin-left:auto;font-size:13px;color:var(--gold);font-weight:700;">₹0</span>
+          <span id="sidebar-cart-total"
+            style="margin-left:auto;font-size:13px;color:var(--gold);font-weight:700;">₹0</span>
         </button>
 
         <span class="nav-section-title">Community</span>
@@ -3309,7 +3349,8 @@
           </div>
           <div class="icon-btn" onclick="openCart()" style="position:relative;">
             <i class="fa fa-shopping-cart"></i>
-            <span id="topbar-cart-total" style="position:absolute;top:-6px;right:-10px;background:var(--gold);color:#1a0f00;font-size:10px;font-weight:700;border-radius:6px;padding:2px 5px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">₹0</span>
+            <span id="topbar-cart-total"
+              style="position:absolute;top:-6px;right:-10px;background:var(--gold);color:#1a0f00;font-size:10px;font-weight:700;border-radius:6px;padding:2px 5px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,0.3);">₹0</span>
           </div>
           <div class="user-avatar" style="width:40px;height:40px;cursor:pointer;" id="topbarAvatar"
             onclick="toggleProfileMenu(event)">U</div>
@@ -3671,23 +3712,28 @@
 
         <div class="products-grid" id="productsGrid"></div>
         <div class="category-section" id="cat-seeds">
-          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🌱 Seeds</h3>
+          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🌱
+            Seeds</h3>
           <div class="products-grid" id="productsGrid-seeds"></div>
         </div>
         <div class="category-section" id="cat-fertilizer">
-          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🧪 Fertilizers</h3>
+          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🧪
+            Fertilizers</h3>
           <div class="products-grid" id="productsGrid-fertilizer"></div>
         </div>
         <div class="category-section" id="cat-pesticide">
-          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🛡️ Pesticides</h3>
+          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🛡️
+            Pesticides</h3>
           <div class="products-grid" id="productsGrid-pesticide"></div>
         </div>
         <div class="category-section" id="cat-tools">
-          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🔧 Tools</h3>
+          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🔧
+            Tools</h3>
           <div class="products-grid" id="productsGrid-tools"></div>
         </div>
         <div class="category-section" id="cat-organic">
-          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🌿 Organic</h3>
+          <h3 class="cat-heading" style="font-size:20px;font-weight:700;margin:24px 0 12px;color:var(--green-neon);">🌿
+            Organic</h3>
           <div class="products-grid" id="productsGrid-organic"></div>
         </div>
       </div>
@@ -3940,7 +3986,8 @@
         </div>
         <div id="cod-input" class="payment-input-group" style="display:none;">
           <div class="form-group">
-            <div style="padding:14px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:10px;font-size:14px;color:rgba(255,255,255,0.8);">
+            <div
+              style="padding:14px;background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:10px;font-size:14px;color:rgba(255,255,255,0.8);">
               💵 You can pay in cash when your order is delivered.
             </div>
           </div>
@@ -3962,7 +4009,7 @@
           style="background:rgba(46,204,113,0.1);border:1px solid rgba(46,204,113,0.2);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;color:rgba(255,255,255,0.7);">
           Order ID: <strong style="color:var(--green-neon);">#PNI-<span id="orderId"></span></strong>
         </div>
-        
+
         <button class="btn btn-primary" style="width:100%;padding:14px;"
           onclick="closePayment();closeCart();clearCart();">Continue Shopping</button>
       </div>
@@ -4011,7 +4058,7 @@
 
   <script>
     // Global error handler — catches ALL runtime errors in the inline script
-    window.onerror = function(msg, url, line) {
+    window.onerror = function (msg, url, line) {
       alert('JavaScript error at line ' + line + ': ' + msg + '.\nOpen browser console (F12) for details.');
       console.error('[PhytoNova] Global error:', msg, 'at line', line);
     };
@@ -4092,265 +4139,265 @@
       { id: 30, name: "Tractor Hitch Adapter", desc: "Easy install attachment for small tractors", price: 2199, emoji: "🔩", category: "tools", badge: "Heavy Duty", rating: 4.4 },
       { id: 31, name: "Neem Cake Fertilizer", desc: "Soil amendment with pest-repellent benefits", price: 399, emoji: "🌰", category: "organic", badge: "Bio", rating: 4.7 },
       { id: 32, name: "Hybrid Onion Seeds", desc: "Fast-maturing, high-yield onion variety", price: 259, emoji: "🧅", category: "seeds", badge: "Top Pick", rating: 4.6 },
-      {"id":33,"name":"Wheat HD-2967 Seeds","desc":"High-yielding bread wheat variety, rust resistant","price":399,"emoji":"🌾","category":"seeds","badge":"High Yield","rating":4.4},
-      {"id":34,"name":"Wheat GW-496 Seeds","desc":"Late sown heat tolerant wheat variety","price":379,"emoji":"🌾","category":"seeds","badge":"Organic","rating":4.9},
-      {"id":35,"name":"Rice IR-64 Seeds","desc":"High-yielding semi-dwarf rice variety","price":449,"emoji":"🍚","category":"seeds","badge":"Certified","rating":4.5},
-      {"id":36,"name":"Rice Swarna Seeds","desc":"Mid-early duration rice, good for kharif","price":429,"emoji":"🍚","category":"seeds","badge":"Best Seller","rating":4.7},
-      {"id":37,"name":"Basmati Pusa 1121 Seeds","desc":"Extra-long grain aromatic basmati rice","price":899,"emoji":"🍚","category":"seeds","badge":"Top Pick","rating":4.8},
-      {"id":38,"name":"Tomato Hybrid Arka Vikas","desc":"High-yielding tomato with tolerance to leaf curl","price":299,"emoji":"🍅","category":"seeds","badge":"Certified","rating":4.8},
-      {"id":39,"name":"Corn DHM-117 Seeds","desc":"Single cross hybrid maize, suitable for rabi","price":499,"emoji":"🌽","category":"seeds","badge":"Top Pick","rating":4.6},
-      {"id":40,"name":"Soybean JS-335 Seeds","desc":"Early maturing soybean with high oil content","price":327,"emoji":"🫘","category":"seeds","badge":"Certified","rating":4.9},
-      {"id":41,"name":"Cotton Bt-II Seeds","desc":"Bollgard II genetically modified cotton seeds","price":849,"emoji":"🏵️","category":"seeds","badge":"Hybrid","rating":4.5},
-      {"id":42,"name":"Sugarcane Co-0238 Seeds","desc":"Mid-late maturing high-yielding sugarcane","price":599,"emoji":"🎋","category":"seeds","badge":"New","rating":4.6},
-      {"id":43,"name":"Sunflower PSFH-67 Seeds","desc":"Confectionery sunflower hybrid seeds","price":259,"emoji":"🌻","category":"seeds","badge":"Organic","rating":4.7},
-      {"id":44,"name":"Groundnut TG-37A Seeds","desc":"Spanish bunch groundnut, early maturing","price":349,"emoji":"🥜","category":"seeds","badge":"Best Seller","rating":4.6},
-      {"id":45,"name":"Mustard Varuna Seeds","desc":"Indian mustard variety tolerant to white rust","price":279,"emoji":"🌼","category":"seeds","badge":"New","rating":4.7},
-      {"id":46,"name":"Black Gram T-9 Seeds","desc":"Early maturing urd bean for kharif/rabi","price":199,"emoji":"🫘","category":"seeds","badge":"Seasonal","rating":4.5},
-      {"id":47,"name":"Green Gram Samrat Seeds","desc":"Mung bean variety with multiple disease resistance","price":219,"emoji":"🫘","category":"seeds","badge":"Organic","rating":4.8},
-      {"id":48,"name":"Sorghum CSH-16 Seeds","desc":"Single-cut sudan grass sorghum hybrid","price":299,"emoji":"🌿","category":"seeds","badge":"Seasonal","rating":4.8},
-      {"id":49,"name":"Pearl Millet HB-3 Seeds","desc":"High-yielding bajra hybrid for rainfed areas","price":189,"emoji":"🌾","category":"seeds","badge":"Fast Delivery","rating":4.4},
-      {"id":50,"name":"Chickpea JG-11 Seeds","desc":"Desi chickpea variety, wilt resistant","price":249,"emoji":"🫘","category":"seeds","badge":"Fast Delivery","rating":4.7},
-      {"id":51,"name":"Lentil L-4147 Seeds","desc":"Early maturing lentil for rice fallows","price":181,"emoji":"🫘","category":"seeds","badge":"Premium","rating":4.6},
-      {"id":52,"name":"Barley RD-2552 Seeds","desc":"Six-row hulled barley for rainfed conditions","price":242,"emoji":"🌾","category":"seeds","badge":"Top Pick","rating":4.7},
-      {"id":53,"name":"Ragi GPU-28 Seeds","desc":"Finger millet variety, drought tolerant","price":169,"emoji":"🌾","category":"seeds","badge":"Seasonal","rating":4.9},
-      {"id":54,"name":"Sesame Gowri Seeds","desc":"High-yielding sesame for kharif season","price":299,"emoji":"🌿","category":"seeds","badge":"Hybrid","rating":4.5},
-      {"id":55,"name":"Niger IGP-76 Seeds","desc":"Oilseed crop for tribal regions","price":239,"emoji":"🌻","category":"seeds","badge":"Certified","rating":4.5},
-      {"id":56,"name":"Castor DCS-9 Seeds","desc":"Compact castor hybrid for mechanised farming","price":449,"emoji":"🌿","category":"seeds","badge":"Seasonal","rating":4.4},
-      {"id":57,"name":"Coriander CS-287 Seeds","desc":"Dual-purpose coriander for leaf and seed","price":139,"emoji":"🌿","category":"seeds","badge":"Top Pick","rating":4.4},
-      {"id":58,"name":"Fenugreek Kasuri Seeds","desc":"Kasuri methi variety for leaf production","price":129,"emoji":"🌿","category":"seeds","badge":"Seasonal","rating":4.4},
-      {"id":59,"name":"Spinach All Green Seeds","desc":"Broad-leaved spinach for year-round harvest","price":99,"emoji":"🥬","category":"seeds","badge":"Premium","rating":4.6},
-      {"id":60,"name":"Brinjal Purple Long Seeds","desc":"Long purple brinjal with glossy fruits","price":185,"emoji":"🍆","category":"seeds","badge":"New","rating":4.7},
-      {"id":61,"name":"Okra Pusa Sawani Seeds","desc":"Yellow vein mosaic virus resistant okra","price":159,"emoji":"🥒","category":"seeds","badge":"Fast Delivery","rating":4.6},
-      {"id":62,"name":"Bitter Gourd Pusa Do Mausami","desc":"Attractive green bitter gourd hybrid","price":189,"emoji":"🥒","category":"seeds","badge":"Fast Delivery","rating":4.7},
-      {"id":63,"name":"Bottle Gourd Pusa Naveen Seeds","desc":"Early bottle gourd with white fruits","price":178,"emoji":"🥒","category":"seeds","badge":"Best Seller","rating":4.7},
-      {"id":64,"name":"Pumpkin Pusa Viswas Seeds","desc":"Semi-circular pumpkin, keeping quality","price":199,"emoji":"🎃","category":"seeds","badge":"Seasonal","rating":4.5},
-      {"id":65,"name":"Cucumber Pusa Sanyog Seeds","desc":"Gynoecious cucumber hybrid for protected cultivation","price":229,"emoji":"🥒","category":"seeds","badge":"Top Pick","rating":4.8},
-      {"id":66,"name":"Watermelon Sugar Baby Seeds","desc":"Small round icebox watermelon variety","price":249,"emoji":"🍉","category":"seeds","badge":"Seasonal","rating":4.6},
-      {"id":67,"name":"Muskmelon Hara Madhu Seeds","desc":"Sweet aromatic muskmelon for summer","price":251,"emoji":"🍈","category":"seeds","badge":"Premium","rating":4.7},
-      {"id":68,"name":"Cabbage Pusa Mukta Seeds","desc":"Medium tight flat head cabbage variety","price":159,"emoji":"🥬","category":"seeds","badge":"Premium","rating":4.8},
-      {"id":69,"name":"Cauliflower Pusa Snowball Seeds","desc":"White curd cauliflower for temperate climate","price":196,"emoji":"🥬","category":"seeds","badge":"Certified","rating":4.7},
-      {"id":70,"name":"Carrot Pusa Rudhira Seeds","desc":"Deep orange coloured carrot with high carotene","price":169,"emoji":"🥕","category":"seeds","badge":"Top Pick","rating":4.4},
-      {"id":71,"name":"Beetroot Crimson Globe Seeds","desc":"Round red beetroot with good storage","price":179,"emoji":"🟣","category":"seeds","badge":"Hybrid","rating":4.4},
-      {"id":72,"name":"Onion Pusa Red Seeds","desc":"Pink bulb onion for kharif rabi season","price":229,"emoji":"🧅","category":"seeds","badge":"Certified","rating":4.4},
-      {"id":73,"name":"Garlic G-282 Seeds","desc":"Giant garlic variety with bold cloves","price":351,"emoji":"🧄","category":"seeds","badge":"High Yield","rating":4.6},
-      {"id":74,"name":"Turmeric Suvarna Seeds","desc":"High curcumin turmeric variety for plains","price":525,"emoji":"🌿","category":"seeds","badge":"Hybrid","rating":4.8},
-      {"id":75,"name":"Ginger Rio-de-Janeiro Seeds","desc":"High-yielding ginger with good flavour","price":599,"emoji":"🌿","category":"seeds","badge":"New","rating":4.9},
-      {"id":76,"name":"Chillies Pusa Jwala Seeds","desc":"Famous hot chilli variety for pickle","price":149,"emoji":"🌶️","category":"seeds","badge":"Certified","rating":4.8},
-      {"id":77,"name":"Papaya Pusa Majesty Seeds","desc":"Gynodioecious papaya, high papain content","price":299,"emoji":"🍈","category":"seeds","badge":"Top Pick","rating":4.7},
-      {"id":78,"name":"Moong Bean Seeds (Samrat)","desc":"Short duration green gram for multiple cuts","price":189,"emoji":"🫘","category":"seeds","badge":"Best Seller","rating":4.4},
-      {"id":79,"name":"Guar Cluster Bean Seeds","desc":"Industrial guar for gum extraction","price":271,"emoji":"🫘","category":"seeds","badge":"Fast Delivery","rating":4.4},
-      {"id":80,"name":"Lobia Cowpea Seeds","desc":"Dual purpose cowpea for grain and fodder","price":159,"emoji":"🫘","category":"seeds","badge":"Top Pick","rating":4.6},
-      {"id":81,"name":"Methi Fenugreek Seeds (Pusa Early)","desc":"Quick growing fenugreek for early greens","price":119,"emoji":"🌿","category":"seeds","badge":"Fast Delivery","rating":4.7},
-      {"id":82,"name":"Palak Pusa Jyoti Seeds","desc":"Slow bolting spinach for summer cultivation","price":109,"emoji":"🥬","category":"seeds","badge":"Top Pick","rating":4.8},
-      {"id":83,"name":"Kale Seeds (Dwarf Green)","desc":"Ornamental and edible kale for cool season","price":199,"emoji":"🥬","category":"seeds","badge":"Seasonal","rating":4.6},
-      {"id":84,"name":"Asparagus Seeds (Mary Washington)","desc":"Perennial asparagus for home gardens","price":399,"emoji":"🌿","category":"seeds","badge":"Best Seller","rating":4.9},
-      {"id":85,"name":"Broccoli Pusa Broccoli Seeds","desc":"Green head broccoli for rabi season","price":249,"emoji":"🥦","category":"seeds","badge":"Fast Delivery","rating":4.6},
-      {"id":86,"name":"Capsicum (Bell Pepper) Seeds","desc":"Sweet coloured capsicum for protected cultivation","price":299,"emoji":"🫑","category":"seeds","badge":"Organic","rating":4.7},
-      {"id":87,"name":"Celery Seeds (Local Variety)","desc":"Aromatic herb for flavouring and medicine","price":249,"emoji":"🌿","category":"seeds","badge":"High Yield","rating":4.4},
-      {"id":88,"name":"Radish Pusa Chetki Seeds","desc":"Quick maturing radish, white roots","price":99,"emoji":"🥬","category":"seeds","badge":"Top Pick","rating":4.9},
-      {"id":89,"name":"Urea 46% N Fertilizer","desc":"Granular nitrogen fertiliser for rapid green growth","price":290,"emoji":"🧪","category":"fertilizer","badge":"Soil Health","rating":4.9},
-      {"id":90,"name":"DAP 18-46-0 Fertilizer","desc":"Di-ammonium phosphate for strong root development","price":455,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.5},
-      {"id":91,"name":"MOP 0-0-60 Fertilizer","desc":"Muriate of potash for fruit quality and disease resistance","price":402,"emoji":"🧪","category":"fertilizer","badge":"Bloom","rating":4.7},
-      {"id":92,"name":"NPK 10-26-26 Fertilizer","desc":"Balanced NPK for flowering and fruiting stage","price":565,"emoji":"🧪","category":"fertilizer","badge":"Fruit Care","rating":4.8},
-      {"id":93,"name":"NPK 12-32-16 Fertilizer","desc":"Phosphorus-rich formula for root and tuber crops","price":551,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.8},
-      {"id":94,"name":"NPK 20-20-20 Fertilizer","desc":"Balanced nutrition for all growth stages","price":513,"emoji":"🧪","category":"fertilizer","badge":"Organic","rating":4.6},
-      {"id":95,"name":"SSP 0-20-0 Single Superphosphate","desc":"Source of phosphorus and calcium for soil health","price":351,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.5},
-      {"id":96,"name":"Zinc Sulphate 21% Fertilizer","desc":"Essential micronutrient for enzyme activation","price":279,"emoji":"🧪","category":"fertilizer","badge":"Best Seller","rating":4.5},
-      {"id":97,"name":"Borax 10.5% B Fertilizer","desc":"Boron micronutrient for flower and fruit development","price":262,"emoji":"🧪","category":"fertilizer","badge":"Soil Health","rating":4.6},
-      {"id":98,"name":"Ferrous Sulphate 19% Fertilizer","desc":"Iron supplement for correcting chlorosis","price":201,"emoji":"🧪","category":"fertilizer","badge":"Soil Health","rating":4.5},
-      {"id":99,"name":"CAN 25% Calcium Ammonium Nitrate","desc":"Nitrogen source with calcium for fruit crops","price":388,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.4},
-      {"id":100,"name":"Ammonium Sulphate Fertilizer","desc":"Nitrogen and sulphur source for acidic soils","price":338,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.4},
-      {"id":101,"name":"Gypsum Agricultural Grade","desc":"Soil conditioner for sodium-affected soils","price":245,"emoji":"🪨","category":"fertilizer","badge":"Boost","rating":4.8},
-      {"id":102,"name":"Dolomite Lime Fertilizer","desc":"Natural calcium magnesium carbonate for pH correction","price":198,"emoji":"🪨","category":"fertilizer","badge":"Fruit Care","rating":4.9},
-      {"id":103,"name":"Humic Acid Granules","desc":"Improves soil structure and nutrient uptake","price":470,"emoji":"🌑","category":"fertilizer","badge":"Natural","rating":4.8},
-      {"id":104,"name":"Seaweed Extract Liquid","desc":"Natural growth stimulant from marine algae","price":397,"emoji":"🌿","category":"fertilizer","badge":"Fruit Care","rating":4.5},
-      {"id":105,"name":"Bio-NPK Granules Biofertilizer","desc":"Microbe-based nitrogen phosphorus potassium mix","price":342,"emoji":"🌱","category":"fertilizer","badge":"Fruit Care","rating":4.4},
-      {"id":106,"name":"Azotobacter Culture","desc":"Nitrogen-fixing bacteria for non-legume crops","price":205,"emoji":"🦠","category":"fertilizer","badge":"Soil Health","rating":4.4},
-      {"id":107,"name":"PSB Culture (Phosphate Solubilising)","desc":"Bacteria that converts unavailable phosphorus to plant form","price":169,"emoji":"🦠","category":"fertilizer","badge":"Best Seller","rating":4.8},
-      {"id":108,"name":"Rhizobium Culture for Pulses","desc":"Specific nitrogen-fixing bacteria for legume crops","price":192,"emoji":"🦠","category":"fertilizer","badge":"Fruit Care","rating":4.8},
-      {"id":109,"name":"Potassium Schoenite Fertilizer","desc":"Water-soluble potassium magnesium sulphate","price":722,"emoji":"🧪","category":"fertilizer","badge":"Natural","rating":4.5},
-      {"id":110,"name":"Magnesium Sulphate Epsom Salt","desc":"Essential magnesium for chlorophyll formation","price":268,"emoji":"🧪","category":"fertilizer","badge":"Natural","rating":4.6},
-      {"id":111,"name":"Chelated Micronutrient Mix","desc":"EDTA chelated Fe Zn Mn Cu for alkaline soils","price":601,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.9},
-      {"id":112,"name":"Slow Release NPK Tablets","desc":"Controlled release fertiliser for potted plants","price":442,"emoji":"💊","category":"fertilizer","badge":"Best Seller","rating":4.8},
-      {"id":113,"name":"Liquid NPK 19-19-19","desc":"Balanced water-soluble foliar fertiliser","price":574,"emoji":"💧","category":"fertilizer","badge":"Fruit Care","rating":4.6},
-      {"id":114,"name":"Organic NPK 4-3-3 Fertilizer","desc":"Natural organic fertiliser from plant extracts","price":337,"emoji":"🌿","category":"fertilizer","badge":"Boost","rating":4.5},
-      {"id":115,"name":"Bone Meal Powder","desc":"Slow-release phosphorus and calcium source","price":327,"emoji":"🦴","category":"fertilizer","badge":"Organic","rating":4.4},
-      {"id":116,"name":"Blood Meal Fertilizer","desc":"High-nitrogen organic fertiliser for leafy growth","price":325,"emoji":"🩸","category":"fertilizer","badge":"Soil Health","rating":4.5},
-      {"id":117,"name":"Fish Meal Organic","desc":"Nitrogen and micronutrient-rich marine fertiliser","price":487,"emoji":"🐟","category":"fertilizer","badge":"Boost","rating":4.7},
-      {"id":118,"name":"Vermiwash 5L Biofertilizer","desc":"Liquid earthworm castings for soil health","price":276,"emoji":"💧","category":"fertilizer","badge":"Premium","rating":4.9},
-      {"id":119,"name":"Panchagavya 1L Organic","desc":"Traditional cow-based organic growth promoter","price":377,"emoji":"🐄","category":"fertilizer","badge":"Pro","rating":4.7},
-      {"id":120,"name":"Compost Tea Starter","desc":"Aerated compost tea brewers mixture","price":257,"emoji":"🍵","category":"fertilizer","badge":"Soil Health","rating":4.4},
-      {"id":121,"name":"Mycorrhizal Biofertilizer","desc":"Fungal inoculant for enhanced root nutrient uptake","price":441,"emoji":"🍄","category":"fertilizer","badge":"Best Seller","rating":4.9},
-      {"id":122,"name":"Silicate Fertilizer","desc":"Silicon supplement for stalk strength and pest resistance","price":408,"emoji":"🧪","category":"fertilizer","badge":"Fruit Care","rating":4.6},
-      {"id":123,"name":"Sulphur Bentonite Fertilizer","desc":"Slow-release sulphur for oilseed crops","price":310,"emoji":"🪨","category":"fertilizer","badge":"Natural","rating":4.7},
-      {"id":124,"name":"Calcium Nitrate Fertilizer","desc":"Water-soluble calcium and nitrogen for fruit crops","price":470,"emoji":"🧪","category":"fertilizer","badge":"Bloom","rating":4.4},
-      {"id":125,"name":"Mono Ammonium Phosphate (MAP)","desc":"High phosphorus water-soluble fertiliser","price":586,"emoji":"🧪","category":"fertilizer","badge":"Bloom","rating":4.7},
-      {"id":126,"name":"Potassium Nitrate Fertilizer","desc":"Water-soluble K and N for fruiting stage","price":750,"emoji":"🧪","category":"fertilizer","badge":"Soil Health","rating":4.4},
-      {"id":127,"name":"Ammonium Molybdate Fertilizer","desc":"Essential molybdenum for nitrogen metabolism","price":322,"emoji":"🧪","category":"fertilizer","badge":"Natural","rating":4.6},
-      {"id":128,"name":"Cobalt Sulphate Fertilizer","desc":"Micronutrient for legume nitrogen fixation","price":512,"emoji":"🧪","category":"fertilizer","badge":"Essential","rating":4.7},
-      {"id":129,"name":"Copper Sulphate Fertilizer","desc":"Essential copper for enzyme and grain development","price":401,"emoji":"🧪","category":"fertilizer","badge":"Organic","rating":4.8},
-      {"id":130,"name":"Manganese Sulphate Fertilizer","desc":"Micronutrient for photosynthesis and leaf greenness","price":318,"emoji":"🧪","category":"fertilizer","badge":"Pro","rating":4.6},
-      {"id":131,"name":"Liquid Calcium Nitrate","desc":"Foliar calcium for preventing blossom end rot","price":383,"emoji":"💧","category":"fertilizer","badge":"Soil Health","rating":4.4},
-      {"id":132,"name":"Magnesium Nitrate Fertilizer","desc":"Water-soluble Mg and N for greenhouse crops","price":562,"emoji":"🧪","category":"fertilizer","badge":"Organic","rating":4.6},
-      {"id":133,"name":"Potassium Thiosulphate Fertilizer","desc":"Liquid K source with sulphur for early growth","price":618,"emoji":"💧","category":"fertilizer","badge":"Bloom","rating":4.5},
-      {"id":134,"name":"Zinc Nitrate Fertilizer","desc":"Water-soluble zinc for correcting deficiency quickly","price":446,"emoji":"🧪","category":"fertilizer","badge":"Essential","rating":4.5},
-      {"id":135,"name":"NPK 15-15-15 Balanced","desc":"All-purpose balanced granular fertiliser","price":479,"emoji":"🧪","category":"fertilizer","badge":"Natural","rating":4.8},
-      {"id":136,"name":"NPK 14-35-14 High Phosphorus","desc":"Phosphorus-rich formula for root establishment","price":502,"emoji":"🧪","category":"fertilizer","badge":"Best Seller","rating":4.8},
-      {"id":137,"name":"Ammonium Chloride Fertilizer","desc":"Nitrogen source for rice paddy cultivation","price":273,"emoji":"🧪","category":"fertilizer","badge":"Bloom","rating":4.6},
-      {"id":138,"name":"Calcium Ammonium Nitrate Premium","desc":"Enhanced CAN with micronutrients for horticulture","price":462,"emoji":"🧪","category":"fertilizer","badge":"Boost","rating":4.8},
-      {"id":139,"name":"Neem Oil 1500ppm Insecticide","desc":"100% organic neem extract for broad-spectrum pest control","price":229,"emoji":"🌿","category":"pesticide","badge":"Organic","rating":4.8},
-      {"id":140,"name":"Neem Cake Powder","desc":"Soil amendment with natural pest repellent properties","price":199,"emoji":"🪵","category":"pesticide","badge":"Fast Delivery","rating":4.9},
-      {"id":141,"name":"Karanj Oil Pesticide","desc":"Organic pongamia oil for sucking pest management","price":243,"emoji":"🌿","category":"pesticide","badge":"Effective","rating":4.4},
-      {"id":142,"name":"Verticillium Lecanii Biopesticide","desc":"Entomopathogenic fungus for whitefly and thrips","price":354,"emoji":"🍄","category":"pesticide","badge":"Effective","rating":4.5},
-      {"id":143,"name":"Beauveria Bassiana Biopesticide","desc":"Natural fungus for bollworm and borer control","price":364,"emoji":"🍄","category":"pesticide","badge":"Broad Spectrum","rating":4.4},
-      {"id":144,"name":"Metarhizium Anisopliae Biopesticide","desc":"Soil-dwelling fungus for soil pest control","price":338,"emoji":"🍄","category":"pesticide","badge":"Broad Spectrum","rating":4.6},
-      {"id":145,"name":"Trichoderma Viride Fungicide","desc":"Biological control agent for soil-borne diseases","price":264,"emoji":"🍄","category":"pesticide","badge":"Organic","rating":4.6},
-      {"id":146,"name":"Bt Biopesticide (Bacillus thuringiensis)","desc":"Organic bacterial insecticide for caterpillar control","price":343,"emoji":"🦠","category":"pesticide","badge":"Broad Spectrum","rating":4.6},
-      {"id":147,"name":"Pseudomonas Fluorescens Biofungicide","desc":" rhizobacteria for seed and soil treatment","price":318,"emoji":"🦠","category":"pesticide","badge":"Fast Delivery","rating":4.4},
-      {"id":148,"name":"Copper Oxychloride 50% WP","desc":"Inorganic fungicide for downy mildew and blight","price":351,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.4},
-      {"id":149,"name":"Mancozeb 75% WP Fungicide","desc":"Broad-spectrum protectant fungicide for vegetables","price":367,"emoji":"🛡️","category":"pesticide","badge":"Safe","rating":4.7},
-      {"id":150,"name":"Carbendazim+Mancozeb WP","desc":"Systemic and contact combo fungicide for cereals","price":451,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.5},
-      {"id":151,"name":"Hexaconazole 5% EC Fungicide","desc":"Systemic triazole for rice blast and powdery mildew","price":417,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.4},
-      {"id":152,"name":"Propiconazole 25% EC Fungicide","desc":"Systemic fungicide for rust and leaf spot diseases","price":472,"emoji":"🛡️","category":"pesticide","badge":"Natural","rating":4.9},
-      {"id":153,"name":"Tebuconazole 25.9% EC Fungicide","desc":"Systemic fungicide for powdery mildew and rust","price":511,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.6},
-      {"id":154,"name":"Difenoconazole 25% EC Fungicide","desc":"Systemic fungicide for early and late blight","price":498,"emoji":"🛡️","category":"pesticide","badge":"Eco","rating":4.5},
-      {"id":155,"name":"Azoxystrobin+Difenoconazole SC","desc":"Combination strobilurin and triazole fungicide","price":680,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.4},
-      {"id":156,"name":"Chlorothalonil 75% WP Fungicide","desc":"Contact fungicide for vegetable disease control","price":375,"emoji":"🛡️","category":"pesticide","badge":"Natural","rating":4.5},
-      {"id":157,"name":"Sulphur 80% WP Fungicide","desc":"Inorganic fungicide and miticide for orchards","price":283,"emoji":"🛡️","category":"pesticide","badge":"Pro","rating":4.4},
-      {"id":158,"name":"Captan 50% WP Fungicide","desc":"Protectant fungicide for fruit tree diseases","price":383,"emoji":"🛡️","category":"pesticide","badge":"Fast Delivery","rating":4.4},
-      {"id":159,"name":"Streptomycin Sulphate 90% SP","desc":"Antibiotic for bacterial leaf spot control","price":265,"emoji":"💊","category":"pesticide","badge":"Natural","rating":4.7},
-      {"id":160,"name":"Kasugamycin 3% SL Bactericide","desc":"Systemic bactericide for rice bacterial leaf blight","price":388,"emoji":"🧴","category":"pesticide","badge":"Safe","rating":4.8},
-      {"id":161,"name":"Glyphosate 41% SL Herbicide","desc":"Systemic non-selective herbicide for weed control","price":464,"emoji":"🌿","category":"pesticide","badge":"Eco","rating":4.7},
-      {"id":162,"name":"Paraquat 24% SL Herbicide","desc":"Non-selective contact herbicide for land preparation","price":503,"emoji":"🌿","category":"pesticide","badge":"Fast Delivery","rating":4.8},
-      {"id":163,"name":"2,4-D Amine Salt 58% SL","desc":"Selective herbicide for broadleaf weed control in cereals","price":376,"emoji":"🌿","category":"pesticide","badge":"Pro","rating":4.5},
-      {"id":164,"name":"Atrazine 50% WP Herbicide","desc":"Pre-emergence herbicide for maize and sugarcane","price":328,"emoji":"🌿","category":"pesticide","badge":"Pro","rating":4.8},
-      {"id":165,"name":"Butachlor 50% EC Herbicide","desc":"Pre-emergence herbicide for rice transplanted fields","price":392,"emoji":"🌿","category":"pesticide","badge":"Eco","rating":4.7},
-      {"id":166,"name":"Pendimethalin 30% EC Herbicide","desc":"Pre-emergence herbicide for onion and soybean","price":412,"emoji":"🌿","category":"pesticide","badge":"Broad Spectrum","rating":4.6},
-      {"id":167,"name":"Oxyfluorfen 23.5% EC Herbicide","desc":"Contact herbicide for broadleaf weeds in plantation crops","price":435,"emoji":"🌿","category":"pesticide","badge":"Eco","rating":4.9},
-      {"id":168,"name":"Imazethapyr 10% SL Herbicide","desc":"Post-emergence herbicide for pulses and soybean","price":473,"emoji":"🌿","category":"pesticide","badge":"Fast Delivery","rating":4.7},
-      {"id":169,"name":"Quizalofop Ethyl 5% EC Herbicide","desc":"Grassy weed herbicide for broadleaf crops","price":453,"emoji":"🌿","category":"pesticide","badge":"Eco","rating":4.4},
-      {"id":170,"name":"Fluchloralin 45% EC Herbicide","desc":"Pre-plant incorporated herbicide for cotton and soybean","price":383,"emoji":"🌿","category":"pesticide","badge":"Organic","rating":4.7},
-      {"id":171,"name":"Isoproturon 75% WP Herbicide","desc":"Post-emergence herbicide for wheat broadleaf weeds","price":354,"emoji":"🌿","category":"pesticide","badge":"Broad Spectrum","rating":4.7},
-      {"id":172,"name":"Metribuzin 70% WP Herbicide","desc":"Selective herbicide for tomato and soybean","price":371,"emoji":"🌿","category":"pesticide","badge":"Effective","rating":4.4},
-      {"id":173,"name":"Carbosulfan 25% EC Insecticide","desc":"Carbamate insecticide for sucking pests and borers","price":435,"emoji":"🛡️","category":"pesticide","badge":"Natural","rating":4.9},
-      {"id":174,"name":"Chlorpyrifos 20% EC Insecticide","desc":"Broad-spectrum organophosphate for soil pests","price":416,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.8},
-      {"id":175,"name":"Dimethoate 30% EC Insecticide","desc":"Systemic insecticide for aphids and mites","price":289,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.8},
-      {"id":176,"name":"Malathion 50% EC Insecticide","desc":"Contact insecticide for stored grain pest control","price":307,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.9},
-      {"id":177,"name":"Spinosad 45% SC Insecticide","desc":"Natural origin insecticide for fruit borer control","price":639,"emoji":"🛡️","category":"pesticide","badge":"Fast Delivery","rating":4.6},
-      {"id":178,"name":"Emamectin Benzoate 5% SG","desc":"Translaminar insecticide for leaf miner and fruit borer","price":615,"emoji":"🛡️","category":"pesticide","badge":"Organic","rating":4.9},
-      {"id":179,"name":"Fipronil 5% SC Insecticide","desc":"Broad-spectrum insecticide for soil and foliar pests","price":422,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.9},
-      {"id":180,"name":"Thiamethoxam 25% WG Insecticide","desc":"Systemic neonicotinoid for sucking pest control","price":576,"emoji":"🛡️","category":"pesticide","badge":"Best Seller","rating":4.6},
-      {"id":181,"name":"Imidacloprid 17.8% SL Insecticide","desc":"Systemic insecticide for nursery and soil treatment","price":385,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.7},
-      {"id":182,"name":"Acephate 75% SP Insecticide","desc":"Systemic insecticide for vegetables and ornamentals","price":300,"emoji":"🛡️","category":"pesticide","badge":"Fast Delivery","rating":4.4},
-      {"id":183,"name":"Bifenthrin 10% EC Insecticide","desc":"Pyrethroid for termites and soil pest control","price":513,"emoji":"🛡️","category":"pesticide","badge":"Effective","rating":4.9},
-      {"id":184,"name":"Cypermethrin 25% EC Insecticide","desc":"Broad-spectrum pyrethroid for multiple pests","price":408,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.5},
-      {"id":185,"name":"Deltamethrin 2.8% EC Insecticide","desc":"Contact pyrethroid for stored grain protection","price":359,"emoji":"🛡️","category":"pesticide","badge":"Broad Spectrum","rating":4.6},
-      {"id":186,"name":"Lambda Cyhalothrin 5% EC","desc":"Synthetic pyrethroid for bollworm and leafminer","price":473,"emoji":"🛡️","category":"pesticide","badge":"Pro","rating":4.7},
-      {"id":187,"name":"Novaluron 10% EC Insecticide","desc":"IGR insecticide for whitefly and thrips management","price":533,"emoji":"🛡️","category":"pesticide","badge":"Natural","rating":4.4},
-      {"id":188,"name":"Indoxacarb 14.5% SC Insecticide","desc":"Oxadiazine insecticide for fruit borer control","price":620,"emoji":"🛡️","category":"pesticide","badge":"Best Seller","rating":4.4},
-      {"id":189,"name":"Lufenuron 5% EC Insecticide","desc":"Chitin synthesis inhibitor for Lepidopteran pests","price":546,"emoji":"🛡️","category":"pesticide","badge":"Natural","rating":4.8},
-      {"id":190,"name":"Garden Trowel (Stainless Steel)","desc":"Ergonomic hand trowel for planting and transplanting","price":220,"emoji":"⛏️","category":"tools","badge":"Indoor","rating":4.4},
-      {"id":191,"name":"Hand Weeder with Wooden Handle","desc":"Comfortable weeding tool for garden beds","price":323,"emoji":"🪓","category":"tools","badge":"Durable","rating":4.4},
-      {"id":192,"name":"Pruning Shears (Bypass Type)","desc":"Sharp bypass secateurs for clean plant cuts","price":430,"emoji":"✂️","category":"tools","badge":"Indoor","rating":4.6},
-      {"id":193,"name":"Hedge Shears (Wavy Blade)","desc":"Long-handle shears for shaping hedges and shrubs","price":610,"emoji":"✂️","category":"tools","badge":"Essential","rating":4.6},
-      {"id":194,"name":"Loppers (Compound Action)","desc":"Long-reach bypass loppers for thick branches","price":868,"emoji":"✂️","category":"tools","badge":"Smart","rating":4.4},
-      {"id":195,"name":"Garden Fork (4-Tine Stainless)","desc":"Sturdy fork for soil turning and compost handling","price":313,"emoji":"🔱","category":"tools","badge":"Pro","rating":4.4},
-      {"id":196,"name":"Spade (D-Handle Round Point)","desc":"Heavy-duty digging spade for land preparation","price":586,"emoji":"🔨","category":"tools","badge":"Pro","rating":4.9},
-      {"id":197,"name":"Hoe Khurpa with Long Handle","desc":"Traditional hoe for intercultural operations","price":394,"emoji":"🔨","category":"tools","badge":"Indoor","rating":4.6},
-      {"id":198,"name":"Hand Cultivator 3-Prong","desc":"Claw cultivator for loosening soil around plants","price":224,"emoji":"🪱","category":"tools","badge":"Best Seller","rating":4.4},
-      {"id":199,"name":"Manual Seed Drill (4-Row)","desc":"Pedal-operated seeder for smallholder farms","price":3392,"emoji":"🚜","category":"tools","badge":"Smart","rating":4.8},
-      {"id":200,"name":"Knapsack Sprayer 16L (Brass Pump)","desc":"Professional pressure sprayer for crop protection","price":1199,"emoji":"🔧","category":"tools","badge":"Pro","rating":4.4},
-      {"id":201,"name":"Battery Sprayer 16L Rechargeable","desc":"Cordless electric sprayer for effortless spraying","price":2513,"emoji":"🔋","category":"tools","badge":"Smart","rating":4.9},
-      {"id":202,"name":"Drip Irrigation Kit 1 Acre","desc":"Complete drip system with mainline and laterals","price":3525,"emoji":"💧","category":"tools","badge":"Essential","rating":4.9},
-      {"id":203,"name":"Drip Tape 16mm (1000m Roll)","desc":"Emitter drip tape for row crop irrigation","price":1834,"emoji":"💧","category":"tools","badge":"Essential","rating":4.4},
-      {"id":204,"name":"Sprinkler Set (Portable 5-Piece)","desc":"Rotating sprinkler set for lawn and garden","price":831,"emoji":"💧","category":"tools","badge":"Durable","rating":4.5},
-      {"id":205,"name":"Rain Gun (Medium Volume)","desc":"Large droplet sprinkler for orchards and plantation","price":2504,"emoji":"💧","category":"tools","badge":"Premium","rating":4.6},
-      {"id":206,"name":"Water Pump 1HP Submersible","desc":"Solar-compatible water pump for borewell","price":3499,"emoji":"💨","category":"tools","badge":"Indoor","rating":4.9},
-      {"id":207,"name":"Measuring Tape 30m Fibreglass","desc":"Long-reach tape for field measurements","price":356,"emoji":"📏","category":"tools","badge":"Seasonal","rating":4.4},
-      {"id":208,"name":"Soil pH Meter (Digital Display)","desc":"Accurate digital pH and moisture meter","price":866,"emoji":"🔬","category":"tools","badge":"Premium","rating":4.4},
-      {"id":209,"name":"Soil Moisture Meter (Probe Type)","desc":"Instant soil moisture reading for irrigation scheduling","price":663,"emoji":"💧","category":"tools","badge":"Seasonal","rating":4.5},
-      {"id":210,"name":"Digital Scale 10kg (Kitchen/Farm)","desc":"Precision digital scale for seed and produce weighing","price":588,"emoji":"⚖️","category":"tools","badge":"Smart","rating":4.5},
-      {"id":211,"name":"Wheel Barrow (Garden Type 80L)","desc":"Steel tray wheelbarrow for compost and harvest","price":1832,"emoji":"🛒","category":"tools","badge":"Seasonal","rating":4.8},
-      {"id":212,"name":"Garden Gloves (Nitrile Coated)","desc":"Water-resistant grip gloves for garden work","price":218,"emoji":"🧤","category":"tools","badge":"Essential","rating":4.4},
-      {"id":213,"name":"Safety Goggles (Anti-Fog)","desc":"Protective eyewear for pesticide application","price":390,"emoji":"🥽","category":"tools","badge":"Best Seller","rating":4.6},
-      {"id":214,"name":"Face Mask N95 (Pack of 10)","desc":"Respirator masks for safe pesticide handling","price":268,"emoji":"😷","category":"tools","badge":"Popular","rating":4.4},
-      {"id":215,"name":"Power Tiller 7HP (Mini)","desc":"Compact rotavator for small landholdings","price":9003,"emoji":"🚜","category":"tools","badge":"Essential","rating":4.8},
-      {"id":216,"name":"Brush Cutter (Petrol 2-Stroke)","desc":"Side-fed brush cutter for farm boundary clearing","price":4603,"emoji":"🪚","category":"tools","badge":"Durable","rating":4.8},
-      {"id":217,"name":"Chainsaw 18-inch (Petrol)","desc":"Heavy-duty chainsaw for tree felling and pruning","price":6436,"emoji":"🪓","category":"tools","badge":"Essential","rating":4.9},
-      {"id":218,"name":"Grass Trimmer (Electric 1000W)","desc":"Lightweight trimmer for lawn edging","price":2101,"emoji":"🪴","category":"tools","badge":"Best Seller","rating":4.5},
-      {"id":219,"name":"Pole Pruner (Telescopic)","desc":"Extendable pruner for tall tree branches","price":1209,"emoji":"🌳","category":"tools","badge":"Smart","rating":4.8},
-      {"id":220,"name":"Seedling Tray 98-Cell (UV Treated)","desc":"Professional nursery tray for seedling raising","price":385,"emoji":"🌱","category":"tools","badge":"Essential","rating":4.7},
-      {"id":221,"name":"Garden Hose 30m (Reinforced)","desc":"Kink-resistant expandable garden hose","price":932,"emoji":"💧","category":"tools","badge":"Pro","rating":4.4},
-      {"id":222,"name":"Watering Can 5L (Metal)","desc":"Long-spout watering can for precision irrigation","price":321,"emoji":"💧","category":"tools","badge":"Indoor","rating":4.6},
-      {"id":223,"name":"Spray Bottle 2L (Trigger)","desc":"Fine-mist spray bottle for foliar applications","price":283,"emoji":"🧴","category":"tools","badge":"Premium","rating":4.9},
-      {"id":224,"name":"Garden Rake (Iron 16-Tine)","desc":"Heavy-duty rake for levelling and collecting debris","price":592,"emoji":"🧹","category":"tools","badge":"Durable","rating":4.4},
-      {"id":225,"name":"Leaf Blower (Cordless 20V)","desc":"Rechargeable leaf blower for orchard cleanup","price":2172,"emoji":"🍃","category":"tools","badge":"Indoor","rating":4.6},
-      {"id":226,"name":"Compost Bin 50L (Stackable)","desc":"Vented compost bin for kitchen and garden waste","price":770,"emoji":"🗑️","category":"tools","badge":"Indoor","rating":4.8},
-      {"id":227,"name":"Shade Net 50% (3m x 6m)","desc":"UV-stabilised shade cloth for nursery protection","price":734,"emoji":"🌿","category":"tools","badge":"Smart","rating":4.6},
-      {"id":228,"name":"Mulching Sheet (Black 23 micron)","desc":"Biodegradable mulch film for weed control","price":468,"emoji":"🧻","category":"tools","badge":"Indoor","rating":4.5},
-      {"id":229,"name":"Vermi Bed (HDPE 4ft x 4ft)","desc":"Worm composting bed with tap and stand","price":1551,"emoji":"🛏️","category":"tools","badge":"Popular","rating":4.6},
-      {"id":230,"name":"Polyhouse Structure Kit","desc":"DIY mini polyhouse frame with polythene cover","price":4978,"emoji":"🏠","category":"tools","badge":"Pro","rating":4.8},
-      {"id":231,"name":"Greenhouse Shade Cloth 75%","desc":"Heavy shade net for greenhouse temperature control","price":945,"emoji":"🏡","category":"tools","badge":"Pro","rating":4.5},
-      {"id":232,"name":"Pruning Saw (Folding 8-inch)","desc":"Sharp folding saw for clean pruning cuts","price":522,"emoji":"🪚","category":"tools","badge":"Best Seller","rating":4.9},
-      {"id":233,"name":"Grafting Knife (Buddng Type)","desc":"Precision grafting knife for fruit tree propagation","price":361,"emoji":"🔪","category":"tools","badge":"Smart","rating":4.8},
-      {"id":234,"name":"Soil Auger (Hand Operated)","desc":"Manual soil sampling auger for testing","price":1106,"emoji":"🔩","category":"tools","badge":"Premium","rating":4.9},
-      {"id":235,"name":"Field Book (Weatherproof)","desc":"Waterproof logbook for farm records and scouting","price":224,"emoji":"📒","category":"tools","badge":"Essential","rating":4.6},
-      {"id":236,"name":"Rain Gauge (Digital)","desc":"Digital rainfall measuring instrument for farm","price":512,"emoji":"🌧️","category":"tools","badge":"Premium","rating":4.6},
-      {"id":237,"name":"Thermometer (Soil & Air Dual)","desc":"Dual probe thermometer for growing conditions","price":446,"emoji":"🌡️","category":"tools","badge":"Popular","rating":4.6},
-      {"id":238,"name":"Vermicompost 25kg Premium","desc":"Rich earthworm castings for soil fertility","price":926,"emoji":"🌱","category":"organic","badge":"100% Natural","rating":4.9},
-      {"id":239,"name":"Cow Dung Manure 10kg","desc":"Farm-fresh cow dung for organic farming","price":279,"emoji":"🐄","category":"organic","badge":"100% Natural","rating":4.4},
-      {"id":240,"name":"Panchagavya 500ml (Traditional)","desc":"Cow-based organic growth promoter and soil amendment","price":299,"emoji":"🐄","category":"organic","badge":"Organic","rating":4.4},
-      {"id":241,"name":"Jeevamrut 1L Organic","desc":"Traditional cow dung and urine fermented biofertiliser","price":275,"emoji":"💧","category":"organic","badge":"Eco","rating":4.8},
-      {"id":242,"name":"Beejamrut 500ml Seed Treatment","desc":"Natural seed coating mixture for germination boost","price":227,"emoji":"🌱","category":"organic","badge":"100% Natural","rating":4.7},
-      {"id":243,"name":"Neem Cake Powder 1kg","desc":"Pest-repellent soil amendment from neem kernel","price":192,"emoji":"🌿","category":"organic","badge":"100% Natural","rating":4.9},
-      {"id":244,"name":"Groundnut Cake Powder 2kg","desc":"Organic nitrogen supplement from pressed groundnut","price":226,"emoji":"🥜","category":"organic","badge":"Regenerative","rating":4.8},
-      {"id":245,"name":"Castor Cake Powder 2kg","desc":"Pest-resistant organic manure from castor extraction","price":206,"emoji":"🪵","category":"organic","badge":"Best Seller","rating":4.8},
-      {"id":246,"name":"Mustard Cake Powder 2kg","desc":"Oil-rich organic manure for flowering plants","price":233,"emoji":"🌼","category":"organic","badge":"Eco","rating":4.9},
-      {"id":247,"name":"Biochar 2kg (Agricultural Grade)","desc":"High-carbon soil amendment for moisture retention","price":326,"emoji":"🧱","category":"organic","badge":"Best Seller","rating":4.9},
-      {"id":248,"name":"Organic Potting Mix 5kg","desc":"Ready-to-use blend of compost peat and perlite","price":285,"emoji":"🌱","category":"organic","badge":"Bio","rating":4.8},
-      {"id":249,"name":"Cocopeat Block 5kg (Compressed)","desc":"Soilless growing medium from coconut husk","price":259,"emoji":"🥥","category":"organic","badge":"Natural","rating":4.7},
-      {"id":250,"name":"Leaf Compost 10kg","desc":"Shredded and composted deciduous leaf mould","price":194,"emoji":"🍂","category":"organic","badge":"Organic","rating":4.4},
-      {"id":251,"name":"Bokashi Compost 1kg (Microbial)","desc":"Fermented organic matter using bokashi method","price":363,"emoji":"🧫","category":"organic","badge":"Organic","rating":4.6},
-      {"id":252,"name":"Green Manure Seeds - Dhaincha","desc":"Fast-growing sesbania for nitrogen fixation","price":148,"emoji":"🌿","category":"organic","badge":"Premium","rating":4.5},
-      {"id":253,"name":"Azolla Culture 1kg (Fresh)","desc":"Aquatic fern for biological nitrogen fixation in rice","price":219,"emoji":"🌿","category":"organic","badge":"Natural","rating":4.9},
-      {"id":254,"name":"EM Solution 1L (Effective Microorganisms)","desc":"Mixed culture of beneficial microorganisms","price":393,"emoji":"🦠","category":"organic","badge":"Organic","rating":4.6},
-      {"id":255,"name":"Liquid Seaweed Extract 500ml","desc":"Kelp-based biostimulant for stress resistance","price":359,"emoji":"🌊","category":"organic","badge":"Eco","rating":4.7},
-      {"id":256,"name":"Humic Acid Liquid 1L","desc":"Liquid humus supplement for soil microbial activity","price":306,"emoji":"💧","category":"organic","badge":"100% Natural","rating":4.8},
-      {"id":257,"name":"Amino Acid Liquid 1L","desc":"Protein hydrolysate for rapid plant uptake","price":418,"emoji":"💧","category":"organic","badge":"100% Natural","rating":4.9},
-      {"id":258,"name":"Bone Meal Organic 1kg","desc":"Steamed bone meal for phosphorus and calcium","price":270,"emoji":"🦴","category":"organic","badge":"Regenerative","rating":4.9},
-      {"id":259,"name":"Horn Meal 1kg","desc":"Dried horn for long-term soil nitrogen","price":336,"emoji":"🐂","category":"organic","badge":"Natural","rating":4.4},
-      {"id":260,"name":"Oil Cake Mix 2kg (Neem+Mustard)","desc":"Blended organic cakes for balanced NPK","price":273,"emoji":"🫘","category":"organic","badge":"Best Seller","rating":4.9},
-      {"id":261,"name":"Wood Ash Powder 1kg","desc":"Potash-rich wood ash for fruiting and flowering","price":144,"emoji":"🔥","category":"organic","badge":"Organic","rating":4.5},
-      {"id":262,"name":"Rice Husk Ash 1kg","desc":"Silica-rich ash for stalk strength and pest resistance","price":124,"emoji":"🍚","category":"organic","badge":"Soil Health","rating":4.7},
-      {"id":263,"name":"Composted Coir Pith","desc":"Buffered cocopeat for improved water retention","price":223,"emoji":"🥥","category":"organic","badge":"Bio","rating":4.7},
-      {"id":264,"name":"Press Mud Compost 5kg","desc":"Sugarcane by-product for soil structure","price":223,"emoji":"🟤","category":"organic","badge":"Best Seller","rating":4.5},
-      {"id":265,"name":"Biogas Slurry (Dried) 5kg","desc":"Digestate from biogas plant as organic manure","price":202,"emoji":"🟤","category":"organic","badge":"Bio","rating":4.4},
-      {"id":266,"name":"Farm Yard Manure 25kg","desc":"Well-decomposed cattle manure for field application","price":449,"emoji":"🐄","category":"organic","badge":"Bio","rating":4.8},
-      {"id":267,"name":"Liquid Manure 5L (Compost Tea)","desc":"Aerated compost tea for foliar and soil spray","price":413,"emoji":"🧪","category":"organic","badge":"Regenerative","rating":4.8},
-      {"id":268,"name":"Banana Pseudostem Extract 500ml","desc":"Traditional plant growth promoter from banana stem","price":228,"emoji":"🍌","category":"organic","badge":"Organic","rating":4.8},
-      {"id":269,"name":"Neem Leaf Extract 500ml","desc":"Pest-repellent foliar spray from neem leaves","price":179,"emoji":"🌿","category":"organic","badge":"Eco","rating":4.5},
-      {"id":270,"name":"Garlic Chilli Extract 500ml","desc":"Natural insect repellent spray for kitchen garden","price":204,"emoji":"🌶️","category":"organic","badge":"Best Seller","rating":4.4},
-      {"id":271,"name":"Buttermilk Spray 1L","desc":"Fermented dairy spray for fungal disease prevention","price":234,"emoji":"🥛","category":"organic","badge":"100% Natural","rating":4.8},
-      {"id":272,"name":"Cow Urine Ark 500ml","desc":"Distilled cow urine for pest and disease management","price":211,"emoji":"🐄","category":"organic","badge":"Bio","rating":4.9},
-      {"id":273,"name":"Dashparni Ark 500ml","desc":"Traditional 10-plant extract for insect control","price":309,"emoji":"🌿","category":"organic","badge":"Bio","rating":4.9},
-      {"id":274,"name":"Agnihastra 1L (Herbal Pesticide)","desc":"Traditional Ayurvedic plant protection formulation","price":356,"emoji":"🧴","category":"organic","badge":"Fast Delivery","rating":4.6},
-      {"id":275,"name":"Matka Khad 2kg (Clay Pot Compost)","desc":"Traditional clay pot composting mixture","price":234,"emoji":"🪴","category":"organic","badge":"Natural","rating":4.8},
-      {"id":276,"name":"Amritpan 1L (Beejamrut variant)","desc":"Enhanced seed treatment organic mixture","price":285,"emoji":"🌱","category":"organic","badge":"100% Natural","rating":4.6},
-      {"id":277,"name":"Sukhjit Khad 2kg","desc":"Ready-to-use organic manure blend","price":270,"emoji":"🌿","category":"organic","badge":"Fast Delivery","rating":4.5},
-      {"id":278,"name":"Ghana Jeevamrut 2kg (Dry Powder)","desc":"Concentrated jeevamrut powder for soil application","price":309,"emoji":"🌱","category":"organic","badge":"100% Natural","rating":4.5},
-      {"id":279,"name":"Vermicompost Tea 1L (Liquid)","desc":"Liquid vermicompost extract for quick plant response","price":219,"emoji":"🍵","category":"organic","badge":"Premium","rating":4.8},
-      {"id":280,"name":"Compost Maker Powder 500g","desc":"Accelerator for faster home composting","price":261,"emoji":"🧪","category":"organic","badge":"Best Seller","rating":4.9},
-      {"id":281,"name":"Mycorrhizae Biofertilizer 500g","desc":"Arbuscular mycorrhizal fungal inoculant","price":385,"emoji":"🍄","category":"organic","badge":"Organic","rating":4.4},
-      {"id":282,"name":"Azospirillum Culture 200g Pack","desc":"Nitrogen-fixing bacteria for cereals and grasses","price":178,"emoji":"🦠","category":"organic","badge":"Fast Delivery","rating":4.7},
-      {"id":283,"name":"Acetobacter Culture 200g Pack","desc":"Nitrogen-fixing bacteria for sugarcane and millets","price":211,"emoji":"🦠","category":"organic","badge":"Premium","rating":4.4},
+      { "id": 33, "name": "Wheat HD-2967 Seeds", "desc": "High-yielding bread wheat variety, rust resistant", "price": 399, "emoji": "🌾", "category": "seeds", "badge": "High Yield", "rating": 4.4 },
+      { "id": 34, "name": "Wheat GW-496 Seeds", "desc": "Late sown heat tolerant wheat variety", "price": 379, "emoji": "🌾", "category": "seeds", "badge": "Organic", "rating": 4.9 },
+      { "id": 35, "name": "Rice IR-64 Seeds", "desc": "High-yielding semi-dwarf rice variety", "price": 449, "emoji": "🍚", "category": "seeds", "badge": "Certified", "rating": 4.5 },
+      { "id": 36, "name": "Rice Swarna Seeds", "desc": "Mid-early duration rice, good for kharif", "price": 429, "emoji": "🍚", "category": "seeds", "badge": "Best Seller", "rating": 4.7 },
+      { "id": 37, "name": "Basmati Pusa 1121 Seeds", "desc": "Extra-long grain aromatic basmati rice", "price": 899, "emoji": "🍚", "category": "seeds", "badge": "Top Pick", "rating": 4.8 },
+      { "id": 38, "name": "Tomato Hybrid Arka Vikas", "desc": "High-yielding tomato with tolerance to leaf curl", "price": 299, "emoji": "🍅", "category": "seeds", "badge": "Certified", "rating": 4.8 },
+      { "id": 39, "name": "Corn DHM-117 Seeds", "desc": "Single cross hybrid maize, suitable for rabi", "price": 499, "emoji": "🌽", "category": "seeds", "badge": "Top Pick", "rating": 4.6 },
+      { "id": 40, "name": "Soybean JS-335 Seeds", "desc": "Early maturing soybean with high oil content", "price": 327, "emoji": "🫘", "category": "seeds", "badge": "Certified", "rating": 4.9 },
+      { "id": 41, "name": "Cotton Bt-II Seeds", "desc": "Bollgard II genetically modified cotton seeds", "price": 849, "emoji": "🏵️", "category": "seeds", "badge": "Hybrid", "rating": 4.5 },
+      { "id": 42, "name": "Sugarcane Co-0238 Seeds", "desc": "Mid-late maturing high-yielding sugarcane", "price": 599, "emoji": "🎋", "category": "seeds", "badge": "New", "rating": 4.6 },
+      { "id": 43, "name": "Sunflower PSFH-67 Seeds", "desc": "Confectionery sunflower hybrid seeds", "price": 259, "emoji": "🌻", "category": "seeds", "badge": "Organic", "rating": 4.7 },
+      { "id": 44, "name": "Groundnut TG-37A Seeds", "desc": "Spanish bunch groundnut, early maturing", "price": 349, "emoji": "🥜", "category": "seeds", "badge": "Best Seller", "rating": 4.6 },
+      { "id": 45, "name": "Mustard Varuna Seeds", "desc": "Indian mustard variety tolerant to white rust", "price": 279, "emoji": "🌼", "category": "seeds", "badge": "New", "rating": 4.7 },
+      { "id": 46, "name": "Black Gram T-9 Seeds", "desc": "Early maturing urd bean for kharif/rabi", "price": 199, "emoji": "🫘", "category": "seeds", "badge": "Seasonal", "rating": 4.5 },
+      { "id": 47, "name": "Green Gram Samrat Seeds", "desc": "Mung bean variety with multiple disease resistance", "price": 219, "emoji": "🫘", "category": "seeds", "badge": "Organic", "rating": 4.8 },
+      { "id": 48, "name": "Sorghum CSH-16 Seeds", "desc": "Single-cut sudan grass sorghum hybrid", "price": 299, "emoji": "🌿", "category": "seeds", "badge": "Seasonal", "rating": 4.8 },
+      { "id": 49, "name": "Pearl Millet HB-3 Seeds", "desc": "High-yielding bajra hybrid for rainfed areas", "price": 189, "emoji": "🌾", "category": "seeds", "badge": "Fast Delivery", "rating": 4.4 },
+      { "id": 50, "name": "Chickpea JG-11 Seeds", "desc": "Desi chickpea variety, wilt resistant", "price": 249, "emoji": "🫘", "category": "seeds", "badge": "Fast Delivery", "rating": 4.7 },
+      { "id": 51, "name": "Lentil L-4147 Seeds", "desc": "Early maturing lentil for rice fallows", "price": 181, "emoji": "🫘", "category": "seeds", "badge": "Premium", "rating": 4.6 },
+      { "id": 52, "name": "Barley RD-2552 Seeds", "desc": "Six-row hulled barley for rainfed conditions", "price": 242, "emoji": "🌾", "category": "seeds", "badge": "Top Pick", "rating": 4.7 },
+      { "id": 53, "name": "Ragi GPU-28 Seeds", "desc": "Finger millet variety, drought tolerant", "price": 169, "emoji": "🌾", "category": "seeds", "badge": "Seasonal", "rating": 4.9 },
+      { "id": 54, "name": "Sesame Gowri Seeds", "desc": "High-yielding sesame for kharif season", "price": 299, "emoji": "🌿", "category": "seeds", "badge": "Hybrid", "rating": 4.5 },
+      { "id": 55, "name": "Niger IGP-76 Seeds", "desc": "Oilseed crop for tribal regions", "price": 239, "emoji": "🌻", "category": "seeds", "badge": "Certified", "rating": 4.5 },
+      { "id": 56, "name": "Castor DCS-9 Seeds", "desc": "Compact castor hybrid for mechanised farming", "price": 449, "emoji": "🌿", "category": "seeds", "badge": "Seasonal", "rating": 4.4 },
+      { "id": 57, "name": "Coriander CS-287 Seeds", "desc": "Dual-purpose coriander for leaf and seed", "price": 139, "emoji": "🌿", "category": "seeds", "badge": "Top Pick", "rating": 4.4 },
+      { "id": 58, "name": "Fenugreek Kasuri Seeds", "desc": "Kasuri methi variety for leaf production", "price": 129, "emoji": "🌿", "category": "seeds", "badge": "Seasonal", "rating": 4.4 },
+      { "id": 59, "name": "Spinach All Green Seeds", "desc": "Broad-leaved spinach for year-round harvest", "price": 99, "emoji": "🥬", "category": "seeds", "badge": "Premium", "rating": 4.6 },
+      { "id": 60, "name": "Brinjal Purple Long Seeds", "desc": "Long purple brinjal with glossy fruits", "price": 185, "emoji": "🍆", "category": "seeds", "badge": "New", "rating": 4.7 },
+      { "id": 61, "name": "Okra Pusa Sawani Seeds", "desc": "Yellow vein mosaic virus resistant okra", "price": 159, "emoji": "🥒", "category": "seeds", "badge": "Fast Delivery", "rating": 4.6 },
+      { "id": 62, "name": "Bitter Gourd Pusa Do Mausami", "desc": "Attractive green bitter gourd hybrid", "price": 189, "emoji": "🥒", "category": "seeds", "badge": "Fast Delivery", "rating": 4.7 },
+      { "id": 63, "name": "Bottle Gourd Pusa Naveen Seeds", "desc": "Early bottle gourd with white fruits", "price": 178, "emoji": "🥒", "category": "seeds", "badge": "Best Seller", "rating": 4.7 },
+      { "id": 64, "name": "Pumpkin Pusa Viswas Seeds", "desc": "Semi-circular pumpkin, keeping quality", "price": 199, "emoji": "🎃", "category": "seeds", "badge": "Seasonal", "rating": 4.5 },
+      { "id": 65, "name": "Cucumber Pusa Sanyog Seeds", "desc": "Gynoecious cucumber hybrid for protected cultivation", "price": 229, "emoji": "🥒", "category": "seeds", "badge": "Top Pick", "rating": 4.8 },
+      { "id": 66, "name": "Watermelon Sugar Baby Seeds", "desc": "Small round icebox watermelon variety", "price": 249, "emoji": "🍉", "category": "seeds", "badge": "Seasonal", "rating": 4.6 },
+      { "id": 67, "name": "Muskmelon Hara Madhu Seeds", "desc": "Sweet aromatic muskmelon for summer", "price": 251, "emoji": "🍈", "category": "seeds", "badge": "Premium", "rating": 4.7 },
+      { "id": 68, "name": "Cabbage Pusa Mukta Seeds", "desc": "Medium tight flat head cabbage variety", "price": 159, "emoji": "🥬", "category": "seeds", "badge": "Premium", "rating": 4.8 },
+      { "id": 69, "name": "Cauliflower Pusa Snowball Seeds", "desc": "White curd cauliflower for temperate climate", "price": 196, "emoji": "🥬", "category": "seeds", "badge": "Certified", "rating": 4.7 },
+      { "id": 70, "name": "Carrot Pusa Rudhira Seeds", "desc": "Deep orange coloured carrot with high carotene", "price": 169, "emoji": "🥕", "category": "seeds", "badge": "Top Pick", "rating": 4.4 },
+      { "id": 71, "name": "Beetroot Crimson Globe Seeds", "desc": "Round red beetroot with good storage", "price": 179, "emoji": "🟣", "category": "seeds", "badge": "Hybrid", "rating": 4.4 },
+      { "id": 72, "name": "Onion Pusa Red Seeds", "desc": "Pink bulb onion for kharif rabi season", "price": 229, "emoji": "🧅", "category": "seeds", "badge": "Certified", "rating": 4.4 },
+      { "id": 73, "name": "Garlic G-282 Seeds", "desc": "Giant garlic variety with bold cloves", "price": 351, "emoji": "🧄", "category": "seeds", "badge": "High Yield", "rating": 4.6 },
+      { "id": 74, "name": "Turmeric Suvarna Seeds", "desc": "High curcumin turmeric variety for plains", "price": 525, "emoji": "🌿", "category": "seeds", "badge": "Hybrid", "rating": 4.8 },
+      { "id": 75, "name": "Ginger Rio-de-Janeiro Seeds", "desc": "High-yielding ginger with good flavour", "price": 599, "emoji": "🌿", "category": "seeds", "badge": "New", "rating": 4.9 },
+      { "id": 76, "name": "Chillies Pusa Jwala Seeds", "desc": "Famous hot chilli variety for pickle", "price": 149, "emoji": "🌶️", "category": "seeds", "badge": "Certified", "rating": 4.8 },
+      { "id": 77, "name": "Papaya Pusa Majesty Seeds", "desc": "Gynodioecious papaya, high papain content", "price": 299, "emoji": "🍈", "category": "seeds", "badge": "Top Pick", "rating": 4.7 },
+      { "id": 78, "name": "Moong Bean Seeds (Samrat)", "desc": "Short duration green gram for multiple cuts", "price": 189, "emoji": "🫘", "category": "seeds", "badge": "Best Seller", "rating": 4.4 },
+      { "id": 79, "name": "Guar Cluster Bean Seeds", "desc": "Industrial guar for gum extraction", "price": 271, "emoji": "🫘", "category": "seeds", "badge": "Fast Delivery", "rating": 4.4 },
+      { "id": 80, "name": "Lobia Cowpea Seeds", "desc": "Dual purpose cowpea for grain and fodder", "price": 159, "emoji": "🫘", "category": "seeds", "badge": "Top Pick", "rating": 4.6 },
+      { "id": 81, "name": "Methi Fenugreek Seeds (Pusa Early)", "desc": "Quick growing fenugreek for early greens", "price": 119, "emoji": "🌿", "category": "seeds", "badge": "Fast Delivery", "rating": 4.7 },
+      { "id": 82, "name": "Palak Pusa Jyoti Seeds", "desc": "Slow bolting spinach for summer cultivation", "price": 109, "emoji": "🥬", "category": "seeds", "badge": "Top Pick", "rating": 4.8 },
+      { "id": 83, "name": "Kale Seeds (Dwarf Green)", "desc": "Ornamental and edible kale for cool season", "price": 199, "emoji": "🥬", "category": "seeds", "badge": "Seasonal", "rating": 4.6 },
+      { "id": 84, "name": "Asparagus Seeds (Mary Washington)", "desc": "Perennial asparagus for home gardens", "price": 399, "emoji": "🌿", "category": "seeds", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 85, "name": "Broccoli Pusa Broccoli Seeds", "desc": "Green head broccoli for rabi season", "price": 249, "emoji": "🥦", "category": "seeds", "badge": "Fast Delivery", "rating": 4.6 },
+      { "id": 86, "name": "Capsicum (Bell Pepper) Seeds", "desc": "Sweet coloured capsicum for protected cultivation", "price": 299, "emoji": "🫑", "category": "seeds", "badge": "Organic", "rating": 4.7 },
+      { "id": 87, "name": "Celery Seeds (Local Variety)", "desc": "Aromatic herb for flavouring and medicine", "price": 249, "emoji": "🌿", "category": "seeds", "badge": "High Yield", "rating": 4.4 },
+      { "id": 88, "name": "Radish Pusa Chetki Seeds", "desc": "Quick maturing radish, white roots", "price": 99, "emoji": "🥬", "category": "seeds", "badge": "Top Pick", "rating": 4.9 },
+      { "id": 89, "name": "Urea 46% N Fertilizer", "desc": "Granular nitrogen fertiliser for rapid green growth", "price": 290, "emoji": "🧪", "category": "fertilizer", "badge": "Soil Health", "rating": 4.9 },
+      { "id": 90, "name": "DAP 18-46-0 Fertilizer", "desc": "Di-ammonium phosphate for strong root development", "price": 455, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.5 },
+      { "id": 91, "name": "MOP 0-0-60 Fertilizer", "desc": "Muriate of potash for fruit quality and disease resistance", "price": 402, "emoji": "🧪", "category": "fertilizer", "badge": "Bloom", "rating": 4.7 },
+      { "id": 92, "name": "NPK 10-26-26 Fertilizer", "desc": "Balanced NPK for flowering and fruiting stage", "price": 565, "emoji": "🧪", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.8 },
+      { "id": 93, "name": "NPK 12-32-16 Fertilizer", "desc": "Phosphorus-rich formula for root and tuber crops", "price": 551, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.8 },
+      { "id": 94, "name": "NPK 20-20-20 Fertilizer", "desc": "Balanced nutrition for all growth stages", "price": 513, "emoji": "🧪", "category": "fertilizer", "badge": "Organic", "rating": 4.6 },
+      { "id": 95, "name": "SSP 0-20-0 Single Superphosphate", "desc": "Source of phosphorus and calcium for soil health", "price": 351, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.5 },
+      { "id": 96, "name": "Zinc Sulphate 21% Fertilizer", "desc": "Essential micronutrient for enzyme activation", "price": 279, "emoji": "🧪", "category": "fertilizer", "badge": "Best Seller", "rating": 4.5 },
+      { "id": 97, "name": "Borax 10.5% B Fertilizer", "desc": "Boron micronutrient for flower and fruit development", "price": 262, "emoji": "🧪", "category": "fertilizer", "badge": "Soil Health", "rating": 4.6 },
+      { "id": 98, "name": "Ferrous Sulphate 19% Fertilizer", "desc": "Iron supplement for correcting chlorosis", "price": 201, "emoji": "🧪", "category": "fertilizer", "badge": "Soil Health", "rating": 4.5 },
+      { "id": 99, "name": "CAN 25% Calcium Ammonium Nitrate", "desc": "Nitrogen source with calcium for fruit crops", "price": 388, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.4 },
+      { "id": 100, "name": "Ammonium Sulphate Fertilizer", "desc": "Nitrogen and sulphur source for acidic soils", "price": 338, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.4 },
+      { "id": 101, "name": "Gypsum Agricultural Grade", "desc": "Soil conditioner for sodium-affected soils", "price": 245, "emoji": "🪨", "category": "fertilizer", "badge": "Boost", "rating": 4.8 },
+      { "id": 102, "name": "Dolomite Lime Fertilizer", "desc": "Natural calcium magnesium carbonate for pH correction", "price": 198, "emoji": "🪨", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.9 },
+      { "id": 103, "name": "Humic Acid Granules", "desc": "Improves soil structure and nutrient uptake", "price": 470, "emoji": "🌑", "category": "fertilizer", "badge": "Natural", "rating": 4.8 },
+      { "id": 104, "name": "Seaweed Extract Liquid", "desc": "Natural growth stimulant from marine algae", "price": 397, "emoji": "🌿", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.5 },
+      { "id": 105, "name": "Bio-NPK Granules Biofertilizer", "desc": "Microbe-based nitrogen phosphorus potassium mix", "price": 342, "emoji": "🌱", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.4 },
+      { "id": 106, "name": "Azotobacter Culture", "desc": "Nitrogen-fixing bacteria for non-legume crops", "price": 205, "emoji": "🦠", "category": "fertilizer", "badge": "Soil Health", "rating": 4.4 },
+      { "id": 107, "name": "PSB Culture (Phosphate Solubilising)", "desc": "Bacteria that converts unavailable phosphorus to plant form", "price": 169, "emoji": "🦠", "category": "fertilizer", "badge": "Best Seller", "rating": 4.8 },
+      { "id": 108, "name": "Rhizobium Culture for Pulses", "desc": "Specific nitrogen-fixing bacteria for legume crops", "price": 192, "emoji": "🦠", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.8 },
+      { "id": 109, "name": "Potassium Schoenite Fertilizer", "desc": "Water-soluble potassium magnesium sulphate", "price": 722, "emoji": "🧪", "category": "fertilizer", "badge": "Natural", "rating": 4.5 },
+      { "id": 110, "name": "Magnesium Sulphate Epsom Salt", "desc": "Essential magnesium for chlorophyll formation", "price": 268, "emoji": "🧪", "category": "fertilizer", "badge": "Natural", "rating": 4.6 },
+      { "id": 111, "name": "Chelated Micronutrient Mix", "desc": "EDTA chelated Fe Zn Mn Cu for alkaline soils", "price": 601, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.9 },
+      { "id": 112, "name": "Slow Release NPK Tablets", "desc": "Controlled release fertiliser for potted plants", "price": 442, "emoji": "💊", "category": "fertilizer", "badge": "Best Seller", "rating": 4.8 },
+      { "id": 113, "name": "Liquid NPK 19-19-19", "desc": "Balanced water-soluble foliar fertiliser", "price": 574, "emoji": "💧", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.6 },
+      { "id": 114, "name": "Organic NPK 4-3-3 Fertilizer", "desc": "Natural organic fertiliser from plant extracts", "price": 337, "emoji": "🌿", "category": "fertilizer", "badge": "Boost", "rating": 4.5 },
+      { "id": 115, "name": "Bone Meal Powder", "desc": "Slow-release phosphorus and calcium source", "price": 327, "emoji": "🦴", "category": "fertilizer", "badge": "Organic", "rating": 4.4 },
+      { "id": 116, "name": "Blood Meal Fertilizer", "desc": "High-nitrogen organic fertiliser for leafy growth", "price": 325, "emoji": "🩸", "category": "fertilizer", "badge": "Soil Health", "rating": 4.5 },
+      { "id": 117, "name": "Fish Meal Organic", "desc": "Nitrogen and micronutrient-rich marine fertiliser", "price": 487, "emoji": "🐟", "category": "fertilizer", "badge": "Boost", "rating": 4.7 },
+      { "id": 118, "name": "Vermiwash 5L Biofertilizer", "desc": "Liquid earthworm castings for soil health", "price": 276, "emoji": "💧", "category": "fertilizer", "badge": "Premium", "rating": 4.9 },
+      { "id": 119, "name": "Panchagavya 1L Organic", "desc": "Traditional cow-based organic growth promoter", "price": 377, "emoji": "🐄", "category": "fertilizer", "badge": "Pro", "rating": 4.7 },
+      { "id": 120, "name": "Compost Tea Starter", "desc": "Aerated compost tea brewers mixture", "price": 257, "emoji": "🍵", "category": "fertilizer", "badge": "Soil Health", "rating": 4.4 },
+      { "id": 121, "name": "Mycorrhizal Biofertilizer", "desc": "Fungal inoculant for enhanced root nutrient uptake", "price": 441, "emoji": "🍄", "category": "fertilizer", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 122, "name": "Silicate Fertilizer", "desc": "Silicon supplement for stalk strength and pest resistance", "price": 408, "emoji": "🧪", "category": "fertilizer", "badge": "Fruit Care", "rating": 4.6 },
+      { "id": 123, "name": "Sulphur Bentonite Fertilizer", "desc": "Slow-release sulphur for oilseed crops", "price": 310, "emoji": "🪨", "category": "fertilizer", "badge": "Natural", "rating": 4.7 },
+      { "id": 124, "name": "Calcium Nitrate Fertilizer", "desc": "Water-soluble calcium and nitrogen for fruit crops", "price": 470, "emoji": "🧪", "category": "fertilizer", "badge": "Bloom", "rating": 4.4 },
+      { "id": 125, "name": "Mono Ammonium Phosphate (MAP)", "desc": "High phosphorus water-soluble fertiliser", "price": 586, "emoji": "🧪", "category": "fertilizer", "badge": "Bloom", "rating": 4.7 },
+      { "id": 126, "name": "Potassium Nitrate Fertilizer", "desc": "Water-soluble K and N for fruiting stage", "price": 750, "emoji": "🧪", "category": "fertilizer", "badge": "Soil Health", "rating": 4.4 },
+      { "id": 127, "name": "Ammonium Molybdate Fertilizer", "desc": "Essential molybdenum for nitrogen metabolism", "price": 322, "emoji": "🧪", "category": "fertilizer", "badge": "Natural", "rating": 4.6 },
+      { "id": 128, "name": "Cobalt Sulphate Fertilizer", "desc": "Micronutrient for legume nitrogen fixation", "price": 512, "emoji": "🧪", "category": "fertilizer", "badge": "Essential", "rating": 4.7 },
+      { "id": 129, "name": "Copper Sulphate Fertilizer", "desc": "Essential copper for enzyme and grain development", "price": 401, "emoji": "🧪", "category": "fertilizer", "badge": "Organic", "rating": 4.8 },
+      { "id": 130, "name": "Manganese Sulphate Fertilizer", "desc": "Micronutrient for photosynthesis and leaf greenness", "price": 318, "emoji": "🧪", "category": "fertilizer", "badge": "Pro", "rating": 4.6 },
+      { "id": 131, "name": "Liquid Calcium Nitrate", "desc": "Foliar calcium for preventing blossom end rot", "price": 383, "emoji": "💧", "category": "fertilizer", "badge": "Soil Health", "rating": 4.4 },
+      { "id": 132, "name": "Magnesium Nitrate Fertilizer", "desc": "Water-soluble Mg and N for greenhouse crops", "price": 562, "emoji": "🧪", "category": "fertilizer", "badge": "Organic", "rating": 4.6 },
+      { "id": 133, "name": "Potassium Thiosulphate Fertilizer", "desc": "Liquid K source with sulphur for early growth", "price": 618, "emoji": "💧", "category": "fertilizer", "badge": "Bloom", "rating": 4.5 },
+      { "id": 134, "name": "Zinc Nitrate Fertilizer", "desc": "Water-soluble zinc for correcting deficiency quickly", "price": 446, "emoji": "🧪", "category": "fertilizer", "badge": "Essential", "rating": 4.5 },
+      { "id": 135, "name": "NPK 15-15-15 Balanced", "desc": "All-purpose balanced granular fertiliser", "price": 479, "emoji": "🧪", "category": "fertilizer", "badge": "Natural", "rating": 4.8 },
+      { "id": 136, "name": "NPK 14-35-14 High Phosphorus", "desc": "Phosphorus-rich formula for root establishment", "price": 502, "emoji": "🧪", "category": "fertilizer", "badge": "Best Seller", "rating": 4.8 },
+      { "id": 137, "name": "Ammonium Chloride Fertilizer", "desc": "Nitrogen source for rice paddy cultivation", "price": 273, "emoji": "🧪", "category": "fertilizer", "badge": "Bloom", "rating": 4.6 },
+      { "id": 138, "name": "Calcium Ammonium Nitrate Premium", "desc": "Enhanced CAN with micronutrients for horticulture", "price": 462, "emoji": "🧪", "category": "fertilizer", "badge": "Boost", "rating": 4.8 },
+      { "id": 139, "name": "Neem Oil 1500ppm Insecticide", "desc": "100% organic neem extract for broad-spectrum pest control", "price": 229, "emoji": "🌿", "category": "pesticide", "badge": "Organic", "rating": 4.8 },
+      { "id": 140, "name": "Neem Cake Powder", "desc": "Soil amendment with natural pest repellent properties", "price": 199, "emoji": "🪵", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.9 },
+      { "id": 141, "name": "Karanj Oil Pesticide", "desc": "Organic pongamia oil for sucking pest management", "price": 243, "emoji": "🌿", "category": "pesticide", "badge": "Effective", "rating": 4.4 },
+      { "id": 142, "name": "Verticillium Lecanii Biopesticide", "desc": "Entomopathogenic fungus for whitefly and thrips", "price": 354, "emoji": "🍄", "category": "pesticide", "badge": "Effective", "rating": 4.5 },
+      { "id": 143, "name": "Beauveria Bassiana Biopesticide", "desc": "Natural fungus for bollworm and borer control", "price": 364, "emoji": "🍄", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.4 },
+      { "id": 144, "name": "Metarhizium Anisopliae Biopesticide", "desc": "Soil-dwelling fungus for soil pest control", "price": 338, "emoji": "🍄", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.6 },
+      { "id": 145, "name": "Trichoderma Viride Fungicide", "desc": "Biological control agent for soil-borne diseases", "price": 264, "emoji": "🍄", "category": "pesticide", "badge": "Organic", "rating": 4.6 },
+      { "id": 146, "name": "Bt Biopesticide (Bacillus thuringiensis)", "desc": "Organic bacterial insecticide for caterpillar control", "price": 343, "emoji": "🦠", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.6 },
+      { "id": 147, "name": "Pseudomonas Fluorescens Biofungicide", "desc": " rhizobacteria for seed and soil treatment", "price": 318, "emoji": "🦠", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.4 },
+      { "id": 148, "name": "Copper Oxychloride 50% WP", "desc": "Inorganic fungicide for downy mildew and blight", "price": 351, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.4 },
+      { "id": 149, "name": "Mancozeb 75% WP Fungicide", "desc": "Broad-spectrum protectant fungicide for vegetables", "price": 367, "emoji": "🛡️", "category": "pesticide", "badge": "Safe", "rating": 4.7 },
+      { "id": 150, "name": "Carbendazim+Mancozeb WP", "desc": "Systemic and contact combo fungicide for cereals", "price": 451, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.5 },
+      { "id": 151, "name": "Hexaconazole 5% EC Fungicide", "desc": "Systemic triazole for rice blast and powdery mildew", "price": 417, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.4 },
+      { "id": 152, "name": "Propiconazole 25% EC Fungicide", "desc": "Systemic fungicide for rust and leaf spot diseases", "price": 472, "emoji": "🛡️", "category": "pesticide", "badge": "Natural", "rating": 4.9 },
+      { "id": 153, "name": "Tebuconazole 25.9% EC Fungicide", "desc": "Systemic fungicide for powdery mildew and rust", "price": 511, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.6 },
+      { "id": 154, "name": "Difenoconazole 25% EC Fungicide", "desc": "Systemic fungicide for early and late blight", "price": 498, "emoji": "🛡️", "category": "pesticide", "badge": "Eco", "rating": 4.5 },
+      { "id": 155, "name": "Azoxystrobin+Difenoconazole SC", "desc": "Combination strobilurin and triazole fungicide", "price": 680, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.4 },
+      { "id": 156, "name": "Chlorothalonil 75% WP Fungicide", "desc": "Contact fungicide for vegetable disease control", "price": 375, "emoji": "🛡️", "category": "pesticide", "badge": "Natural", "rating": 4.5 },
+      { "id": 157, "name": "Sulphur 80% WP Fungicide", "desc": "Inorganic fungicide and miticide for orchards", "price": 283, "emoji": "🛡️", "category": "pesticide", "badge": "Pro", "rating": 4.4 },
+      { "id": 158, "name": "Captan 50% WP Fungicide", "desc": "Protectant fungicide for fruit tree diseases", "price": 383, "emoji": "🛡️", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.4 },
+      { "id": 159, "name": "Streptomycin Sulphate 90% SP", "desc": "Antibiotic for bacterial leaf spot control", "price": 265, "emoji": "💊", "category": "pesticide", "badge": "Natural", "rating": 4.7 },
+      { "id": 160, "name": "Kasugamycin 3% SL Bactericide", "desc": "Systemic bactericide for rice bacterial leaf blight", "price": 388, "emoji": "🧴", "category": "pesticide", "badge": "Safe", "rating": 4.8 },
+      { "id": 161, "name": "Glyphosate 41% SL Herbicide", "desc": "Systemic non-selective herbicide for weed control", "price": 464, "emoji": "🌿", "category": "pesticide", "badge": "Eco", "rating": 4.7 },
+      { "id": 162, "name": "Paraquat 24% SL Herbicide", "desc": "Non-selective contact herbicide for land preparation", "price": 503, "emoji": "🌿", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.8 },
+      { "id": 163, "name": "2,4-D Amine Salt 58% SL", "desc": "Selective herbicide for broadleaf weed control in cereals", "price": 376, "emoji": "🌿", "category": "pesticide", "badge": "Pro", "rating": 4.5 },
+      { "id": 164, "name": "Atrazine 50% WP Herbicide", "desc": "Pre-emergence herbicide for maize and sugarcane", "price": 328, "emoji": "🌿", "category": "pesticide", "badge": "Pro", "rating": 4.8 },
+      { "id": 165, "name": "Butachlor 50% EC Herbicide", "desc": "Pre-emergence herbicide for rice transplanted fields", "price": 392, "emoji": "🌿", "category": "pesticide", "badge": "Eco", "rating": 4.7 },
+      { "id": 166, "name": "Pendimethalin 30% EC Herbicide", "desc": "Pre-emergence herbicide for onion and soybean", "price": 412, "emoji": "🌿", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.6 },
+      { "id": 167, "name": "Oxyfluorfen 23.5% EC Herbicide", "desc": "Contact herbicide for broadleaf weeds in plantation crops", "price": 435, "emoji": "🌿", "category": "pesticide", "badge": "Eco", "rating": 4.9 },
+      { "id": 168, "name": "Imazethapyr 10% SL Herbicide", "desc": "Post-emergence herbicide for pulses and soybean", "price": 473, "emoji": "🌿", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.7 },
+      { "id": 169, "name": "Quizalofop Ethyl 5% EC Herbicide", "desc": "Grassy weed herbicide for broadleaf crops", "price": 453, "emoji": "🌿", "category": "pesticide", "badge": "Eco", "rating": 4.4 },
+      { "id": 170, "name": "Fluchloralin 45% EC Herbicide", "desc": "Pre-plant incorporated herbicide for cotton and soybean", "price": 383, "emoji": "🌿", "category": "pesticide", "badge": "Organic", "rating": 4.7 },
+      { "id": 171, "name": "Isoproturon 75% WP Herbicide", "desc": "Post-emergence herbicide for wheat broadleaf weeds", "price": 354, "emoji": "🌿", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.7 },
+      { "id": 172, "name": "Metribuzin 70% WP Herbicide", "desc": "Selective herbicide for tomato and soybean", "price": 371, "emoji": "🌿", "category": "pesticide", "badge": "Effective", "rating": 4.4 },
+      { "id": 173, "name": "Carbosulfan 25% EC Insecticide", "desc": "Carbamate insecticide for sucking pests and borers", "price": 435, "emoji": "🛡️", "category": "pesticide", "badge": "Natural", "rating": 4.9 },
+      { "id": 174, "name": "Chlorpyrifos 20% EC Insecticide", "desc": "Broad-spectrum organophosphate for soil pests", "price": 416, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.8 },
+      { "id": 175, "name": "Dimethoate 30% EC Insecticide", "desc": "Systemic insecticide for aphids and mites", "price": 289, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.8 },
+      { "id": 176, "name": "Malathion 50% EC Insecticide", "desc": "Contact insecticide for stored grain pest control", "price": 307, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.9 },
+      { "id": 177, "name": "Spinosad 45% SC Insecticide", "desc": "Natural origin insecticide for fruit borer control", "price": 639, "emoji": "🛡️", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.6 },
+      { "id": 178, "name": "Emamectin Benzoate 5% SG", "desc": "Translaminar insecticide for leaf miner and fruit borer", "price": 615, "emoji": "🛡️", "category": "pesticide", "badge": "Organic", "rating": 4.9 },
+      { "id": 179, "name": "Fipronil 5% SC Insecticide", "desc": "Broad-spectrum insecticide for soil and foliar pests", "price": 422, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.9 },
+      { "id": 180, "name": "Thiamethoxam 25% WG Insecticide", "desc": "Systemic neonicotinoid for sucking pest control", "price": 576, "emoji": "🛡️", "category": "pesticide", "badge": "Best Seller", "rating": 4.6 },
+      { "id": 181, "name": "Imidacloprid 17.8% SL Insecticide", "desc": "Systemic insecticide for nursery and soil treatment", "price": 385, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.7 },
+      { "id": 182, "name": "Acephate 75% SP Insecticide", "desc": "Systemic insecticide for vegetables and ornamentals", "price": 300, "emoji": "🛡️", "category": "pesticide", "badge": "Fast Delivery", "rating": 4.4 },
+      { "id": 183, "name": "Bifenthrin 10% EC Insecticide", "desc": "Pyrethroid for termites and soil pest control", "price": 513, "emoji": "🛡️", "category": "pesticide", "badge": "Effective", "rating": 4.9 },
+      { "id": 184, "name": "Cypermethrin 25% EC Insecticide", "desc": "Broad-spectrum pyrethroid for multiple pests", "price": 408, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.5 },
+      { "id": 185, "name": "Deltamethrin 2.8% EC Insecticide", "desc": "Contact pyrethroid for stored grain protection", "price": 359, "emoji": "🛡️", "category": "pesticide", "badge": "Broad Spectrum", "rating": 4.6 },
+      { "id": 186, "name": "Lambda Cyhalothrin 5% EC", "desc": "Synthetic pyrethroid for bollworm and leafminer", "price": 473, "emoji": "🛡️", "category": "pesticide", "badge": "Pro", "rating": 4.7 },
+      { "id": 187, "name": "Novaluron 10% EC Insecticide", "desc": "IGR insecticide for whitefly and thrips management", "price": 533, "emoji": "🛡️", "category": "pesticide", "badge": "Natural", "rating": 4.4 },
+      { "id": 188, "name": "Indoxacarb 14.5% SC Insecticide", "desc": "Oxadiazine insecticide for fruit borer control", "price": 620, "emoji": "🛡️", "category": "pesticide", "badge": "Best Seller", "rating": 4.4 },
+      { "id": 189, "name": "Lufenuron 5% EC Insecticide", "desc": "Chitin synthesis inhibitor for Lepidopteran pests", "price": 546, "emoji": "🛡️", "category": "pesticide", "badge": "Natural", "rating": 4.8 },
+      { "id": 190, "name": "Garden Trowel (Stainless Steel)", "desc": "Ergonomic hand trowel for planting and transplanting", "price": 220, "emoji": "⛏️", "category": "tools", "badge": "Indoor", "rating": 4.4 },
+      { "id": 191, "name": "Hand Weeder with Wooden Handle", "desc": "Comfortable weeding tool for garden beds", "price": 323, "emoji": "🪓", "category": "tools", "badge": "Durable", "rating": 4.4 },
+      { "id": 192, "name": "Pruning Shears (Bypass Type)", "desc": "Sharp bypass secateurs for clean plant cuts", "price": 430, "emoji": "✂️", "category": "tools", "badge": "Indoor", "rating": 4.6 },
+      { "id": 193, "name": "Hedge Shears (Wavy Blade)", "desc": "Long-handle shears for shaping hedges and shrubs", "price": 610, "emoji": "✂️", "category": "tools", "badge": "Essential", "rating": 4.6 },
+      { "id": 194, "name": "Loppers (Compound Action)", "desc": "Long-reach bypass loppers for thick branches", "price": 868, "emoji": "✂️", "category": "tools", "badge": "Smart", "rating": 4.4 },
+      { "id": 195, "name": "Garden Fork (4-Tine Stainless)", "desc": "Sturdy fork for soil turning and compost handling", "price": 313, "emoji": "🔱", "category": "tools", "badge": "Pro", "rating": 4.4 },
+      { "id": 196, "name": "Spade (D-Handle Round Point)", "desc": "Heavy-duty digging spade for land preparation", "price": 586, "emoji": "🔨", "category": "tools", "badge": "Pro", "rating": 4.9 },
+      { "id": 197, "name": "Hoe Khurpa with Long Handle", "desc": "Traditional hoe for intercultural operations", "price": 394, "emoji": "🔨", "category": "tools", "badge": "Indoor", "rating": 4.6 },
+      { "id": 198, "name": "Hand Cultivator 3-Prong", "desc": "Claw cultivator for loosening soil around plants", "price": 224, "emoji": "🪱", "category": "tools", "badge": "Best Seller", "rating": 4.4 },
+      { "id": 199, "name": "Manual Seed Drill (4-Row)", "desc": "Pedal-operated seeder for smallholder farms", "price": 3392, "emoji": "🚜", "category": "tools", "badge": "Smart", "rating": 4.8 },
+      { "id": 200, "name": "Knapsack Sprayer 16L (Brass Pump)", "desc": "Professional pressure sprayer for crop protection", "price": 1199, "emoji": "🔧", "category": "tools", "badge": "Pro", "rating": 4.4 },
+      { "id": 201, "name": "Battery Sprayer 16L Rechargeable", "desc": "Cordless electric sprayer for effortless spraying", "price": 2513, "emoji": "🔋", "category": "tools", "badge": "Smart", "rating": 4.9 },
+      { "id": 202, "name": "Drip Irrigation Kit 1 Acre", "desc": "Complete drip system with mainline and laterals", "price": 3525, "emoji": "💧", "category": "tools", "badge": "Essential", "rating": 4.9 },
+      { "id": 203, "name": "Drip Tape 16mm (1000m Roll)", "desc": "Emitter drip tape for row crop irrigation", "price": 1834, "emoji": "💧", "category": "tools", "badge": "Essential", "rating": 4.4 },
+      { "id": 204, "name": "Sprinkler Set (Portable 5-Piece)", "desc": "Rotating sprinkler set for lawn and garden", "price": 831, "emoji": "💧", "category": "tools", "badge": "Durable", "rating": 4.5 },
+      { "id": 205, "name": "Rain Gun (Medium Volume)", "desc": "Large droplet sprinkler for orchards and plantation", "price": 2504, "emoji": "💧", "category": "tools", "badge": "Premium", "rating": 4.6 },
+      { "id": 206, "name": "Water Pump 1HP Submersible", "desc": "Solar-compatible water pump for borewell", "price": 3499, "emoji": "💨", "category": "tools", "badge": "Indoor", "rating": 4.9 },
+      { "id": 207, "name": "Measuring Tape 30m Fibreglass", "desc": "Long-reach tape for field measurements", "price": 356, "emoji": "📏", "category": "tools", "badge": "Seasonal", "rating": 4.4 },
+      { "id": 208, "name": "Soil pH Meter (Digital Display)", "desc": "Accurate digital pH and moisture meter", "price": 866, "emoji": "🔬", "category": "tools", "badge": "Premium", "rating": 4.4 },
+      { "id": 209, "name": "Soil Moisture Meter (Probe Type)", "desc": "Instant soil moisture reading for irrigation scheduling", "price": 663, "emoji": "💧", "category": "tools", "badge": "Seasonal", "rating": 4.5 },
+      { "id": 210, "name": "Digital Scale 10kg (Kitchen/Farm)", "desc": "Precision digital scale for seed and produce weighing", "price": 588, "emoji": "⚖️", "category": "tools", "badge": "Smart", "rating": 4.5 },
+      { "id": 211, "name": "Wheel Barrow (Garden Type 80L)", "desc": "Steel tray wheelbarrow for compost and harvest", "price": 1832, "emoji": "🛒", "category": "tools", "badge": "Seasonal", "rating": 4.8 },
+      { "id": 212, "name": "Garden Gloves (Nitrile Coated)", "desc": "Water-resistant grip gloves for garden work", "price": 218, "emoji": "🧤", "category": "tools", "badge": "Essential", "rating": 4.4 },
+      { "id": 213, "name": "Safety Goggles (Anti-Fog)", "desc": "Protective eyewear for pesticide application", "price": 390, "emoji": "🥽", "category": "tools", "badge": "Best Seller", "rating": 4.6 },
+      { "id": 214, "name": "Face Mask N95 (Pack of 10)", "desc": "Respirator masks for safe pesticide handling", "price": 268, "emoji": "😷", "category": "tools", "badge": "Popular", "rating": 4.4 },
+      { "id": 215, "name": "Power Tiller 7HP (Mini)", "desc": "Compact rotavator for small landholdings", "price": 9003, "emoji": "🚜", "category": "tools", "badge": "Essential", "rating": 4.8 },
+      { "id": 216, "name": "Brush Cutter (Petrol 2-Stroke)", "desc": "Side-fed brush cutter for farm boundary clearing", "price": 4603, "emoji": "🪚", "category": "tools", "badge": "Durable", "rating": 4.8 },
+      { "id": 217, "name": "Chainsaw 18-inch (Petrol)", "desc": "Heavy-duty chainsaw for tree felling and pruning", "price": 6436, "emoji": "🪓", "category": "tools", "badge": "Essential", "rating": 4.9 },
+      { "id": 218, "name": "Grass Trimmer (Electric 1000W)", "desc": "Lightweight trimmer for lawn edging", "price": 2101, "emoji": "🪴", "category": "tools", "badge": "Best Seller", "rating": 4.5 },
+      { "id": 219, "name": "Pole Pruner (Telescopic)", "desc": "Extendable pruner for tall tree branches", "price": 1209, "emoji": "🌳", "category": "tools", "badge": "Smart", "rating": 4.8 },
+      { "id": 220, "name": "Seedling Tray 98-Cell (UV Treated)", "desc": "Professional nursery tray for seedling raising", "price": 385, "emoji": "🌱", "category": "tools", "badge": "Essential", "rating": 4.7 },
+      { "id": 221, "name": "Garden Hose 30m (Reinforced)", "desc": "Kink-resistant expandable garden hose", "price": 932, "emoji": "💧", "category": "tools", "badge": "Pro", "rating": 4.4 },
+      { "id": 222, "name": "Watering Can 5L (Metal)", "desc": "Long-spout watering can for precision irrigation", "price": 321, "emoji": "💧", "category": "tools", "badge": "Indoor", "rating": 4.6 },
+      { "id": 223, "name": "Spray Bottle 2L (Trigger)", "desc": "Fine-mist spray bottle for foliar applications", "price": 283, "emoji": "🧴", "category": "tools", "badge": "Premium", "rating": 4.9 },
+      { "id": 224, "name": "Garden Rake (Iron 16-Tine)", "desc": "Heavy-duty rake for levelling and collecting debris", "price": 592, "emoji": "🧹", "category": "tools", "badge": "Durable", "rating": 4.4 },
+      { "id": 225, "name": "Leaf Blower (Cordless 20V)", "desc": "Rechargeable leaf blower for orchard cleanup", "price": 2172, "emoji": "🍃", "category": "tools", "badge": "Indoor", "rating": 4.6 },
+      { "id": 226, "name": "Compost Bin 50L (Stackable)", "desc": "Vented compost bin for kitchen and garden waste", "price": 770, "emoji": "🗑️", "category": "tools", "badge": "Indoor", "rating": 4.8 },
+      { "id": 227, "name": "Shade Net 50% (3m x 6m)", "desc": "UV-stabilised shade cloth for nursery protection", "price": 734, "emoji": "🌿", "category": "tools", "badge": "Smart", "rating": 4.6 },
+      { "id": 228, "name": "Mulching Sheet (Black 23 micron)", "desc": "Biodegradable mulch film for weed control", "price": 468, "emoji": "🧻", "category": "tools", "badge": "Indoor", "rating": 4.5 },
+      { "id": 229, "name": "Vermi Bed (HDPE 4ft x 4ft)", "desc": "Worm composting bed with tap and stand", "price": 1551, "emoji": "🛏️", "category": "tools", "badge": "Popular", "rating": 4.6 },
+      { "id": 230, "name": "Polyhouse Structure Kit", "desc": "DIY mini polyhouse frame with polythene cover", "price": 4978, "emoji": "🏠", "category": "tools", "badge": "Pro", "rating": 4.8 },
+      { "id": 231, "name": "Greenhouse Shade Cloth 75%", "desc": "Heavy shade net for greenhouse temperature control", "price": 945, "emoji": "🏡", "category": "tools", "badge": "Pro", "rating": 4.5 },
+      { "id": 232, "name": "Pruning Saw (Folding 8-inch)", "desc": "Sharp folding saw for clean pruning cuts", "price": 522, "emoji": "🪚", "category": "tools", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 233, "name": "Grafting Knife (Buddng Type)", "desc": "Precision grafting knife for fruit tree propagation", "price": 361, "emoji": "🔪", "category": "tools", "badge": "Smart", "rating": 4.8 },
+      { "id": 234, "name": "Soil Auger (Hand Operated)", "desc": "Manual soil sampling auger for testing", "price": 1106, "emoji": "🔩", "category": "tools", "badge": "Premium", "rating": 4.9 },
+      { "id": 235, "name": "Field Book (Weatherproof)", "desc": "Waterproof logbook for farm records and scouting", "price": 224, "emoji": "📒", "category": "tools", "badge": "Essential", "rating": 4.6 },
+      { "id": 236, "name": "Rain Gauge (Digital)", "desc": "Digital rainfall measuring instrument for farm", "price": 512, "emoji": "🌧️", "category": "tools", "badge": "Premium", "rating": 4.6 },
+      { "id": 237, "name": "Thermometer (Soil & Air Dual)", "desc": "Dual probe thermometer for growing conditions", "price": 446, "emoji": "🌡️", "category": "tools", "badge": "Popular", "rating": 4.6 },
+      { "id": 238, "name": "Vermicompost 25kg Premium", "desc": "Rich earthworm castings for soil fertility", "price": 926, "emoji": "🌱", "category": "organic", "badge": "100% Natural", "rating": 4.9 },
+      { "id": 239, "name": "Cow Dung Manure 10kg", "desc": "Farm-fresh cow dung for organic farming", "price": 279, "emoji": "🐄", "category": "organic", "badge": "100% Natural", "rating": 4.4 },
+      { "id": 240, "name": "Panchagavya 500ml (Traditional)", "desc": "Cow-based organic growth promoter and soil amendment", "price": 299, "emoji": "🐄", "category": "organic", "badge": "Organic", "rating": 4.4 },
+      { "id": 241, "name": "Jeevamrut 1L Organic", "desc": "Traditional cow dung and urine fermented biofertiliser", "price": 275, "emoji": "💧", "category": "organic", "badge": "Eco", "rating": 4.8 },
+      { "id": 242, "name": "Beejamrut 500ml Seed Treatment", "desc": "Natural seed coating mixture for germination boost", "price": 227, "emoji": "🌱", "category": "organic", "badge": "100% Natural", "rating": 4.7 },
+      { "id": 243, "name": "Neem Cake Powder 1kg", "desc": "Pest-repellent soil amendment from neem kernel", "price": 192, "emoji": "🌿", "category": "organic", "badge": "100% Natural", "rating": 4.9 },
+      { "id": 244, "name": "Groundnut Cake Powder 2kg", "desc": "Organic nitrogen supplement from pressed groundnut", "price": 226, "emoji": "🥜", "category": "organic", "badge": "Regenerative", "rating": 4.8 },
+      { "id": 245, "name": "Castor Cake Powder 2kg", "desc": "Pest-resistant organic manure from castor extraction", "price": 206, "emoji": "🪵", "category": "organic", "badge": "Best Seller", "rating": 4.8 },
+      { "id": 246, "name": "Mustard Cake Powder 2kg", "desc": "Oil-rich organic manure for flowering plants", "price": 233, "emoji": "🌼", "category": "organic", "badge": "Eco", "rating": 4.9 },
+      { "id": 247, "name": "Biochar 2kg (Agricultural Grade)", "desc": "High-carbon soil amendment for moisture retention", "price": 326, "emoji": "🧱", "category": "organic", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 248, "name": "Organic Potting Mix 5kg", "desc": "Ready-to-use blend of compost peat and perlite", "price": 285, "emoji": "🌱", "category": "organic", "badge": "Bio", "rating": 4.8 },
+      { "id": 249, "name": "Cocopeat Block 5kg (Compressed)", "desc": "Soilless growing medium from coconut husk", "price": 259, "emoji": "🥥", "category": "organic", "badge": "Natural", "rating": 4.7 },
+      { "id": 250, "name": "Leaf Compost 10kg", "desc": "Shredded and composted deciduous leaf mould", "price": 194, "emoji": "🍂", "category": "organic", "badge": "Organic", "rating": 4.4 },
+      { "id": 251, "name": "Bokashi Compost 1kg (Microbial)", "desc": "Fermented organic matter using bokashi method", "price": 363, "emoji": "🧫", "category": "organic", "badge": "Organic", "rating": 4.6 },
+      { "id": 252, "name": "Green Manure Seeds - Dhaincha", "desc": "Fast-growing sesbania for nitrogen fixation", "price": 148, "emoji": "🌿", "category": "organic", "badge": "Premium", "rating": 4.5 },
+      { "id": 253, "name": "Azolla Culture 1kg (Fresh)", "desc": "Aquatic fern for biological nitrogen fixation in rice", "price": 219, "emoji": "🌿", "category": "organic", "badge": "Natural", "rating": 4.9 },
+      { "id": 254, "name": "EM Solution 1L (Effective Microorganisms)", "desc": "Mixed culture of beneficial microorganisms", "price": 393, "emoji": "🦠", "category": "organic", "badge": "Organic", "rating": 4.6 },
+      { "id": 255, "name": "Liquid Seaweed Extract 500ml", "desc": "Kelp-based biostimulant for stress resistance", "price": 359, "emoji": "🌊", "category": "organic", "badge": "Eco", "rating": 4.7 },
+      { "id": 256, "name": "Humic Acid Liquid 1L", "desc": "Liquid humus supplement for soil microbial activity", "price": 306, "emoji": "💧", "category": "organic", "badge": "100% Natural", "rating": 4.8 },
+      { "id": 257, "name": "Amino Acid Liquid 1L", "desc": "Protein hydrolysate for rapid plant uptake", "price": 418, "emoji": "💧", "category": "organic", "badge": "100% Natural", "rating": 4.9 },
+      { "id": 258, "name": "Bone Meal Organic 1kg", "desc": "Steamed bone meal for phosphorus and calcium", "price": 270, "emoji": "🦴", "category": "organic", "badge": "Regenerative", "rating": 4.9 },
+      { "id": 259, "name": "Horn Meal 1kg", "desc": "Dried horn for long-term soil nitrogen", "price": 336, "emoji": "🐂", "category": "organic", "badge": "Natural", "rating": 4.4 },
+      { "id": 260, "name": "Oil Cake Mix 2kg (Neem+Mustard)", "desc": "Blended organic cakes for balanced NPK", "price": 273, "emoji": "🫘", "category": "organic", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 261, "name": "Wood Ash Powder 1kg", "desc": "Potash-rich wood ash for fruiting and flowering", "price": 144, "emoji": "🔥", "category": "organic", "badge": "Organic", "rating": 4.5 },
+      { "id": 262, "name": "Rice Husk Ash 1kg", "desc": "Silica-rich ash for stalk strength and pest resistance", "price": 124, "emoji": "🍚", "category": "organic", "badge": "Soil Health", "rating": 4.7 },
+      { "id": 263, "name": "Composted Coir Pith", "desc": "Buffered cocopeat for improved water retention", "price": 223, "emoji": "🥥", "category": "organic", "badge": "Bio", "rating": 4.7 },
+      { "id": 264, "name": "Press Mud Compost 5kg", "desc": "Sugarcane by-product for soil structure", "price": 223, "emoji": "🟤", "category": "organic", "badge": "Best Seller", "rating": 4.5 },
+      { "id": 265, "name": "Biogas Slurry (Dried) 5kg", "desc": "Digestate from biogas plant as organic manure", "price": 202, "emoji": "🟤", "category": "organic", "badge": "Bio", "rating": 4.4 },
+      { "id": 266, "name": "Farm Yard Manure 25kg", "desc": "Well-decomposed cattle manure for field application", "price": 449, "emoji": "🐄", "category": "organic", "badge": "Bio", "rating": 4.8 },
+      { "id": 267, "name": "Liquid Manure 5L (Compost Tea)", "desc": "Aerated compost tea for foliar and soil spray", "price": 413, "emoji": "🧪", "category": "organic", "badge": "Regenerative", "rating": 4.8 },
+      { "id": 268, "name": "Banana Pseudostem Extract 500ml", "desc": "Traditional plant growth promoter from banana stem", "price": 228, "emoji": "🍌", "category": "organic", "badge": "Organic", "rating": 4.8 },
+      { "id": 269, "name": "Neem Leaf Extract 500ml", "desc": "Pest-repellent foliar spray from neem leaves", "price": 179, "emoji": "🌿", "category": "organic", "badge": "Eco", "rating": 4.5 },
+      { "id": 270, "name": "Garlic Chilli Extract 500ml", "desc": "Natural insect repellent spray for kitchen garden", "price": 204, "emoji": "🌶️", "category": "organic", "badge": "Best Seller", "rating": 4.4 },
+      { "id": 271, "name": "Buttermilk Spray 1L", "desc": "Fermented dairy spray for fungal disease prevention", "price": 234, "emoji": "🥛", "category": "organic", "badge": "100% Natural", "rating": 4.8 },
+      { "id": 272, "name": "Cow Urine Ark 500ml", "desc": "Distilled cow urine for pest and disease management", "price": 211, "emoji": "🐄", "category": "organic", "badge": "Bio", "rating": 4.9 },
+      { "id": 273, "name": "Dashparni Ark 500ml", "desc": "Traditional 10-plant extract for insect control", "price": 309, "emoji": "🌿", "category": "organic", "badge": "Bio", "rating": 4.9 },
+      { "id": 274, "name": "Agnihastra 1L (Herbal Pesticide)", "desc": "Traditional Ayurvedic plant protection formulation", "price": 356, "emoji": "🧴", "category": "organic", "badge": "Fast Delivery", "rating": 4.6 },
+      { "id": 275, "name": "Matka Khad 2kg (Clay Pot Compost)", "desc": "Traditional clay pot composting mixture", "price": 234, "emoji": "🪴", "category": "organic", "badge": "Natural", "rating": 4.8 },
+      { "id": 276, "name": "Amritpan 1L (Beejamrut variant)", "desc": "Enhanced seed treatment organic mixture", "price": 285, "emoji": "🌱", "category": "organic", "badge": "100% Natural", "rating": 4.6 },
+      { "id": 277, "name": "Sukhjit Khad 2kg", "desc": "Ready-to-use organic manure blend", "price": 270, "emoji": "🌿", "category": "organic", "badge": "Fast Delivery", "rating": 4.5 },
+      { "id": 278, "name": "Ghana Jeevamrut 2kg (Dry Powder)", "desc": "Concentrated jeevamrut powder for soil application", "price": 309, "emoji": "🌱", "category": "organic", "badge": "100% Natural", "rating": 4.5 },
+      { "id": 279, "name": "Vermicompost Tea 1L (Liquid)", "desc": "Liquid vermicompost extract for quick plant response", "price": 219, "emoji": "🍵", "category": "organic", "badge": "Premium", "rating": 4.8 },
+      { "id": 280, "name": "Compost Maker Powder 500g", "desc": "Accelerator for faster home composting", "price": 261, "emoji": "🧪", "category": "organic", "badge": "Best Seller", "rating": 4.9 },
+      { "id": 281, "name": "Mycorrhizae Biofertilizer 500g", "desc": "Arbuscular mycorrhizal fungal inoculant", "price": 385, "emoji": "🍄", "category": "organic", "badge": "Organic", "rating": 4.4 },
+      { "id": 282, "name": "Azospirillum Culture 200g Pack", "desc": "Nitrogen-fixing bacteria for cereals and grasses", "price": 178, "emoji": "🦠", "category": "organic", "badge": "Fast Delivery", "rating": 4.7 },
+      { "id": 283, "name": "Acetobacter Culture 200g Pack", "desc": "Nitrogen-fixing bacteria for sugarcane and millets", "price": 211, "emoji": "🦠", "category": "organic", "badge": "Premium", "rating": 4.4 },
 
-// Generated counts per category:
-// seeds: 56
-// fertilizer: 50
-// pesticide: 51
-// tools: 48
-// organic: 46
-// Total new products: 251
+      // Generated counts per category:
+      // seeds: 56
+      // fertilizer: 50
+      // pesticide: 51
+      // tools: 48
+      // organic: 46
+      // Total new products: 251
 
     ];
 
@@ -5380,66 +5427,51 @@
         };
       }
 
+      // Calculate a deterministic hash from metrics so same image always gets same result
       const hash = Math.round((greenRatio * 1000 + yellowRatio * 2000 + brownRatio * 3000 + whiteRatio * 4000 + brightRatio * 500) % 100);
 
-      // A. Very clean healthy photo → always healthy
-      if (greenRatio >= 0.45 && brightRatio >= 0.30 && brownRatio < 0.04 && yellowRatio < 0.04 && whiteRatio < 0.03) {
+      // 1. Clear healthy plant
+      if (greenRatio >= 0.45 && brightRatio >= 0.35 && brownRatio < 0.05 && yellowRatio < 0.05 && whiteRatio < 0.03) {
         return diseaseDB.find(d => d.type === 'healthy');
       }
 
-      // B. Normal green plant with some variation → mix of healthy and disease
-      if (greenRatio >= 0.30 && brownRatio < 0.08 && yellowRatio < 0.08 && whiteRatio < 0.04) {
-        const roll = hash % 100;
-        if (roll < 50) {
-          return diseaseDB.find(d => d.type === 'healthy');
-        }
-      }
-
-      // C. White coating → Powdery Mildew
+      // 2. White coating → Powdery Mildew
       if (whiteRatio >= 0.08 && greenRatio >= 0.15) {
         return diseaseDB.find(d => d.name.includes('Powdery Mildew'));
       }
 
-      // D. Strong yellowing → Nutrient Deficiency
-      if (yellowRatio >= 0.12 && greenRatio >= 0.10) {
-        const nutrients = diseaseDB.filter(d => d.name.includes('Nutrient'));
-        if (nutrients.length) return nutrients[hash % nutrients.length];
+      // 3. Strong yellowing → Nutrient Deficiency ( Nitrogen )
+      if (yellowRatio >= 0.10 && greenRatio >= 0.10) {
+        return diseaseDB.find(d => d.name.includes('Nitrogen')) || diseaseDB.find(d => d.name.includes('Nutrient'));
       }
 
-      // E. Clear brown spots → Blight / Spot diseases
-      if (brownRatio >= 0.08 && (yellowRatio >= 0.05 || greenRatio >= 0.20)) {
+      // 4. Brown spots → could be Early Blight, Late Blight, or Bacterial Spot
+      if (brownRatio >= 0.08 && yellowRatio >= 0.05) {
         const browns = diseaseDB.filter(d => d.name.includes('Blight') || d.name.includes('Bacterial') || d.name.includes('Spot'));
         if (browns.length) return browns[hash % browns.length];
       }
 
-      // F. Moderate yellowing → Virus / Mosaic
-      if (yellowRatio >= 0.08 && greenRatio >= 0.18) {
-        const viruses = diseaseDB.filter(d => d.name.includes('Mosaic') || d.name.includes('Virus'));
-        if (viruses.length) return viruses[hash % viruses.length];
+      // 5. Moderate yellowing → Mosaic Virus or Downy Mildew
+      if (yellowRatio >= 0.06 && greenRatio >= 0.20) {
+        const yellows = diseaseDB.filter(d => d.name.includes('Mosaic') || d.name.includes('Downy') || d.name.includes('Virus'));
+        if (yellows.length) return yellows[hash % yellows.length];
       }
 
-      // G. Moderate brown → Wilt / Rot
-      if (brownRatio >= 0.06 && greenRatio >= 0.20) {
-        const wilts = diseaseDB.filter(d => d.name.includes('Wilt') || d.name.includes('Rot'));
-        if (wilts.length) return wilts[hash % wilts.length];
+      // 6. Mostly green with slight issues → Rust or Anthracnose
+      if (greenRatio >= 0.30 && (brownRatio >= 0.03 || yellowRatio >= 0.03)) {
+        const mixed = diseaseDB.filter(d => d.name.includes('Rust') || d.name.includes('Anthracnose') || d.name.includes('Wilt'));
+        if (mixed.length) return mixed[hash % mixed.length];
       }
 
-      // H. Mostly green but some symptoms → Rust / Anthracnose
-      if (greenRatio >= 0.30 && (brownRatio >= 0.04 || yellowRatio >= 0.04)) {
-        const mild = diseaseDB.filter(d => d.name.includes('Rust') || d.name.includes('Anthracnose') || d.name.includes('Mildew'));
-        if (mild.length) return mild[hash % mild.length];
-      }
-
-      // I. Default: mix of disease and healthy based on hash
+      // 7. Default: pick a disease based on hash so different images get different results
       const diseasesOnly = diseaseDB.filter(d => d.type !== 'healthy' && d.type !== 'notplant');
       if (diseasesOnly.length) {
-        if (hash < 40) {
-          return diseaseDB.find(d => d.type === 'healthy');
-        }
         const pick = diseasesOnly[hash % diseasesOnly.length];
+        // Adjust confidence based on hash so it looks realistic
         return { ...pick, confidence: 70 + (hash % 25) };
       }
 
+      // 8. Ultimate fallback → healthy
       return diseaseDB.find(d => d.type === 'healthy');
     }
 

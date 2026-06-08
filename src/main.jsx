@@ -129,12 +129,12 @@ window.handleSignUp = async function () {
   const errorEl = document.getElementById('signup-error');
 
   if (!name) {
-    errorEl.textContent = 'Please enter your full name.';
+    errorEl.textContent = 'Please enter your username.';
     nameInput.classList.add('error');
     return;
   }
-  if (!/^[A-Za-z\s]+$/.test(name)) {
-    errorEl.textContent = 'Name must contain only alphabets and spaces.';
+  if (!/^[A-Za-z][A-Za-z]*$/.test(name)) {
+    errorEl.textContent = 'Username must start with a letter and contain only alphabets.';
     nameInput.classList.add('error');
     return;
   }
